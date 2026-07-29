@@ -1,0 +1,5 @@
+format=ncg-signature-v1
+declaration=NativeCarryGeometry.Arithmetic.Binary.oddLeg_equiv_binaryIncidence
+lean=4.32.0
+mathlib=81a5d257c8e410db227a6665ed08f64fea08e997
+type-repr=Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Equiv [Lean.Level.succ (Lean.Level.zero), Lean.Level.succ (Lean.Level.zero)]) (Lean.Expr.const `NativeCarryGeometry.Arithmetic.Binary.OddLeg [])) (Lean.Expr.const `NativeCarryGeometry.Arithmetic.Binary.BinaryIncidence [])

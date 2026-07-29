@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "historical_source": {
+    "repository": "https://github.com/thiagomassensini/primos",
+    "branch": "main",
+    "branch_commit": "7d8d0b345b329935674edc24e5ac08ad9f7b5804",
+    "release": "v0.52.0",
+    "release_commit": "7d8d0b345b329935674edc24e5ac08ad9f7b5804",
+    "release_url": "https://github.com/thiagomassensini/primos/releases/tag/v0.52.0"
+  },
+  "registry": {
+    "path": "audit/theorems.tsv",
+    "id_count": 59,
+    "module_format": "Lean module name without .lean",
+    "type_hash_algorithm": "sha256",
+    "type_hash_status": "GENERATED_AND_VERIFIED"
+  },
+  "integrity_policy": {
+    "signature_format": "ncg-signature-v1",
+    "type_representation": "(repr info.type).pretty 1000000",
+    "preimage_fields_in_order": [
+      "format",
+      "declaration",
+      "lean",
+      "mathlib",
+      "type-repr"
+    ],
+    "preimage_encoding": "UTF-8; key=value lines; every field, including type-repr, ends with LF",
+    "type_sha256_definition": "SHA-256 of the exact versioned signature preimage generated from the elaborated Lean environment.",
+    "proof_identity": "The proof body is identified separately by the Git commit, tree, tag, and release manifest."
+  }
+}
