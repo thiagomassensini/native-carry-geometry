@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this formalization, please cite the versioned software release."
+title: "Native Carry Geometry"
+type: software
+authors:
+  - family-names: Massensini
+    given-names: Thiago
+repository-code: "https://github.com/thiagomassensini/native-carry-geometry"
+url: "https://github.com/thiagomassensini/native-carry-geometry"
+license: Apache-2.0
+version: 0.1.0
+date-released: 2026-07-29
+abstract: >-
+  A Lean 4 formalization from positional carry decomposition and uniform carry
+  mass to quadratic amplitude rigidity, a real centered-bracket operator,
+  global radial zero-set factorization, and a scope-preserving analytic
+  presentation identity.
+keywords:
+  - Lean 4
+  - formalized mathematics
+  - positional representation
+  - carry geometry
+  - centered differences
+  - quadratic amplitude
+  - operator zero sets
+  - reproducible proof audit

@@ -1,0 +1,539 @@
+{
+  "policy": {
+    "allowed": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "forbidden": [
+      "Lean sorryAx",
+      "any axiom outside the explicit allowlist"
+    ],
+    "note": "Only propext, Classical.choice, and Quot.sound are permitted; every transitive use is recorded per declaration."
+  },
+  "schema": "native-carry-axiom-audit-v1",
+  "theorems": [
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.deformedAmplitude_sq_eq_massWeight",
+      "id": "NCG-AMP-001"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.deformedAmplitude_sq_eq_carryMass_iff",
+      "id": "NCG-AMP-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.positionalMassCompatible_iff",
+      "id": "NCG-AMP-003"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.radialBranchEnergy_eq_one_iff",
+      "id": "NCG-AMP-004"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.radialBranchSaturation_base_independent",
+      "id": "NCG-AMP-005"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.positionalMassCompatible_iff_realEnergyCompatible",
+      "id": "NCG-AMP-006"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.radialBranchEnergy_half_eq_one",
+      "id": "NCG-AMP-007"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.radialBranchEnergy_half_ne_zero",
+      "id": "NCG-AMP-008"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Analytic.finiteBracketChart_eq_two_prefixes",
+      "id": "NCG-ANL-001"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Analytic.finiteBracketChart_tendsto_bracketSeries",
+      "id": "NCG-ANL-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Analytic.analyticOnNhd_bracketSeries",
+      "id": "NCG-ANL-003"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Analytic.cameraNormalizationFactor_ne_zero",
+      "id": "NCG-ANL-004"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Analytic.normalizedBracketChart_camera_independent",
+      "id": "NCG-ANL-005"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Analytic.bracketSeries_eq_factor_mul_canonicalCarryContinuation",
+      "id": "NCG-ANL-006"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Analytic.analyticOnNhd_canonicalCarryContinuation",
+      "id": "NCG-ANL-007"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Analytic.bracketSeries_zero_iff_canonicalCarryContinuation_zero",
+      "id": "NCG-ANL-008"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.Balanced.card_balancedOffsets",
+      "id": "NCG-BAL-001"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.Balanced.balancedOffset_equiv_nonzeroResidue",
+      "id": "NCG-BAL-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.Balanced.centerOffsetDecomposition_existsUnique",
+      "id": "NCG-BAL-003"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.Binary.four_dvd_binaryCenter",
+      "id": "NCG-BIN-001"
+    },
+    {
+      "axioms": [
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.Binary.binaryCenter_unique",
+      "id": "NCG-BIN-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.Binary.oddLeg_equiv_binaryIncidence",
+      "id": "NCG-BIN-003"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.Binary.binaryEffectiveDepth_eq_centerDepth",
+      "id": "NCG-BIN-004"
+    },
+    {
+      "axioms": [
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Bracket.centeredSecondDifference_neg_radius",
+      "id": "NCG-BRK-001"
+    },
+    {
+      "axioms": [
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Bracket.centeredSecondDifference_add",
+      "id": "NCG-BRK-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Bracket.Balanced.balancedBracket_eq_saturatedBracket",
+      "id": "NCG-BRK-003"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Bracket.Balanced.finiteBracketCancellation",
+      "id": "NCG-BRK-004"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Bracket.Balanced.finiteBracketChart_eq_intervalSum_sub_centerCorrection",
+      "id": "NCG-BRK-005"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Bracket.Curvature.balancedRadialCurvature_eq_half_pairSum",
+      "id": "NCG-CUR-001"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Bracket.Curvature.balancedRadialCurvature_pos_of_pos",
+      "id": "NCG-CUR-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Bracket.Curvature.balancedRadialCurvature_neg_of_neg",
+      "id": "NCG-CUR-003"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Bracket.Curvature.balancedRadialCurvature_eq_zero_iff",
+      "id": "NCG-CUR-004"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.Balanced.offsetCarries_iff_eq_canonicalOffset",
+      "id": "NCG-DEP-001"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.Balanced.effectiveDepth_eq_centerDepth",
+      "id": "NCG-DEP-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.complexCoordinates_injective",
+      "id": "NCG-EQV-001"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.normSq_complexCoordinates",
+      "id": "NCG-EQV-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.complexCoordinates_finiteOperator",
+      "id": "NCG-EQV-003"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.finiteOperator_eq_zero_iff_complexCoordinates_eq_zero",
+      "id": "NCG-EQV-004"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.complexCoordinates_realCarryState_eq_powerMonomial",
+      "id": "NCG-EQV-005"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.complexCoordinates_finiteRealOperator_eq_finiteBracketChart",
+      "id": "NCG-EQV-006"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero",
+      "id": "NCG-EQV-007"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero",
+      "id": "NCG-EQV-008"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.canonicalCarryOperatorZero_re_eq_half",
+      "id": "NCG-EQV-009"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.criticalAmplitude_sq_eq_carryMass",
+      "id": "NCG-MAS-001"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.carryMass_effectiveDepth_eq_centerDepth",
+      "id": "NCG-MAS-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.map_finiteSaturatedBracketOperator",
+      "id": "NCG-OPR-001"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.quadraticEnergy_eq_zero_iff",
+      "id": "NCG-OPR-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.isFiniteRealCarryOperatorZero_iff",
+      "id": "NCG-OPR-003"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.isRealCarryOperatorZero_iff",
+      "id": "NCG-OPR-004"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.realCarryOperatorZero_sigma_eq_half",
+      "id": "NCG-OPR-005"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.not_realCarryOperatorZero_of_sigma_ne_half",
+      "id": "NCG-OPR-006"
+    },
+    {
+      "axioms": [
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.positionalDecompositionAtDepth_existsUnique",
+      "id": "NCG-POS-001"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.positionalDepth_factorization_existsUnique",
+      "id": "NCG-POS-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.positionalDepth_spec",
+      "id": "NCG-POS-003"
+    },
+    {
+      "axioms": [
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Arithmetic.residueAtDepth_eq_zero_iff_pow_dvd",
+      "id": "NCG-POS-004"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.uniformCarryEvent_probability",
+      "id": "NCG-PRB-001"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.quadraticEnergy_rotationDirection",
+      "id": "NCG-REA-001"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.quadraticEnergy_realCarryState",
+      "id": "NCG-REA-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.realCarryEnergyCompatible_iff",
+      "id": "NCG-REA-003"
+    }
+  ]
+}

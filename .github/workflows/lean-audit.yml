@@ -1,0 +1,68 @@
+name: Lean kernel and repository audit
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+
+concurrency:
+  group: lean-audit-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Lean kernel and audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Check out exact revision
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Verify pinned reproducibility inputs
+        run: python3 scripts/check_reproducibility.py
+
+      - name: Set up Lean and Mathlib cache
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
+        with:
+          use-github-cache: true
+          use-mathlib-cache: true
+
+      - name: Build public root with warnings as errors
+        run: lake build --wfail NativeCarryGeometry
+
+      - name: Run static trust and registry audits
+        env:
+          AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-audit
+        run: bash scripts/run_audits.sh "${AUDIT_OUTPUT}"
+
+      - name: Record compiler and revision
+        env:
+          AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-audit
+        run: |
+          {
+            echo "commit=$(git rev-parse HEAD)"
+            lean --version | head -n 1
+            lake --version
+          } > "${AUDIT_OUTPUT}/build-environment.txt"
+
+      - name: Confirm audits did not modify tracked files
+        run: |
+          git diff --exit-code
+          [[ -z "$(git status --porcelain --untracked-files=all)" ]]
+
+      - name: Upload audit evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-carry-audit-${{ github.sha }}
+          path: ${{ runner.temp }}/native-carry-audit
+          if-no-files-found: error
+          retention-days: 30
