@@ -37,8 +37,6 @@ jobs:
       RELEASE_TAG: v0.1.0
       REQUESTED_SHA: ${{ github.event_name == 'workflow_dispatch' && inputs.commit_sha || github.sha }}
       GH_TOKEN: ${{ github.token }}
-      AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-release/audit
-      RELEASE_OUTPUT: ${{ runner.temp }}/native-carry-release
 
     steps:
       - name: Validate explicit release request
@@ -163,10 +161,14 @@ jobs:
 
       - name: Run complete repository audits
         if: steps.publication_state.outputs.already_published != 'true'
+        env:
+          AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-release/audit
         run: bash scripts/run_audits.sh "${AUDIT_OUTPUT}"
 
       - name: Record compiler and exact source revision
         if: steps.publication_state.outputs.already_published != 'true'
+        env:
+          AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-release/audit
         run: |
           mkdir -p -- "${AUDIT_OUTPUT}"
           {
@@ -213,6 +215,9 @@ jobs:
 
       - name: Generate post-tag release evidence
         if: steps.publication_state.outputs.already_published != 'true'
+        env:
+          AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-release/audit
+          RELEASE_OUTPUT: ${{ runner.temp }}/native-carry-release
         run: |
           set -euo pipefail
           mkdir -p -- "${RELEASE_OUTPUT}"
@@ -244,6 +249,8 @@ jobs:
 
       - name: Publish immutable GitHub release
         if: steps.publication_state.outputs.already_published != 'true'
+        env:
+          RELEASE_OUTPUT: ${{ runner.temp }}/native-carry-release
         run: |
           set -euo pipefail
           gh release create "${RELEASE_TAG}" \
