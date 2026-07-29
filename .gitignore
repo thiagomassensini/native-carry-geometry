@@ -1,0 +1,6 @@
+/.lake/
+/build/
+*.log
+audit/generated/
+__pycache__/
+*.py[cod]
