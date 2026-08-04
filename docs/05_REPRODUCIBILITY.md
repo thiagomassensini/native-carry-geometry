@@ -76,7 +76,7 @@ The intended layer boundaries are:
 | Bracket | additive or ring algebra | boundary or analytic zero predicates |
 | Real operator | real topology and limits | analytic continuation modules |
 | Analytic presentation | complex analysis and bracket modules | excluded historical operator routes |
-| Equivalence | real and analytic public APIs | discarded-domain zero predicates |
+| Equivalence | real and analytic public APIs | misclassified ambient chart cancellations |
 
 The real terminal theorem must remain provable without importing the analytic
 presentation.
