@@ -5,7 +5,7 @@ import Mathlib.Tactic
 # Canonical positional decomposition at arbitrary depth
 
 This module isolates the Euclidean arithmetic shared by every positional
-camera.  For a natural base `b > 0`, a depth `k`, and an integer `n`, the
+system and by later camera constructions.  For a natural base `b > 0`, a depth `k`, and an integer `n`, the
 pair
 
 `(n / b^k, n % b^k)`
