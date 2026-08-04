@@ -106,7 +106,7 @@ that varies amplitude and quadratic norm in the ambient chart.
 
 ## 5. One native operator-zero predicate
 
-The unique native zero predicate is:
+The one native operator-zero predicate is:
 
 ```lean
 abbrev IsNativeCarryOperatorZero
@@ -118,7 +118,7 @@ It applies to the tower already carrying its mass.
 
 The names `IsNativeRealCarryOperatorZero` and
 `IsNativeCanonicalCarryOperatorZero` are legacy coordinate-labelled aliases.
-They do not define two zero species.
+They do not introduce additional operator-zero predicates.
 
 The principal theorem is:
 
@@ -172,7 +172,7 @@ RadialChartCancelsAt camera sigma time
 
 The corresponding analytic equation is
 `canonicalCarryContinuation s = 0`. These are chart-cancellation statements,
-not definitions of another operator zero.
+and do not define an additional operator-zero predicate.
 
 A chart represents the native operator only if it also preserves the upstream
 mass:
@@ -198,7 +198,7 @@ AnalyticChartRepresentsNativeZero s ↔
 
 The first coordinate is therefore representation data. Once the chart
 represents the native tower, it is provably on the native shell and its
-cancellation belongs to the same native zero locus.
+cancellation belongs to the same native operator-zero locus.
 
 Historical names such as `IsRealCarryOperatorZero`,
 `IsFiniteRealCarryOperatorZero`, and
