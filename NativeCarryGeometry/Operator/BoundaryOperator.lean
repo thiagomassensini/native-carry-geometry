@@ -47,8 +47,8 @@ abbrev RadialChartCancelsAt
 
 /--
 Legacy compatibility alias for ambient radial-chart cancellation.  Despite the
-historical word `Boundary`, this abbreviation is not the zero predicate of a
-second operator.
+historical word `Boundary`, this abbreviation does not introduce an
+additional native operator-zero predicate.
 -/
 abbrev BoundaryConvergesToZero
     (camera : ℕ) (sigma time : ℝ) : Prop :=
