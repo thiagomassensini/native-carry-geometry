@@ -10,6 +10,10 @@ open NativeCarryGeometry.Internal.Carry.Cp
 
 noncomputable section
 
+/--
+Quadratic norm of the sigma-radial deformation family.  This is chart energy,
+not an operator and not an operator-zero predicate.
+-/
 def branchNormSq (p : ℕ) (sigma : ℝ) : ℝ :=
   ((p - 1 : ℕ) : ℝ) *
     ∑' k : ℕ, branchMassWeight p sigma (k + 1)
@@ -127,7 +131,10 @@ theorem branchNormSq_eq_one_iff
     (branchRatio_lt_one p hp hsigma)]
   exact branchRatio_eq_inv_iff p hp sigma
 
-/-- O defeito da norma e o deslocamento critico possuem exatamente o mesmo zero. -/
+/--
+O defeito escalar da norma e o deslocamento critico possuem o mesmo locus
+nulo de saturacao. Esse locus nao e um zero do operador.
+-/
 theorem branchDefect_eq_zero_iff_criticalDisplacement_eq_zero
     (p : ℕ) (hp : Nat.Prime p) {sigma : ℝ} (hsigma : 0 < sigma) :
     branchDefect p sigma = 0 ↔ criticalDisplacement sigma = 0 := by
@@ -398,6 +405,13 @@ noncomputable section
     (deformedAmplitude b sigma k) ^ 2 =
       massWeight b sigma k :=
   Internal.Carry.Cp.branchAmplitude_sq_eq_massWeight b sigma k
+
+/-- Preferred-name form of `deformedAmplitude_sq_eq_massWeight`. -/
+@[simp] theorem deformedAmplitude_sq_eq_radialEnergyWeight
+    (b : ℕ) (sigma : ℝ) (k : ℕ) :
+    (deformedAmplitude b sigma k) ^ 2 =
+      radialEnergyWeight b sigma k :=
+  deformedAmplitude_sq_eq_massWeight b sigma k
 
 /-- NCG-AMP-002: Local Quadratic Amplitude Rigidity. -/
 theorem deformedAmplitude_sq_eq_carryMass_iff
