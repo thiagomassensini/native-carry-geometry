@@ -4,9 +4,9 @@
 
 The historical source contains many valid experimental and formal research
 directions. This repository selects the shortest auditable dependency chain
-from positional carry to the one mass-built native zero and its faithful real
-and analytic coordinates, with radial-chart representation rigidity as a
-downstream comparison theorem.
+from positional carry to the mass-built native operator, its operator-zero
+predicate, and its faithful real and analytic coordinates, with radial-chart
+representation rigidity as a downstream comparison theorem.
 
 Exclusion from this root means:
 
