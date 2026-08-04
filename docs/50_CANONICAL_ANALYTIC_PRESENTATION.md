@@ -157,5 +157,5 @@ centered bracket
 ```
 
 No theorem in this layer constructs the native mass or is a premise of
-`NCG-OPR-004`. The analytic layer provides faithful coordinates after the real
+`NCG-OPR-007`. The analytic layer provides faithful coordinates after the real
 operator has already been assembled.
