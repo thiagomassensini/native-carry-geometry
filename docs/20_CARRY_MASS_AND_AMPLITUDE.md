@@ -1,4 +1,4 @@
-# Carry Mass and Quadratic Amplitude
+# Carry Mass, Integer Weights, and Quadratic Amplitude
 
 ## 1. Uniform carry probability
 
@@ -70,16 +70,21 @@ and proves
 (nativeTowerAmplitude n) ^ 2 = nativeTowerMass n
 ```
 
-This is the construction used by `nativeRealCarryState`. The operator never
-receives a later “mass injection”.
+For every positive integer `n`, the definition specializes the positional
+carry law to scale `n` at depth one: `nativeTowerMass n = carryMass n.toNat 1`.
+The corresponding amplitude is its quadratic root. This is the construction
+used by `nativeRealCarryState`; the operator consumes these integer weights
+and never manufactures mass later.
 
 ## 3. Local quadratic rigidity
 
-The square of the deformed amplitude is the mass weight of the deformed
-branch:
+The square of the deformed amplitude is the radial energy weight of the
+comparison chart. The legacy API calls it `massWeight`; the preferred name is
+`radialEnergyWeight`, because it equals native carry mass only at
+`sigma = 1/2`:
 
 ```lean
-theorem deformedAmplitude_sq_eq_massWeight ...
+theorem deformedAmplitude_sq_eq_radialEnergyWeight ...
 ```
 
 This is `NCG-AMP-001`.
@@ -140,7 +145,8 @@ Within its positive-`sigma` convergence regime:
 | `NCG-AMP-007` | `radialBranchEnergy_half_eq_one` | the critical branch saturates |
 | `NCG-AMP-008` | `radialBranchEnergy_half_ne_zero` | the critical branch is nondegenerate |
 
-These are diagnostics of the deformation chart. They neither define the native
+These are quadratic-norm diagnostics of the deformation chart. Their null or
+saturation loci are not operator zeros. They neither define the native
 operator nor add mass to its zero predicate.
 
 ## 6. Radial-presentation crosswalk
@@ -152,18 +158,43 @@ are not identified sample by sample.
 The downstream formal bridge is:
 
 ```lean
-theorem positionalMassCompatible_iff_realEnergyCompatible
+theorem positionalMassCompatible_iff_radialDeformationRepresentsNativeMass
     (b : ℕ) (hb : 1 < b) (sigma time : ℝ) :
     PositionalMassCompatible b sigma ↔
-      Operator.RealCarryEnergyCompatible sigma time
+      Operator.RadialDeformationRepresentsNativeMass sigma time
 ```
 
-This is `NCG-AMP-006`. Both sides are equivalent to `sigma = 1/2`; their
-equivalence says that the positional and real deformation charts recognize the
-same native shell. It is not an equality of indexing schemes and is not part
-of the native operator's construction.
+This is the canonical-name wrapper of `NCG-AMP-006`. Both sides are
+equivalent to `sigma = 1/2`; their equivalence says that the positional and
+integer-indexed radial charts recognize the same native mass shell. It is not
+an equality of indexing schemes and is not part of the operator's later
+evaluation.
 
-## 7. Dependency direction
+
+## 7. Sigma in real and complex quadratic norm
+
+For every positive integer, the same exponent law is proved in all coordinate
+forms:
+
+[
+E(u_{sigma,t}(n))
+=
+operatorname{normSq}(J(u_{sigma,t}(n)))
+=
+operatorname{normSq}(n^{-(sigma+it)})
+=
+n^{-2sigma}.
+]
+
+The registered theorems are `NCG-REA-005`, `NCG-EQV-013`, and
+`NCG-EQV-016`. `NCG-EQV-015` then proves that the complex-coordinate
+family preserves (n^{-1}) for every nondegenerate positive input exactly at
+(sigma=1/2).
+
+This is the formal content of “sigma is a change of quadratic norm.” It is not
+a change of operator or a new zero predicate.
+
+## 8. Dependency direction
 
 The source imports follow the causal chain:
 
