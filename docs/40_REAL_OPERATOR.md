@@ -172,7 +172,7 @@ abbrev IsNativeCarryOperatorZero
 ```
 
 `IsBoundaryResonance` and the older coordinate-labelled
-`IsNativeRealCarryOperatorZero` are definitionally equal aliases.
+`IsNativeRealCarryOperatorZero` are definitionally equal legacy-compatibility aliases.
 
 The ambient deformation has only a cancellation predicate,
 `RadialChartCancelsAt camera sigma time`. At `sigma = 1/2`, Lean proves
