@@ -20,9 +20,9 @@ checks enforce the implementation.
 
 Quotient–residue geometry and carry depth determine the carry mass
 
-```lean
-carryMass b k = b ^ (-k)
-```
+\[
+\operatorname{carryMass}(b,k)=b^{-k}.
+\]
 
 in the measure layer. The integer tower then uses
 
