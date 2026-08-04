@@ -5,14 +5,15 @@ import Mathlib.Data.Complex.Basic
 /-!
 # Optional complex packaging of the native real-plane camera
 
-The primitive camera, its quadratic energy, and its zero predicate were defined
-in `CpNativeCarryRealPlaneBracket` using only real pairs and additive centered
+The native real state, finite operator, and operator-zero predicate are defined
+in `Operator/RealState.lean`, `Operator/FiniteRealOperator.lean`, and
+`Operator/ZeroSetFactorization.lean` using real pairs and additive centered
 differences.
 
 This module proves that storing a real pair `(x,y)` in the two fields of a
 complex number is an injective additive encoding.  The encoding commutes with
 every finite saturated camera, preserves quadratic energy through `normSq`, and
-therefore preserves zeros exactly.
+therefore makes the real and complex resultants define the same zero locus.
 
 The historical additive homomorphism is retained internally because the exact
 real-to-analytic boundary proof consumes it.  The public API below strengthens
@@ -143,8 +144,8 @@ theorem nativeCarryRealPlaneComplexPackaging_eq_finiteChart
         p M hp hpodd _
 
 /--
-The real camera and its packaged finite balanced-bracket chart have exactly the same
-zero predicate.
+The real camera and its packaged finite balanced-bracket chart define exactly
+the same finite-resultant zero locus.
 -/
 theorem nativeCarryRealPlaneFiniteChartAt_zero_iff_packaged_zero
     (p M : ℕ) (hp : Nat.Prime p) (hpodd : Odd p)
@@ -292,7 +293,7 @@ theorem radialComplexNormRepresentsNativeMass_iff
     rw [normSq_complexCoordinates]
     exact henergy n hn
 
-/-- NCG-EQV-003: Finite-Operator Naturality. -/
+/-- NCG-EQV-003: Ambient Finite-Chart Naturality (Legacy Declaration Name). -/
 theorem complexCoordinates_finiteOperator
     (camera cutoff : ℕ) (sigma time : ℝ) :
     complexCoordinates
@@ -321,7 +322,7 @@ theorem complexCoordinates_finiteNativeOperator
     complexCoordinates.toAddMonoidHom camera cutoff
     (Operator.nativeRealCarryState time)
 
-/-- NCG-EQV-004: Finite Zero-Set Equivalence. -/
+/-- NCG-EQV-004: Finite Resultant Coordinate Zero-Locus Identity. -/
 theorem finiteOperator_eq_zero_iff_complexCoordinates_eq_zero
     (camera cutoff : ℕ) (sigma time : ℝ) :
     Operator.finiteRealCarryOperator
@@ -336,9 +337,10 @@ theorem finiteOperator_eq_zero_iff_complexCoordinates_eq_zero
     apply complexCoordinates_injective
     simpa using hzero
 
-/-- NCG-EQV-010: Native Finite Zero Coordinate Identity.
+/-- NCG-EQV-010: Native Finite Resultant Coordinate Zero-Locus Identity.
 
-Complex coordinates neither add nor remove zeros of the native operator. -/
+The native finite resultant and its complex coordinates define the same zero
+locus. -/
 theorem finiteNativeOperator_eq_zero_iff_complexCoordinates_eq_zero
     (camera cutoff : ℕ) (time : ℝ) :
     Operator.finiteNativeRealCarryOperator
