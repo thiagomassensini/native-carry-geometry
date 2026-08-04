@@ -14,7 +14,8 @@ abstract: >-
   A Lean 4 formalization from positional quotient-residue geometry and carry
   mass to quadratic amplitude rigidity and one native centered-bracket
   operator. Real pairs and complex numbers are proved faithful coordinates of
-  the same mass-built state, resultant, and zero; sigma is isolated as an
+  the same mass-built state and resultant, with the same zero locus; sigma is
+  isolated as an
   ambient quadratic-norm deformation coordinate.
 keywords:
   - Lean 4
@@ -23,5 +24,5 @@ keywords:
   - carry geometry
   - centered differences
   - quadratic amplitude
-  - one native operator zero
+  - native operator-zero predicate
   - reproducible proof audit
