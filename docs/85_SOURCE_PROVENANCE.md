@@ -90,7 +90,7 @@ and reproves the energy and finite-zero statements for that representation.
 ### 5.3. Full analytic zero predicate
 
 The historical boundary theorem identifies camera-three closure with
-canonical scalar cancellation. Release `v0.1.0` defines a complete analytic
+canonical scalar cancellation. Release `v0.2.0` defines a complete analytic
 operator predicate that retains real energy compatibility and proves the full
 predicate identity as `NCG-EQV-008`.
 
@@ -111,7 +111,7 @@ checkpoints represented in the locked history are:
 | binary and balanced incidence geometry | center, residue, and depth constructions |
 | carry mass and quadratic rigidity | local and global amplitude laws |
 | real state and finite camera | rotating state, energy, additive bracket operator |
-| real zero-set factorization | universal camera theorem and corollaries |
+| native real zero and radial-presentation factorization | mass-built native predicate plus universal camera compatibility theorem and corollaries |
 | canonical analytic presentation | bracket convergence, normalization, camera compatibility |
 | real–analytic boundary crosswalk | positive samples, finite charts, and camera-three boundary equivalence |
 
@@ -122,7 +122,7 @@ For exact source declaration and commit values, use
 
 A valid audit citation must bind:
 
-1. release `v0.1.0`;
+1. release `v0.2.0`;
 2. the final proof commit of this repository;
 3. the NCG identifier;
 4. the elaborated type digest;

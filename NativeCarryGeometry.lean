@@ -4,8 +4,9 @@ import NativeCarryGeometry.Arithmetic.BalancedResidue
 import NativeCarryGeometry.Arithmetic.CarryDepth
 import NativeCarryGeometry.Measure.CarryMass
 import NativeCarryGeometry.Measure.CarryProbability
-import NativeCarryGeometry.Operator.RealState
 import NativeCarryGeometry.Measure.QuadraticAmplitude
+import NativeCarryGeometry.Operator.RealState
+import NativeCarryGeometry.Operator.QuadraticDomain
 import NativeCarryGeometry.Bracket.CenteredDifference
 import NativeCarryGeometry.Bracket.BalancedCamera
 import NativeCarryGeometry.Bracket.RadialCurvature

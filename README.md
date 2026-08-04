@@ -1,8 +1,9 @@
 # Native Carry Geometry
 
 Native Carry Geometry is a Lean 4 formalization of a positional-carry
-construction, its quadratic amplitude law, a real rotating-state operator, and
-an intrinsic analytic presentation of the same operator.
+construction, its quadratic amplitude law, the real operator already assembled
+from that weighted tower, and a complex-coordinate presentation of the same
+operator.
 
 This repository is intentionally small and audit-oriented. Its mathematical
 dependency chain is
@@ -12,23 +13,39 @@ positional decomposition
 → carry depth
 → uniform carry mass
 → quadratic amplitude rigidity
-→ real rotating state
+→ native integer tower
+→ native real rotating state
 → centered bracket
-→ finite camera resultants
-→ boundary closure
-→ zero-set factorization
-→ faithful analytic presentation
+→ native finite camera resultants
+→ native boundary zero
+→ faithful complex/analytic coordinates
+→ radial-presentation uniqueness
 ```
 
-- Release: `v0.1.0`
+- Release: `v0.2.0`
 - Lean and Mathlib line: `v4.32.0`
 - Historical source lock:
 [`thiagomassensini/primos@7d8d0b345b329935674edc24e5ac08ad9f7b5804`](https://github.com/thiagomassensini/primos/tree/7d8d0b345b329935674edc24e5ac08ad9f7b5804)
 
 ## Principal results
 
-For every natural camera width, the complete real-operator zero predicate
-factors into a unique radial shell and a temporal boundary resonance:
+The primary operator has no free radial parameter. Its tower, state, finite
+resultant, and zero predicate are exposed as:
+
+```lean
+nativeTowerMass n
+nativeTowerAmplitude n
+nativeRealCarryState time n
+finiteNativeRealCarryOperator camera cutoff time
+IsNativeRealCarryOperatorZero camera time
+```
+
+`nativeTowerAmplitude_sq_eq_mass` proves that the quadratic amplitude already
+contains the carry mass. Consequently, a native zero is boundary closure of
+the already weighted operator; no mass predicate is attached afterward.
+
+The two-coordinate family remains available under explicit radial-deformation
+names. Its registered compatibility factorization is:
 
 ```lean
 theorem isRealCarryOperatorZero_iff
@@ -38,11 +55,22 @@ theorem isRealCarryOperatorZero_iff
         IsBoundaryResonance camera time
 ```
 
-This is theorem `NCG-OPR-004`, the **Real Carry Operator Zero-Set
-Factorization Theorem**. Its immediate corollaries are radial confinement
-(`NCG-OPR-005`) and off-shell nonvanishing (`NCG-OPR-006`).
+This is `NCG-OPR-004`, the **Radial Presentation Factorization Theorem**.
+Here `sigma = 1/2` says exactly when the deformation chart represents the
+native tower. `NCG-OPR-005/006` express presentation uniqueness and off-shell
+nonrepresentation; they do not manufacture operator mass.
 
-The analytic presentation is connected to the real presentation by:
+For the native operator itself, the real and analytic zero predicates are
+equivalent without an added mass condition:
+
+```lean
+theorem isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero
+    (time : ℝ) :
+    Operator.IsNativeRealCarryOperatorZero 3 time ↔
+      IsNativeCanonicalCarryOperatorZero time
+```
+
+The ambient radial chart also has the registered real/analytic identity:
 
 ```lean
 theorem isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero
@@ -53,15 +81,15 @@ theorem isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero
 
 This is `NCG-EQV-008`. Its scope is exact:
 
-- the real confinement theorem is universal in `camera : ℕ`;
+- the radial-presentation theorem is universal in `camera : ℕ`;
 - the boundary-to-analytic crosswalk is specialized to camera `3`;
 - the crosswalk assumes `s ∈ canonicalStrip`, i.e.
   `0 < s.re ∧ s.re < 1`;
-- `IsCanonicalCarryOperatorZero` retains
-  `RealCarryEnergyCompatible s.re s.im`; a scalar cancellation is not promoted
-  to a full operator zero after discarding the quadratic domain.
+- `IsCanonicalCarryOperatorZero` is the compatibility predicate for an ambient
+  radial parameter; the primary native predicate is
+  `IsNativeCanonicalCarryOperatorZero`.
 
-The resulting analytic radial confinement theorem is `NCG-EQV-009`.
+The resulting radial-presentation uniqueness theorem is `NCG-EQV-009`.
 
 ## Scope distinctions
 
@@ -75,15 +103,16 @@ theorem
 positionalMassCompatible_iff_realEnergyCompatible
 ```
 
-(`NCG-AMP-006`) identifies their admissible quadratic domains without asserting
-`b = camera` and without asserting a pointwise equality between `b⁻ᵏ` and
-`n⁻¹`.
+(`NCG-AMP-006`) identifies when a radial deformation reproduces the native
+mass. It is deliberately located downstream in
+`Operator/QuadraticDomain.lean`; it neither defines nor injects the mass.
 
-### Universal confinement does not identify all resonance sets
+### Radial-presentation uniqueness does not identify all resonance sets
 
-`NCG-OPR-004` is one theorem quantified over every natural camera. It does not
-assert that two distinct raw camera formulas are definitionally equal, and it
-does not assert that their temporal resonance sets are literally equal.
+`NCG-OPR-004` is one compatibility theorem quantified over every natural
+camera. It does not assert that two distinct raw camera formulas are
+definitionally equal, and it does not assert that their temporal resonance
+sets are literally equal.
 
 ### Total definitions include degenerate cameras
 
@@ -101,7 +130,7 @@ definitionally the generic finite camera at width `2`.
 
 ### Odd-prime hypotheses remain local
 
-The positional mass and real confinement results do not require primality.
+The positional mass and radial-presentation results do not require primality.
 Prime and oddness hypotheses occur only where the implementation identifies a
 balanced residue camera with its symmetric bracket chart or compares
 normalized analytic camera charts.
@@ -132,8 +161,8 @@ the complete audit procedure.
 | [Bracket and curvature](docs/30_BRACKET_AND_CURVATURE.md) | Centered differences, cameras, and sign rigidity |
 | [Real operator](docs/40_REAL_OPERATOR.md) | Real state, finite resultants, boundary closure |
 | [Canonical analytic presentation](docs/50_CANONICAL_ANALYTIC_PRESENTATION.md) | Bracket series and camera normalization |
-| [Real–analytic equivalence](docs/60_REAL_ANALYTIC_EQUIVALENCE.md) | Coordinate, finite, boundary, and full-zero identities |
-| [Zero-set factorization](docs/70_ZERO_SET_FACTORIZATION.md) | Terminal theorem and exact logical scope |
+| [Real–analytic equivalence](docs/60_REAL_ANALYTIC_EQUIVALENCE.md) | Native coordinate/zero identity and ambient radial extension |
+| [Zero-set factorization](docs/70_ZERO_SET_FACTORIZATION.md) | Native zeros and radial-presentation uniqueness |
 | [Theorem registry](docs/80_THEOREM_REGISTRY.md) | Stable NCG identifiers and type-digest policy |
 | [Source provenance](docs/85_SOURCE_PROVENANCE.md) | Historical lock and selective-port policy |
 | [Excluded research routes](docs/88_EXCLUDED_RESEARCH_ROUTES.md) | Valid historical extensions outside this audit root |

@@ -105,6 +105,35 @@ abbrev radialRatio (b : ℕ) (sigma : ℝ) : ℝ :=
 abbrev massWeight (b : ℕ) (sigma : ℝ) (k : ℕ) : ℝ :=
   Internal.Carry.Cp.branchMassWeight b sigma k
 
+/-!
+## Native integer tower
+
+The operator does not acquire a mass condition after it has been built.  Its
+positive-integer tower is assembled here, in the carry-measure layer: the
+integer `n` is used as the positional scale at depth one, so its mass is
+`carryMass n 1` and its amplitude is the quadratic root
+`criticalAmplitude n 1`.
+-/
+
+/-- Carry mass attached to a positive integer in the native vertical tower. -/
+def nativeTowerMass (n : ℤ) : ℝ :=
+  if 0 < n then carryMass n.toNat 1 else 0
+
+/-- Quadratic amplitude attached to a positive integer in the native tower. -/
+def nativeTowerAmplitude (n : ℤ) : ℝ :=
+  if 0 < n then criticalAmplitude n.toNat 1 else 0
+
+/-- NCG-MAS-003: Native Tower Amplitude-Mass Identity.
+
+The native tower is assembled with the carry mass already built in. -/
+@[simp] theorem nativeTowerAmplitude_sq_eq_mass
+    (n : ℤ) :
+    (nativeTowerAmplitude n) ^ 2 = nativeTowerMass n := by
+  by_cases hn : 0 < n
+  · simp only [nativeTowerAmplitude, nativeTowerMass, if_pos hn]
+    exact Internal.Carry.Cp.criticalAmplitude_sq_eq_mass n.toNat 1
+  · simp [nativeTowerAmplitude, nativeTowerMass, hn]
+
 /-- NCG-MAS-001: Critical Amplitude-Mass Identity. -/
 @[simp] theorem criticalAmplitude_sq_eq_carryMass (b k : ℕ) :
     (criticalAmplitude b k) ^ 2 = carryMass b k :=

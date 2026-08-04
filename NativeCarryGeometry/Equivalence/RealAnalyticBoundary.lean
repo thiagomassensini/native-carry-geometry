@@ -15,8 +15,9 @@ Genuine chart.  Passing to the limit proves that every Genuine zero in the
 open strip closes the raw primitive real boundary.
 
 No external classical identification, Green relation, or Cayley transform
-occurs in this crosswalk.  This theorem concerns raw boundary closure only;
-the public full-zero equivalence below restores the energy-domain premise.
+occurs in this crosswalk.  The native specialization below restricts the
+ambient radial chart to the carry-built tower; the registered conjunction is
+retained only as a compatibility theorem for arbitrary radial parameters.
 -/
 
 open scoped BigOperators Topology
@@ -299,6 +300,14 @@ noncomputable section
 def canonicalParameter (sigma time : ℝ) : ℂ :=
   ⟨sigma, time⟩
 
+/-- Complex coordinate of the already weighted native tower. -/
+def nativeCanonicalParameter (time : ℝ) : ℂ :=
+  canonicalParameter ((1 : ℝ) / 2) time
+
+/-- Analytic readout of the native operator; only phase time is free. -/
+def nativeCarryAnalyticReadout (time : ℝ) : ℂ :=
+  Analytic.canonicalCarryContinuation (nativeCanonicalParameter time)
+
 @[simp] private theorem canonicalParameter_re (sigma time : ℝ) :
     (canonicalParameter sigma time).re = sigma := rfl
 
@@ -318,6 +327,25 @@ theorem complexCoordinates_realCarryState_eq_powerMonomial
   exact
     Internal.Analytic.Cp.nativeCarryRealPlaneComplexPackaging_sampleAt_eq_dirichletTerm
       sigma time hn
+
+/-- The native real state and its complex form are exactly coordinate images. -/
+theorem complexCoordinates_nativeRealCarryState_eq_powerMonomial
+    (time : ℝ) {n : ℤ} (hn : 0 < n) :
+    complexCoordinates (Operator.nativeRealCarryState time n) =
+      Analytic.powerMonomial (nativeCanonicalParameter time) n := by
+  calc
+    complexCoordinates (Operator.nativeRealCarryState time n) =
+        complexCoordinates
+          (Operator.realCarryState ((1 : ℝ) / 2) time n) := by
+      apply congrArg complexCoordinates
+      exact
+        Internal.Analytic.Cp.nativeCarryRealPlaneSample_eq_sampleAt_half
+          time n
+    _ = Analytic.powerMonomial
+          (canonicalParameter ((1 : ℝ) / 2) time) n :=
+      complexCoordinates_realCarryState_eq_powerMonomial
+        ((1 : ℝ) / 2) time hn
+    _ = Analytic.powerMonomial (nativeCanonicalParameter time) n := rfl
 
 /-- NCG-EQV-006: Finite Real/Analytic Operator Identity. -/
 theorem complexCoordinates_finiteRealOperator_eq_finiteBracketChart
@@ -340,6 +368,33 @@ theorem complexCoordinates_finiteRealOperator_eq_finiteBracketChart
     Internal.Analytic.Cp.nativeCarryRealPlaneComplexPackaging_finiteChartAt_eq_dirichlet
       camera cutoff hprime hodd sigma time
 
+/-- Exact finite identity for the mass-built native operator. -/
+theorem complexCoordinates_finiteNativeOperator_eq_finiteBracketChart
+    (camera cutoff : ℕ)
+    (hprime : Nat.Prime camera) (hodd : Odd camera)
+    (time : ℝ) :
+    complexCoordinates
+        (Operator.finiteNativeRealCarryOperator camera cutoff time) =
+      Bracket.Balanced.finiteBracketChart camera cutoff
+        (Analytic.powerMonomial (nativeCanonicalParameter time)) := by
+  calc
+    complexCoordinates
+        (Operator.finiteNativeRealCarryOperator camera cutoff time) =
+      complexCoordinates
+        (Operator.finiteRealCarryOperator camera cutoff
+          ((1 : ℝ) / 2) time) := by
+      apply congrArg complexCoordinates
+      exact
+        Internal.Analytic.Cp.nativeCarryRealPlaneFiniteChart_eq_chartAt_half
+          camera cutoff time
+    _ = Bracket.Balanced.finiteBracketChart camera cutoff
+        (Analytic.powerMonomial
+          (canonicalParameter ((1 : ℝ) / 2) time)) :=
+      complexCoordinates_finiteRealOperator_eq_finiteBracketChart
+        camera cutoff hprime hodd ((1 : ℝ) / 2) time
+    _ = Bracket.Balanced.finiteBracketChart camera cutoff
+        (Analytic.powerMonomial (nativeCanonicalParameter time)) := rfl
+
 /--
 NCG-EQV-007: Camera-Three Boundary/Continuation Zero Equivalence.
 
@@ -354,19 +409,52 @@ theorem boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero
     hs
 
 /--
-Full zero predicate for the canonical analytic presentation.  A scalar zero of
-the continuation is not promoted to an operator zero unless the real carry
-energy condition is also present.
+NCG-EQV-011: Native Boundary/Analytic Readout Zero Identity.
+
+The native real boundary and native analytic readout have exactly the same
+zeros.  No additional mass predicate appears because both sides already use
+the carry-built tower.
+-/
+theorem nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero
+    (time : ℝ) :
+    Operator.NativeBoundaryConvergesToZero 3 time ↔
+      nativeCarryAnalyticReadout time = 0 := by
+  have hs : nativeCanonicalParameter time ∈ Analytic.canonicalStrip := by
+    change 0 < (1 : ℝ) / 2 ∧ (1 : ℝ) / 2 < 1
+    constructor <;> norm_num
+  have hradial :=
+    boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero hs
+  rw [← Operator.radialDeformationBoundary_half_iff_native 3 time]
+  simpa [nativeCarryAnalyticReadout, nativeCanonicalParameter,
+    canonicalParameter] using hradial
+
+/-- Native analytic zero: zero of the readout of the already weighted tower. -/
+abbrev IsNativeCanonicalCarryOperatorZero (time : ℝ) : Prop :=
+  nativeCarryAnalyticReadout time = 0
+
+/-- NCG-EQV-012: Native Real/Analytic Operator Zero Identity.
+
+Native real and analytic zero predicates are literally equivalent. -/
+theorem isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero
+    (time : ℝ) :
+    Operator.IsNativeRealCarryOperatorZero 3 time ↔
+      IsNativeCanonicalCarryOperatorZero time :=
+  nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero time
+
+/--
+Compatibility predicate for the two-coordinate radial analytic presentation.
+It records when an ambient scalar parameter represents the already-built
+native tower; it is not the definition of the native operator zero.
 -/
 def IsCanonicalCarryOperatorZero (s : ℂ) : Prop :=
   Operator.RealCarryEnergyCompatible s.re s.im ∧
     Analytic.canonicalCarryContinuation s = 0
 
 /--
-NCG-EQV-008: Real/Analytic Full-Zero Presentation Identity.
+NCG-EQV-008: Real/Analytic Radial-Presentation Identity.
 
-Inside the canonical strip, the real camera-three zero predicate and its
-analytic presentation are exactly the same proposition.
+Inside the canonical strip, the real and analytic radial presentations are
+exactly the same proposition.
 -/
 theorem isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero
     {s : ℂ} (hs : s ∈ Analytic.canonicalStrip) :
@@ -378,10 +466,10 @@ theorem isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero
     (boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero hs)
 
 /--
-NCG-EQV-009: Canonical Analytic Radial Confinement.
+NCG-EQV-009: Canonical Analytic Radial-Presentation Uniqueness.
 
-This is confinement of the full analytic operator predicate, not a statement
-about arbitrary scalar zeros of `canonicalCarryContinuation`.
+This is uniqueness of the ambient radial presentation, not a mass condition
+added to the native operator and not a statement about arbitrary scalar zeros.
 -/
 theorem canonicalCarryOperatorZero_re_eq_half
     {s : ℂ} (hs : s ∈ Analytic.canonicalStrip)

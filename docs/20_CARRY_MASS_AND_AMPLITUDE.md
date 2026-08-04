@@ -51,6 +51,28 @@ $$
 depth and canonical-center depth for the odd-prime balanced incidence
 geometry.
 
+### 2.1. Native integer tower
+
+Before any state or operator is defined, the measure layer assembles the
+positive-integer tower:
+
+```lean
+def nativeTowerMass (n : ℤ) : ℝ :=
+  if 0 < n then carryMass n.toNat 1 else 0
+
+def nativeTowerAmplitude (n : ℤ) : ℝ :=
+  if 0 < n then criticalAmplitude n.toNat 1 else 0
+```
+
+and proves
+
+```lean
+(nativeTowerAmplitude n) ^ 2 = nativeTowerMass n
+```
+
+This is the construction used by `nativeRealCarryState`. The operator never
+receives a later “mass injection”.
+
 ## 3. Local quadratic rigidity
 
 The square of the deformed amplitude is the mass weight of the deformed
@@ -82,10 +104,11 @@ $$
 The positive-depth hypothesis is necessary: at depth zero both sides are one
 for every exponent.
 
-## 4. Global positional domain
+## 4. Global radial-deformation comparison
 
-`PositionalMassCompatible b sigma` requires the local energy–mass identity at
-every positive depth. The global rigidity theorem is:
+`PositionalMassCompatible b sigma` asks when a free radial deformation
+reproduces the mass already fixed by the positional tower at every positive
+depth. The global rigidity theorem is:
 
 ```lean
 theorem positionalMassCompatible_iff
@@ -117,15 +140,16 @@ Within its positive-`sigma` convergence regime:
 | `NCG-AMP-007` | `radialBranchEnergy_half_eq_one` | the critical branch saturates |
 | `NCG-AMP-008` | `radialBranchEnergy_half_ne_zero` | the critical branch is nondegenerate |
 
-These are saturation statements. They are not definitions of an operator zero.
+These are diagnostics of the deformation chart. They neither define the native
+operator nor add mass to its zero predicate.
 
-## 6. Quadratic-domain crosswalk
+## 6. Radial-presentation crosswalk
 
 The positional description uses depth weights `b⁻ᵏ`. The real state indexed by
 an integer uses energy `n^(-2 sigma)` and compares it with `n⁻¹`. These weights
 are not identified sample by sample.
 
-The formal bridge is:
+The downstream formal bridge is:
 
 ```lean
 theorem positionalMassCompatible_iff_realEnergyCompatible
@@ -135,13 +159,21 @@ theorem positionalMassCompatible_iff_realEnergyCompatible
 ```
 
 This is `NCG-AMP-006`. Both sides are equivalent to `sigma = 1/2`; their
-equivalence is a crosswalk between admissible domains, not an equality of
-their indexing schemes.
+equivalence says that the positional and real deformation charts recognize the
+same native shell. It is not an equality of indexing schemes and is not part
+of the native operator's construction.
 
-## 7. Dependency role
+## 7. Dependency direction
 
-The terminal real zero-set theorem deliberately passes through
-`NCG-AMP-006`, using base `2` as one valid positional witness. This makes the
-carry-to-operator dependency explicit in the proof term. It does not make the
-finite camera width equal to base `2`, and it does not give base `2` a causal
-privilege: `NCG-AMP-003` holds for every base greater than one.
+The source imports follow the causal chain:
+
+```text
+CarryDepth → CarryMass → QuadraticAmplitude
+→ RealState → QuadraticDomain → finite/boundary operator
+```
+
+`QuadraticAmplitude.lean` does not import `RealState.lean`. The crosswalk was
+moved to `Operator/QuadraticDomain.lean`, after both constructions exist. Its
+use of base `2` in the radial factorization proof is one valid positional
+witness; it neither identifies base with camera nor gives base `2` causal
+privilege.

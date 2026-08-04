@@ -2,7 +2,7 @@
 
 ## 1. Locked environment
 
-Release `v0.1.0` uses:
+Release `v0.2.0` uses:
 
 | Component | Lock |
 |---|---|
@@ -22,7 +22,7 @@ Install [`elan`](https://github.com/leanprover/elan), then:
 ```bash
 git clone https://github.com/thiagomassensini/native-carry-geometry.git
 cd native-carry-geometry
-git checkout v0.1.0
+git checkout v0.2.0
 lake build --wfail NativeCarryGeometry
 ```
 
@@ -39,7 +39,7 @@ sha256sum lean-toolchain lake-manifest.json
 ```
 
 Do not run an unconstrained dependency update and then cite the resulting build
-as reproduction of `v0.1.0`.
+as reproduction of `v0.2.0`.
 
 ## 3. Kernel audit
 
@@ -152,7 +152,10 @@ Before approving a release, verify mechanically or by source inspection that:
 - `NCG-OPR-004` remains universally quantified over `camera : ℕ`;
 - `NCG-EQV-007` and `NCG-EQV-008` retain camera `3` and the canonical-strip
   premise;
-- `IsCanonicalCarryOperatorZero` retains real energy compatibility;
+- `IsNativeRealCarryOperatorZero` has no radial parameter or post-hoc mass
+  conjunct;
+- `IsCanonicalCarryOperatorZero` is documented as the ambient radial-chart
+  compatibility predicate, not the primary native zero;
 - odd-prime hypotheses remain present on the camera-specific analytic
   theorems;
 - generic camera `2` is not documented as the nondegenerate binary camera;
@@ -166,7 +169,7 @@ An auditable citation has the form:
 ```text
 Theorem NCG-OPR-004,
 type-sha256 <digest>,
-Native Carry Geometry v0.1.0,
+Native Carry Geometry v0.2.0,
 proof commit <commit>.
 ```
 

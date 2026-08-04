@@ -1,7 +1,7 @@
 # Theorem audit registry
 
 `theorems.tsv` is the single machine-readable registry of citeable NCG
-results. Its 59 rows correspond one-to-one with the 59 distinct `NCG-*`
+results. Its 64 rows correspond one-to-one with the 64 distinct `NCG-*`
 identifiers currently attached to public Lean declarations.
 
 The first three columns are stable:
@@ -17,7 +17,7 @@ Rows are sorted lexicographically by `id`.
 
 ## Hash policy
 
-All 59 `type_sha256` values are generated from the elaborated Lean
+All 64 `type_sha256` values are generated from the elaborated Lean
 environment. The exact UTF-8 preimage is:
 
 ```text
@@ -66,22 +66,23 @@ synthetic NCG IDs merely for appearing in the API.
 | `NativeCarryGeometry.Arithmetic.BinaryCenter` | `NativeCarryGeometry.Arithmetic.Binary.binaryCenter`, `OddLeg`, `BinaryIncidence`, `binaryEffectiveDepth` |
 | `NativeCarryGeometry.Arithmetic.BalancedResidue` | `NativeCarryGeometry.Arithmetic.Balanced.halfRange`, `balancedOffsets`, `BalancedOffset`, `NonzeroResidue`, `Nonmultiple`, `Incidence` |
 | `NativeCarryGeometry.Arithmetic.CarryDepth` | `NativeCarryGeometry.Arithmetic.Balanced.canonicalOffset`, `effectiveDepth`, `centerDepth` |
-| `NativeCarryGeometry.Measure.CarryMass` | `NativeCarryGeometry.Measure.carryMass`, `criticalAmplitude`, `deformedAmplitude`, `radialRatio`, `massWeight` |
+| `NativeCarryGeometry.Measure.CarryMass` | `NativeCarryGeometry.Measure.carryMass`, `criticalAmplitude`, `deformedAmplitude`, `radialRatio`, `massWeight`, `nativeTowerMass`, `nativeTowerAmplitude` |
 | `NativeCarryGeometry.Measure.CarryProbability` | `NativeCarryGeometry.Measure.uniformFiniteProbability`, `uniformCarryEvent` |
 | `NativeCarryGeometry.Measure.QuadraticAmplitude` | `NativeCarryGeometry.Measure.PositionalMassCompatible`, `radialBranchEnergy` |
 | `NativeCarryGeometry.Bracket.CenteredDifference` | `NativeCarryGeometry.Bracket.centeredSecondDifference`, `saturatedBracket` |
 | `NativeCarryGeometry.Bracket.BalancedCamera` | `NativeCarryGeometry.Bracket.Balanced.halfRange`, `balancedBracket`, `alignedCenter`, `finiteBracketChart` |
 | `NativeCarryGeometry.Bracket.RadialCurvature` | `NativeCarryGeometry.Bracket.Curvature.balancedRadialCurvature`, `balancedRadialCurvatureAtSigma`, `pairedRadialCurvature` |
-| `NativeCarryGeometry.Operator.RealState` | `NativeCarryGeometry.Operator.RealCarryPlane`, `quadraticEnergy`, `rotationDirection`, `realCarryState`, `criticalRealCarryState`, `RealCarryEnergyCompatible` |
-| `NativeCarryGeometry.Operator.FiniteRealOperator` | `NativeCarryGeometry.Operator.finiteSaturatedBracketOperator`, `finiteRealCarryOperator`, `criticalFiniteRealCarryOperator`, `visibleEnergy`, `IsFiniteRealCarryOperatorZero` |
-| `NativeCarryGeometry.Operator.BoundaryOperator` | `NativeCarryGeometry.Operator.BoundaryConvergesToZero`, `IsBoundaryResonance` |
-| `NativeCarryGeometry.Operator.ZeroSetFactorization` | `NativeCarryGeometry.Operator.IsRealCarryOperatorZero` |
+| `NativeCarryGeometry.Operator.RealState` | `NativeCarryGeometry.Operator.RealCarryPlane`, `quadraticEnergy`, `rotationDirection`, `nativeRealCarryState`, `radialDeformationState`, compatibility aliases `realCarryState`/`criticalRealCarryState`, `RadialDeformationRepresentsNativeMass` |
+| `NativeCarryGeometry.Operator.QuadraticDomain` | downstream positional/real radial-presentation crosswalk (`NCG-AMP-006`) |
+| `NativeCarryGeometry.Operator.FiniteRealOperator` | `NativeCarryGeometry.Operator.finiteSaturatedBracketOperator`, `finiteNativeRealCarryOperator`, `finiteRadialDeformation`, compatibility aliases, `visibleEnergy`, native and radial finite-zero predicates |
+| `NativeCarryGeometry.Operator.BoundaryOperator` | `NativeCarryGeometry.Operator.NativeBoundaryConvergesToZero`, `RadialDeformationBoundaryConvergesToZero`, compatibility alias `BoundaryConvergesToZero`, `IsBoundaryResonance` |
+| `NativeCarryGeometry.Operator.ZeroSetFactorization` | `NativeCarryGeometry.Operator.IsNativeRealCarryOperatorZero`, `IsRadialDeformationPresentationZero`, compatibility alias `IsRealCarryOperatorZero` |
 | `NativeCarryGeometry.Analytic.FiniteBracketChart` | `NativeCarryGeometry.Analytic.powerMonomial`, `positivePowerPrefix`, `convergentPowerSeries` |
 | `NativeCarryGeometry.Analytic.BracketSeries` | `NativeCarryGeometry.Analytic.bracketSeries`, `finiteBracketSeries` |
 | `NativeCarryGeometry.Analytic.BracketHolomorphy` | `NativeCarryGeometry.Analytic.bracketHalfPlane` |
 | `NativeCarryGeometry.Analytic.CanonicalContinuation` | `NativeCarryGeometry.Analytic.cameraNormalizationFactor`, `canonicalStrip`, `normalizedBracketChart`, `canonicalCarryContinuation` |
 | `NativeCarryGeometry.Equivalence.ComplexCoordinates` | `NativeCarryGeometry.Equivalence.complexCoordinates` |
-| `NativeCarryGeometry.Equivalence.RealAnalyticBoundary` | `NativeCarryGeometry.Equivalence.canonicalParameter`, `IsCanonicalCarryOperatorZero` |
+| `NativeCarryGeometry.Equivalence.RealAnalyticBoundary` | `NativeCarryGeometry.Equivalence.canonicalParameter`, `nativeCanonicalParameter`, `nativeCarryAnalyticReadout`, `IsNativeCanonicalCarryOperatorZero`, radial compatibility predicate `IsCanonicalCarryOperatorZero` |
 
 Supporting public lemmas without an `NCG-*` annotation retain their Lean names
 but are likewise outside the citeable registry.
@@ -97,10 +98,13 @@ Four deliberate asymmetries are recorded rather than hidden:
 
 1. `NCG-AMP-007` and `NCG-AMP-008` are new registered critical-value
    corollaries and have no exact historical declarations.
-2. `NCG-EQV-008` is the new full-zero identity; the historical source proves
-   only the boundary/continuation equivalence registered as `NCG-EQV-007`.
-3. `NCG-EQV-009` is a new confinement corollary for the full canonical
-   analytic predicate, not a statement about arbitrary scalar zeros.
+2. `NCG-EQV-008` is the ambient radial-presentation identity; the historical
+   source proves only the boundary/continuation equivalence registered as
+   `NCG-EQV-007`. The native identity is exposed separately without a mass
+   conjunct.
+3. `NCG-EQV-009` is a uniqueness corollary for the ambient radial analytic
+   presentation, not a mass source and not a statement about arbitrary scalar
+   zeros.
 4. `NCG-EQV-004` maps to the closest historical packaged finite-zero theorem,
    while the current proof uses injectivity of the stronger coordinate
    equivalence.
