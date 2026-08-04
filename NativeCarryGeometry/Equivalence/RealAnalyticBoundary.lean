@@ -7,7 +7,8 @@ import NativeCarryGeometry.Equivalence.ComplexCoordinates
 
 This module identifies cancellation of the ambient analytic chart with
 cancellation of the real radial chart before any quadratic-domain conclusion
-is used. These are coordinate presentations, not different operator zeros.
+is used. These are coordinate presentations of the same zero locus, not distinct
+operator-zero predicates.
 
 For `s = sigma + time * I`, the complex packaging of the real rotating sample
 at `(sigma,time)` is exactly the Dirichlet monomial `n^(-s)`.  Additive
@@ -315,7 +316,7 @@ def nativeCarryAnalyticReadout (time : ℝ) : ℂ :=
 @[simp] private theorem canonicalParameter_im (sigma time : ℝ) :
     (canonicalParameter sigma time).im = time := rfl
 
-/-- NCG-EQV-005: Real-State/Power-Monomial Coordinate Identity. -/
+/-- NCG-EQV-005: Ambient Radial-State/Power-Monomial Coordinate Identity. -/
 theorem complexCoordinates_realCarryState_eq_powerMonomial
     (sigma time : ℝ) {n : ℤ} (hn : 0 < n) :
     complexCoordinates (Operator.realCarryState sigma time n) =
@@ -366,7 +367,7 @@ theorem complexCoordinates_nativeRealCarryState_eq_powerMonomial
         ((1 : ℝ) / 2) time hn
     _ = Analytic.powerMonomial (nativeCanonicalParameter time) n := rfl
 
-/-- NCG-EQV-006: Finite Real/Analytic Operator Identity. -/
+/-- NCG-EQV-006: Ambient Finite Radial-Chart Coordinate Identity. -/
 theorem complexCoordinates_finiteRealOperator_eq_finiteBracketChart
     (camera cutoff : ℕ)
     (hprime : Nat.Prime camera) (hodd : Odd camera)
@@ -415,7 +416,7 @@ theorem complexCoordinates_finiteNativeOperator_eq_finiteBracketChart
         (Analytic.powerMonomial (nativeCanonicalParameter time)) := rfl
 
 /--
-NCG-EQV-007: Camera-Three Boundary/Continuation Zero Equivalence.
+NCG-EQV-007: Camera-Three Radial/Analytic Chart-Cancellation Identity.
 
 The camera specialization and the open-strip premise are part of the theorem;
 neither may be erased when this result is cited.
@@ -438,7 +439,7 @@ theorem radialChartCancelsAt_iff_canonicalChartCancelsAt
   boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero hs
 
 /--
-NCG-EQV-011: Native Boundary/Analytic Readout Zero Identity.
+NCG-EQV-011: Native Boundary/Analytic Readout Zero-Locus Identity.
 
 The native real boundary and native analytic readout have exactly the same
 zeros.  No additional mass predicate appears because both sides already use
@@ -458,9 +459,9 @@ theorem nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero
     canonicalParameter] using hradial
 
 /--
-NCG-EQV-017: One Native Operator Zero, Analytic Coordinate Form.
+NCG-EQV-017: Native Operator Zero-Predicate/Analytic Readout Identity.
 
-This is the principal zero theorem.  The left side is the unique zero predicate
+This is the principal zero theorem.  The left side is the single zero predicate
 of the mass-built operator; the right side is its complex-coordinate readout.
 -/
 theorem isNativeCarryOperatorZero_iff_analyticReadout_eq_zero
@@ -471,14 +472,15 @@ theorem isNativeCarryOperatorZero_iff_analyticReadout_eq_zero
 
 /--
 Legacy coordinate-labelled name for the zero read through the analytic
-coordinates of the already weighted native tower. It is not a different zero.
+coordinates of the already weighted native tower. It defines the same zero
+locus, not a different zero predicate.
 -/
 abbrev IsNativeCanonicalCarryOperatorZero (time : ℝ) : Prop :=
   nativeCarryAnalyticReadout time = 0
 
-/-- NCG-EQV-012: Native Real/Analytic Operator Zero Identity.
+/-- NCG-EQV-012: Legacy Coordinate-Labelled Native Zero Identity.
 
-Native real and analytic zero predicates are literally equivalent. -/
+The legacy real and analytic spellings are provably equivalent predicates. -/
 theorem isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero
     (time : ℝ) :
     Operator.IsNativeRealCarryOperatorZero 3 time ↔
@@ -491,7 +493,7 @@ preserves the upstream mass and its analytic resultant cancels.  This is a
 representation predicate, not a second kind of operator zero.
 -/
 def AnalyticChartRepresentsNativeZero (s : ℂ) : Prop :=
-  Operator.RealCarryEnergyCompatible s.re s.im ∧
+  Operator.RadialDeformationRepresentsNativeMass s.re s.im ∧
     Analytic.canonicalCarryContinuation s = 0
 
 /--
@@ -512,10 +514,10 @@ theorem analyticChartRepresentsNativeZero_iff
       s.re = (1 : ℝ) / 2 ∧
         Analytic.canonicalCarryContinuation s = 0 := by
   unfold AnalyticChartRepresentsNativeZero
-  rw [Operator.realCarryEnergyCompatible_iff]
+  rw [Operator.radialDeformationRepresentsNativeMass_iff]
 
 /--
-NCG-EQV-008: Real/Analytic Radial-Presentation Identity.
+NCG-EQV-008: Legacy Real/Analytic Native-Representation Identity.
 
 Inside the canonical strip, the real and analytic radial presentations are
 exactly the same proposition.
@@ -530,10 +532,11 @@ theorem isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero
     (boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero hs)
 
 /--
-NCG-EQV-009: Canonical Analytic Radial-Presentation Uniqueness.
+NCG-EQV-009: Legacy Analytic Native-Representation Half-Shell Corollary.
 
 This is uniqueness of the ambient radial presentation, not a mass condition
-added to the native operator and not a statement about arbitrary scalar zeros.
+added to the native operator and not a statement about arbitrary ambient
+analytic-chart cancellations.
 -/
 theorem canonicalCarryOperatorZero_re_eq_half
     {s : ℂ} (hs : s ∈ Analytic.canonicalStrip)
