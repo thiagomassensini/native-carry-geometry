@@ -23,7 +23,7 @@ The registry is interpreted through five contracts:
 | Mass is upstream | `nativeTowerMass`, `nativeTowerAmplitude` | `NCG-MAS-003`, `NCG-REA-004` |
 | Sigma varies quadratic norm | `radialEnergyWeight`, `radialDeformationState` | `NCG-REA-005/006`, `NCG-EQV-013/015/016` |
 | Real and complex are coordinates | `complexCoordinates` | `NCG-EQV-010/011/014` |
-| One operator zero | `IsNativeCarryOperatorZero` | `NCG-EQV-017` |
+| One native operator-zero predicate | `IsNativeCarryOperatorZero` | `NCG-EQV-017` |
 | Ambient cancellation is a chart relation | `RadialChartCancelsAt`, `RadialChartRepresentsNativeZero`, `AnalyticChartRepresentsNativeZero` | `NCG-OPR-007/008`, `NCG-EQV-018/019` |
 
 Older names remain reducible compatibility aliases. Their registered signatures
