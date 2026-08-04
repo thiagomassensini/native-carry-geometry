@@ -20,6 +20,7 @@ from auditlib import (
 )
 
 
+EXPECTED_PACKAGE_VERSION = "0.2.0"
 EXPECTED_TOOLCHAIN = "leanprover/lean4:v4.32.0"
 EXPECTED_MATHLIB_INPUT_REV = "v4.32.0"
 EXPECTED_MATHLIB_COMMIT = "81a5d257c8e410db227a6665ed08f64fea08e997"
@@ -59,6 +60,12 @@ def main() -> int:
         )
 
     lakefile = tomllib.loads(lakefile_path.read_text(encoding="utf-8"))
+    package_version = lakefile.get("version")
+    if package_version != EXPECTED_PACKAGE_VERSION:
+        errors.append(
+            f"lakefile.toml package version is {package_version!r}; "
+            f"expected {EXPECTED_PACKAGE_VERSION!r}"
+        )
     requirements = lakefile.get("require", [])
     mathlib_requirements = [
         item for item in requirements if isinstance(item, dict) and item.get("name") == "mathlib"
@@ -126,11 +133,13 @@ def main() -> int:
     report = {
         "check": "reproducibility-lock",
         "expected": {
+            "package_version": EXPECTED_PACKAGE_VERSION,
             "lean_toolchain": EXPECTED_TOOLCHAIN,
             "mathlib_input_rev": EXPECTED_MATHLIB_INPUT_REV,
             "mathlib_commit": EXPECTED_MATHLIB_COMMIT,
         },
         "observed": {
+            "package_version": package_version,
             "lean_toolchain": toolchain,
             "mathlib_input_rev": mathlib_package.get("inputRev"),
             "mathlib_commit": mathlib_package.get("rev"),
