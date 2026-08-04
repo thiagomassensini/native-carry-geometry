@@ -31,9 +31,9 @@ No theorem silently identifies base and camera.
 For `b > 1` and depth `k`:
 
 [
-operatorname{carryMass}(b,k)=b^{-k},
-qquad
-operatorname{carryAmplitude}(b,k)=b^{-k/2}.
+carryMass(b,k) = b^{-k},
+
+carryAmplitude(b,k) = b^{-k/2}.
 ]
 
 The native integer tower is assembled in the measure layer:
@@ -134,7 +134,7 @@ This is one operator zero in real and analytic coordinates.
 The additive equivalence
 
 [
-J:mathbb R^2simeqmathbb C,qquad J(x,y)=x+iy
+J : R² ≃ C,    J(x,y) = x + iy
 ]
 
 is `complexCoordinates`. Lean proves that it is injective, preserves norm
@@ -217,7 +217,7 @@ This repository proves:
 6. construction of the native integer tower before the operator;
 7. energy invariance under real logarithmic rotation;
 8. additive naturality of the centered bracket;
-9. faithful (mathbb R^2simeqmathbb C) coordinate encoding;
+9. faithful R² ≃ C coordinate encoding;
 10. exact finite native real/complex identity;
 11. exact native boundary/analytic-readout identity for camera `3`;
 12. explicit complex norm law (n^{-2sigma});
