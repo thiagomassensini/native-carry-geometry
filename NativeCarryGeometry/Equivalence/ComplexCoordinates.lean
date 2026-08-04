@@ -247,6 +247,22 @@ theorem complexCoordinates_finiteOperator
     complexCoordinates.toAddMonoidHom camera cutoff
     (Operator.realCarryState sigma time)
 
+/--
+The native real operator and its complex-coordinate expression are the same
+finite additive operator under the coordinate equivalence.
+-/
+theorem complexCoordinates_finiteNativeOperator
+    (camera cutoff : ℕ) (time : ℝ) :
+    complexCoordinates
+        (Operator.finiteNativeRealCarryOperator
+          camera cutoff time) =
+      Operator.finiteSaturatedBracketOperator camera cutoff
+        (fun n => complexCoordinates
+          (Operator.nativeRealCarryState time n)) := by
+  exact Operator.map_finiteSaturatedBracketOperator
+    complexCoordinates.toAddMonoidHom camera cutoff
+    (Operator.nativeRealCarryState time)
+
 /-- NCG-EQV-004: Finite Zero-Set Equivalence. -/
 theorem finiteOperator_eq_zero_iff_complexCoordinates_eq_zero
     (camera cutoff : ℕ) (sigma time : ℝ) :
@@ -255,6 +271,21 @@ theorem finiteOperator_eq_zero_iff_complexCoordinates_eq_zero
       complexCoordinates
         (Operator.finiteRealCarryOperator
           camera cutoff sigma time) = 0 := by
+  constructor
+  · intro hzero
+    simp [hzero]
+  · intro hzero
+    apply complexCoordinates_injective
+    simpa using hzero
+
+/-- Complex coordinates neither add nor remove zeros of the native operator. -/
+theorem finiteNativeOperator_eq_zero_iff_complexCoordinates_eq_zero
+    (camera cutoff : ℕ) (time : ℝ) :
+    Operator.finiteNativeRealCarryOperator
+        camera cutoff time = 0 ↔
+      complexCoordinates
+        (Operator.finiteNativeRealCarryOperator
+          camera cutoff time) = 0 := by
   constructor
   · intro hzero
     simp [hzero]

@@ -4,8 +4,9 @@
 
 The historical source contains many valid experimental and formal research
 directions. This repository selects the shortest auditable dependency chain
-from positional carry to the real zero-set factorization and its faithful
-analytic presentation.
+from positional carry to the mass-built native real zero and its faithful
+analytic coordinates, with radial-presentation uniqueness as a downstream
+comparison theorem.
 
 Exclusion from this root means:
 
@@ -33,14 +34,14 @@ It does not mean that the excluded result is false.
 | empirical scanners and cutoff extrapolation | finite numerical evidence for boundary behavior | excluded |
 | prime-distribution reconstruction experiments | separate number-theoretic reconstruction questions | excluded |
 
-## 3. Why these routes are unnecessary for confinement
+## 3. Why these routes are unnecessary for the native construction
 
 The proof of `NCG-OPR-004` needs only:
 
 1. positional mass rigidity;
 2. the positional-to-real quadratic-domain crosswalk;
 3. the definition of boundary closure;
-4. the complete zero predicate.
+4. the native boundary-zero predicate and the radial-presentation comparison.
 
 It does not need a second global energy identity, a reconstruction theorem, a
 source state, or an operator completion. Adding such a route could establish a
@@ -51,7 +52,7 @@ stronger theorem, but it would not repair a gap in the existing factorization.
 The radial curvature module is included because it supplies an independent
 local sign interpretation of the same exponent. It is not in the proof
 dependency of the terminal theorem. Its presence must not be described as a
-second required confinement proof.
+second required radial-presentation proof.
 
 ## 5. Numerical evidence
 

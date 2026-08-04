@@ -1,5 +1,4 @@
 import NativeCarryGeometry.Measure.CarryMass
-import NativeCarryGeometry.Operator.RealState
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 
@@ -438,14 +437,6 @@ theorem radialBranchSaturation_base_independent
       radialBranchEnergy c sigma = 1 :=
   Internal.Analytic.Cp.branchNormSq_eq_one_base_independent
     b c hb hc hsigma
-
-/-- NCG-AMP-006: Quadratic Domain Crosswalk. -/
-theorem positionalMassCompatible_iff_realEnergyCompatible
-    (b : ℕ) (hb : 1 < b) (sigma time : ℝ) :
-    PositionalMassCompatible b sigma ↔
-      Operator.RealCarryEnergyCompatible sigma time := by
-  rw [positionalMassCompatible_iff b hb sigma,
-    Operator.realCarryEnergyCompatible_iff sigma time]
 
 /-- NCG-AMP-007: Critical Radial Branch Saturation. -/
 theorem radialBranchEnergy_half_eq_one

@@ -111,7 +111,7 @@ checkpoints represented in the locked history are:
 | binary and balanced incidence geometry | center, residue, and depth constructions |
 | carry mass and quadratic rigidity | local and global amplitude laws |
 | real state and finite camera | rotating state, energy, additive bracket operator |
-| real zero-set factorization | universal camera theorem and corollaries |
+| native real zero and radial-presentation factorization | mass-built native predicate plus universal camera compatibility theorem and corollaries |
 | canonical analytic presentation | bracket convergence, normalization, camera compatibility |
 | real–analytic boundary crosswalk | positive samples, finite charts, and camera-three boundary equivalence |
 

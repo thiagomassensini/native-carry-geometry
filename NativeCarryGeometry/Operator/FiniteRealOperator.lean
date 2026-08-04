@@ -54,7 +54,19 @@ def nativeCarryRealPlaneFiniteChartAt
 /-- Finite primitive camera, entirely valued in the real plane. -/
 def nativeCarryRealPlaneFiniteChart
     (p M : ℕ) (t : ℝ) : NativeCarryRealPlane :=
-  nativeCarryRealPlaneFiniteChartAt p M ((1 : ℝ) / 2) t
+  nativeCarryFiniteSaturatedChart p M
+    (nativeCarryRealPlaneSample t)
+
+/-- The native finite chart is the half-exponent radial chart, extensionally. -/
+theorem nativeCarryRealPlaneFiniteChart_eq_chartAt_half
+    (p M : ℕ) (t : ℝ) :
+    nativeCarryRealPlaneFiniteChart p M t =
+      nativeCarryRealPlaneFiniteChartAt p M ((1 : ℝ) / 2) t := by
+  unfold nativeCarryRealPlaneFiniteChart
+    nativeCarryRealPlaneFiniteChartAt
+  apply congrArg (nativeCarryFiniteSaturatedChart p M)
+  funext n
+  exact nativeCarryRealPlaneSample_eq_sampleAt_half t n
 
 /--
 For an odd prime width, the real primitive camera is the existing generic
@@ -66,11 +78,8 @@ theorem nativeCarryRealPlaneFiniteChart_eq_finiteChart
       NativeCarryGeometry.Internal.Genuine.Cp.finiteChart p M
         (nativeCarryRealPlaneSample t) := by
   unfold nativeCarryRealPlaneFiniteChart
-    nativeCarryRealPlaneFiniteChartAt
-    nativeCarryRealPlaneSample
   exact nativeCarryFiniteSaturatedChart_eq_finiteChart
-    p M hp hpodd
-      (nativeCarryRealPlaneSampleAt ((1 : ℝ) / 2) t)
+    p M hp hpodd (nativeCarryRealPlaneSample t)
 
 /-- Euclidean energy is nonnegative. -/
 theorem nativeCarryRealPlaneEnergy_nonneg
@@ -120,9 +129,8 @@ theorem nativeCarryRealPlaneFiniteChart_energy_eq_zero_iff
   nativeCarryRealPlaneEnergy_eq_zero_iff _
 
 /--
-An admissible finite primitive zero keeps the vector state and the camera
-resultant separate: mass compatibility is a domain condition, while zero is a
-bracket observation.
+A finite radial-presentation zero records both that the deformation represents
+the native mass and that its bracket resultant vanishes.
 -/
 def NativeCarryRealPlaneAdmissibleFiniteZero
     (p M : ℕ) (sigma t : ℝ) : Prop :=
@@ -131,10 +139,9 @@ def NativeCarryRealPlaneAdmissibleFiniteZero
       (nativeCarryRealPlaneFiniteChartAt p M sigma t) = 0
 
 /--
-Exact real-domain factorization: an admissible finite zero is the same as the
-critical exponent together with a zero of the critical real camera.  The
-bracket does not choose the exponent after the fact; the carry mass fixes the
-domain before the camera is evaluated.
+Exact radial-chart factorization: a finite deformation presents a native zero
+exactly at the half exponent and at a zero of the mass-built native camera.
+The carry mass was fixed before either camera was evaluated.
 -/
 theorem nativeCarryRealPlaneAdmissibleFiniteZero_iff
     (p M : ℕ) (sigma t : ℝ) :
@@ -147,9 +154,11 @@ theorem nativeCarryRealPlaneAdmissibleFiniteZero_iff
     have hsigma :=
       (nativeCarryRealPlaneMassCompatible_iff sigma t).1 hcompatible
     subst sigma
+    rw [← nativeCarryRealPlaneFiniteChart_eq_chartAt_half] at hzero
     exact ⟨rfl, hzero⟩
   · rintro ⟨hsigma, hzero⟩
     subst sigma
+    rw [nativeCarryRealPlaneFiniteChart_eq_chartAt_half] at hzero
     exact ⟨
       (nativeCarryRealPlaneMassCompatible_iff ((1 : ℝ) / 2) t).2 rfl,
       hzero⟩
@@ -167,15 +176,27 @@ abbrev finiteSaturatedBracketOperator
   Internal.Analytic.Cp.nativeCarryFiniteSaturatedChart
     camera cutoff f
 
-abbrev finiteRealCarryOperator
+/-- Native finite operator, already assembled from the carry-mass state. -/
+abbrev finiteNativeRealCarryOperator
+    (camera cutoff : ℕ) (time : ℝ) : RealCarryPlane :=
+  Internal.Analytic.Cp.nativeCarryRealPlaneFiniteChart
+    camera cutoff time
+
+/-- Secondary finite radial deformation of the native operator. -/
+abbrev finiteRadialDeformation
     (camera cutoff : ℕ) (sigma time : ℝ) : RealCarryPlane :=
   Internal.Analytic.Cp.nativeCarryRealPlaneFiniteChartAt
     camera cutoff sigma time
 
+/-- Compatibility alias: this is the radial deformation family. -/
+abbrev finiteRealCarryOperator
+    (camera cutoff : ℕ) (sigma time : ℝ) : RealCarryPlane :=
+  finiteRadialDeformation camera cutoff sigma time
+
+/-- Compatibility alias for the native finite operator. -/
 abbrev criticalFiniteRealCarryOperator
     (camera cutoff : ℕ) (time : ℝ) : RealCarryPlane :=
-  Internal.Analytic.Cp.nativeCarryRealPlaneFiniteChart
-    camera cutoff time
+  finiteNativeRealCarryOperator camera cutoff time
 
 abbrev visibleEnergy (u : RealCarryPlane) : ℝ :=
   quadraticEnergy u
@@ -200,6 +221,12 @@ abbrev IsFiniteRealCarryOperatorZero
     (camera cutoff : ℕ) (sigma time : ℝ) : Prop :=
   Internal.Analytic.Cp.NativeCarryRealPlaneAdmissibleFiniteZero
     camera cutoff sigma time
+
+/-- A finite zero of the native operator needs no added mass predicate. -/
+abbrev IsFiniteNativeRealCarryOperatorZero
+    (camera cutoff : ℕ) (time : ℝ) : Prop :=
+  quadraticEnergy
+      (finiteNativeRealCarryOperator camera cutoff time) = 0
 
 /-- NCG-OPR-003: Finite Zero-Set Factorization. -/
 theorem isFiniteRealCarryOperatorZero_iff

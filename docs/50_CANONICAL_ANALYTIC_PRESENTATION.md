@@ -120,10 +120,10 @@ The principal theorems are:
 | `NCG-ANL-007` | `analyticOnNhd_canonicalCarryContinuation` | analyticity on the canonical strip |
 | `NCG-ANL-008` | `bracketSeries_zero_iff_canonicalCarryContinuation_zero` | any odd prime camera represents the same scalar zero set in the strip |
 
-`NCG-ANL-008` is a statement about the bracket series and the canonical scalar
-representative. A complete operator zero additionally retains the real
-energy-compatible domain; that stronger identity is proved in the equivalence
-layer.
+`NCG-ANL-008` is a statement about the bracket series and the ambient canonical
+scalar representative. The native operator readout is obtained by restricting
+this representative to `s.re = 1/2`, which was already fixed by the carry-built
+tower. The equivalence layer proves the exact native real/complex zero identity.
 
 ## 7. Dependency direction
 
@@ -139,6 +139,6 @@ centered bracket
 → canonical analytic representative
 ```
 
-No theorem in this layer is a premise of `NCG-OPR-004`. The analytic layer
-provides a second faithful presentation after the real operator has already
-been defined and confined.
+No theorem in this layer constructs the native mass or is a premise of
+`NCG-OPR-004`. The analytic layer provides faithful coordinates after the real
+operator has already been assembled.

@@ -17,23 +17,51 @@ open Filter
 noncomputable section
 
 /--
-The finite resultants of a camera converge to the zero vector at the stated
-radial exponent and phase time.
+The finite resultants of the native carry-built operator converge to zero.
+Only the phase time remains free because the vertical tower already contains
+its carry mass and quadratic amplitude.
 -/
-def BoundaryConvergesToZero
-    (camera : ℕ) (sigma time : ℝ) : Prop :=
+def NativeBoundaryConvergesToZero
+    (camera : ℕ) (time : ℝ) : Prop :=
   Tendsto
     (fun cutoff : ℕ =>
-      finiteRealCarryOperator camera cutoff sigma time)
+      finiteNativeRealCarryOperator camera cutoff time)
     atTop (nhds 0)
 
 /--
-A boundary resonance is closure after the quadratic carry shell has been
-fixed.  The remaining free coordinate is `time`.
+Boundary closure of the secondary radial deformation family.
+-/
+def RadialDeformationBoundaryConvergesToZero
+    (camera : ℕ) (sigma time : ℝ) : Prop :=
+  Tendsto
+    (fun cutoff : ℕ =>
+      finiteRadialDeformation camera cutoff sigma time)
+    atTop (nhds 0)
+
+/-- Compatibility alias for radial-deformation boundary closure. -/
+abbrev BoundaryConvergesToZero
+    (camera : ℕ) (sigma time : ℝ) : Prop :=
+  RadialDeformationBoundaryConvergesToZero camera sigma time
+
+/-- The half-exponent deformation chart is exactly the native boundary. -/
+theorem radialDeformationBoundary_half_iff_native
+    (camera : ℕ) (time : ℝ) :
+    RadialDeformationBoundaryConvergesToZero
+        camera ((1 : ℝ) / 2) time ↔
+      NativeBoundaryConvergesToZero camera time := by
+  unfold RadialDeformationBoundaryConvergesToZero
+    NativeBoundaryConvergesToZero
+  simp only [finiteRadialDeformation,
+    finiteNativeRealCarryOperator,
+    Internal.Analytic.Cp.nativeCarryRealPlaneFiniteChart_eq_chartAt_half]
+
+/--
+A boundary resonance is precisely a zero of the native boundary operator.
+The mass is already in the tower; it is not conjoined here as an extra test.
 -/
 def IsBoundaryResonance
     (camera : ℕ) (time : ℝ) : Prop :=
-  BoundaryConvergesToZero camera ((1 : ℝ) / 2) time
+  NativeBoundaryConvergesToZero camera time
 
 end
 end NativeCarryGeometry.Operator

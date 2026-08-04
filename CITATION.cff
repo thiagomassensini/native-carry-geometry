@@ -13,8 +13,8 @@ date-released: 2026-07-29
 abstract: >-
   A Lean 4 formalization from positional carry decomposition and uniform carry
   mass to quadratic amplitude rigidity, a real centered-bracket operator,
-  global radial zero-set factorization, and a scope-preserving analytic
-  presentation identity.
+  a native mass-built real operator, radial-presentation uniqueness, and a
+  scope-preserving real/analytic coordinate identity.
 keywords:
   - Lean 4
   - formalized mathematics

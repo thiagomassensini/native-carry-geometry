@@ -1,38 +1,47 @@
-# Real Carry Operator Zero-Set Factorization
+# Native Zeros and Radial-Presentation Factorization
 
 ## 1. Definitions
 
-Boundary closure is:
+Native boundary closure is:
 
 ```lean
-def BoundaryConvergesToZero
-    (camera : ℕ) (sigma time : ℝ) : Prop :=
+def NativeBoundaryConvergesToZero
+    (camera : ℕ) (time : ℝ) : Prop :=
   Tendsto
     (fun cutoff =>
-      finiteRealCarryOperator camera cutoff sigma time)
+      finiteNativeRealCarryOperator camera cutoff time)
     atTop (nhds 0)
 ```
 
-Resonance is boundary closure on the quadratic carry shell:
+Resonance and the native operator zero are this same predicate:
 
 ```lean
 def IsBoundaryResonance
     (camera : ℕ) (time : ℝ) : Prop :=
-  BoundaryConvergesToZero camera (1 / 2) time
+  NativeBoundaryConvergesToZero camera time
+
+abbrev IsNativeRealCarryOperatorZero
+    (camera : ℕ) (time : ℝ) : Prop :=
+  NativeBoundaryConvergesToZero camera time
 ```
 
-The complete real zero predicate retains both domain and closure:
+The auxiliary radial deformation has its own closure predicate. The old public
+name `IsRealCarryOperatorZero` is retained as an alias for the proposition that
+the deformation both represents the native mass and closes to zero:
 
 ```lean
-def IsRealCarryOperatorZero
+def IsRadialDeformationPresentationZero
     (camera : ℕ) (sigma time : ℝ) : Prop :=
-  RealCarryEnergyCompatible sigma time ∧
-    BoundaryConvergesToZero camera sigma time
+  RadialDeformationRepresentsNativeMass sigma time ∧
+    RadialDeformationBoundaryConvergesToZero camera sigma time
 ```
+
+This conjunction is about representation in a larger chart. It is not the
+definition of the native operator and does not inject mass into it.
 
 ## 2. Terminal theorem
 
-`NCG-OPR-004`, the **Real Carry Operator Zero-Set Factorization Theorem**, is:
+`NCG-OPR-004`, the **Radial Presentation Factorization Theorem**, is:
 
 ```lean
 theorem isRealCarryOperatorZero_iff
@@ -42,7 +51,7 @@ theorem isRealCarryOperatorZero_iff
         IsBoundaryResonance camera time
 ```
 
-Equivalently, for each natural camera,
+Equivalently, the radial presentations of native zeros form, for each camera,
 
 $$
 Z_c
@@ -57,43 +66,46 @@ $$
 =
 \left\{
 t\in\mathbb R:
-\operatorname{BoundaryConvergesToZero}
-\left(c,\frac12,t\right)
+\operatorname{NativeBoundaryConvergesToZero}(c,t)
 \right\}.
 $$
 
 ## 3. Proof dependency
 
-The forward direction:
+The native object was already constructed before this proof. The forward
+direction for its radial presentation:
 
-1. opens the complete zero into energy compatibility and boundary closure;
+1. opens the radial-presentation predicate into mass representation and
+   deformation boundary closure;
 2. uses `NCG-AMP-006` at positional base `2` to recover positional mass
    compatibility;
 3. applies `NCG-AMP-003` to obtain `sigma = 1/2`;
 4. substitutes the exponent;
-5. recognizes the remaining boundary closure as resonance.
+5. uses the proved half-chart identity to recognize the native boundary
+   resonance.
 
 The reverse direction:
 
 1. receives `sigma = 1/2` and a resonance;
 2. constructs positional mass compatibility with `NCG-AMP-003`;
 3. transports it to real energy compatibility with `NCG-AMP-006`;
-4. pairs that domain proof with the same boundary closure.
+4. transports native boundary closure back to the half-exponent deformation
+   chart and pairs the two facts.
 
-Using positional base `2` in this proof supplies one valid witness to a
-base-independent domain. It does not identify base `2` with the arbitrary
-camera parameter.
+Using positional base `2` supplies one witness for radial-chart rigidity. It
+does not build the native mass, identify base `2` with camera, or give the
+operator a radial input.
 
 ## 4. Corollaries
 
-`NCG-OPR-005`, **Radial Confinement**, states:
+`NCG-OPR-005`, **Radial-Presentation Uniqueness**, states:
 
 ```lean
 IsRealCarryOperatorZero camera sigma time →
   sigma = 1 / 2
 ```
 
-`NCG-OPR-006`, **Off-Shell Nonvanishing**, states:
+`NCG-OPR-006`, **Off-Shell Nonrepresentation**, states:
 
 ```lean
 sigma ≠ 1 / 2 →
@@ -111,23 +123,23 @@ The theorem has one universally quantified statement:
 for every camera : ℕ
 ```
 
-Therefore the radial admissibility law is global across:
+Therefore the radial-presentation law is global across:
 
 - odd and even cameras;
 - prime and composite cameras;
 - total degenerate cameras.
 
-This means that camera width does not alter the radial shell of a complete
-operator zero. It does not mean:
+This means that camera width does not alter which radial chart represents the
+native tower. It does not mean:
 
-- `BoundaryConvergesToZero c` is definitionally equal to
-  `BoundaryConvergesToZero d`;
+- `NativeBoundaryConvergesToZero c` is definitionally equal to
+  `NativeBoundaryConvergesToZero d`;
 - `IsBoundaryResonance c` and `IsBoundaryResonance d` have identical temporal
   extension;
 - a resonance exists for every camera;
 - the theorem classifies or enumerates resonance times.
 
-The temporal component is isolated, not left as a hidden radial obligation.
+The temporal component is isolated in the native resonance predicate.
 
 ## 6. Degenerate cameras
 
@@ -141,7 +153,7 @@ separately in `Arithmetic/BinaryCenter.lean`.
 
 ## 7. Independence from alternative proof routes
 
-The proof of `NCG-OPR-004` does not use:
+The native construction and the proof of `NCG-OPR-004` do not use:
 
 - a completed boundary-flow operator;
 - a global energy reconstruction;
@@ -156,9 +168,17 @@ retroactive premises of this theorem.
 
 ## 8. Analytic consequence
 
-Within the canonical strip, `NCG-EQV-008` identifies the full camera-three real
-zero predicate with the full canonical analytic zero predicate. Consequently,
-`NCG-EQV-009` transports radial confinement:
+The primary native consequence is:
+
+$$
+\operatorname{IsNativeRealCarryOperatorZero}(3,t)
+\iff
+\operatorname{IsNativeCanonicalCarryOperatorZero}(t).
+$$
+
+Within the canonical strip, `NCG-EQV-008` additionally identifies the real and
+analytic radial-presentation predicates. Consequently, `NCG-EQV-009`
+transports presentation uniqueness:
 
 $$
 \operatorname{IsCanonicalCarryOperatorZero}(s)
@@ -166,5 +186,5 @@ $$
 \operatorname{Re}(s)=\frac12.
 $$
 
-This consequence retains both the camera-three and canonical-strip scope of
-the crosswalk.
+This last ambient-chart consequence retains both the camera-three and
+canonical-strip scope of the crosswalk.

@@ -152,7 +152,10 @@ Before approving a release, verify mechanically or by source inspection that:
 - `NCG-OPR-004` remains universally quantified over `camera : ℕ`;
 - `NCG-EQV-007` and `NCG-EQV-008` retain camera `3` and the canonical-strip
   premise;
-- `IsCanonicalCarryOperatorZero` retains real energy compatibility;
+- `IsNativeRealCarryOperatorZero` has no radial parameter or post-hoc mass
+  conjunct;
+- `IsCanonicalCarryOperatorZero` is documented as the ambient radial-chart
+  compatibility predicate, not the primary native zero;
 - odd-prime hypotheses remain present on the camera-specific analytic
   theorems;
 - generic camera `2` is not documented as the nondegenerate binary camera;

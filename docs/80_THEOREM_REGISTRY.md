@@ -69,14 +69,14 @@ fully qualified Lean names but do not receive synthetic theorem identifiers.
 | ID | Public declaration | Academic label |
 |---|---|---|
 | `NCG-REA-001` | `Operator.quadraticEnergy_rotationDirection` | Real Rotation Unit-Energy Theorem |
-| `NCG-REA-002` | `Operator.quadraticEnergy_realCarryState` | Real-State Energy Invariance |
-| `NCG-REA-003` | `Operator.realCarryEnergyCompatible_iff` | Real Carry Energy Rigidity |
+| `NCG-REA-002` | `Operator.quadraticEnergy_realCarryState` | Radial-Deformation Energy Invariance |
+| `NCG-REA-003` | `Operator.realCarryEnergyCompatible_iff` | Radial-Deformation Mass Rigidity |
 | `NCG-OPR-001` | `Operator.map_finiteSaturatedBracketOperator` | Additive Naturality of the Finite Operator |
 | `NCG-OPR-002` | `Operator.quadraticEnergy_eq_zero_iff` | Faithfulness of Visible Energy |
-| `NCG-OPR-003` | `Operator.isFiniteRealCarryOperatorZero_iff` | Finite Zero-Set Factorization |
-| `NCG-OPR-004` | `Operator.isRealCarryOperatorZero_iff` | Real Carry Operator Zero-Set Factorization |
-| `NCG-OPR-005` | `Operator.realCarryOperatorZero_sigma_eq_half` | Radial Confinement Corollary |
-| `NCG-OPR-006` | `Operator.not_realCarryOperatorZero_of_sigma_ne_half` | Off-Shell Nonvanishing Corollary |
+| `NCG-OPR-003` | `Operator.isFiniteRealCarryOperatorZero_iff` | Finite Radial-Presentation Factorization |
+| `NCG-OPR-004` | `Operator.isRealCarryOperatorZero_iff` | Radial Presentation Factorization |
+| `NCG-OPR-005` | `Operator.realCarryOperatorZero_sigma_eq_half` | Radial-Presentation Uniqueness Corollary |
+| `NCG-OPR-006` | `Operator.not_realCarryOperatorZero_of_sigma_ne_half` | Off-Shell Nonrepresentation Corollary |
 
 ## 6. Canonical analytic presentation
 
@@ -99,11 +99,11 @@ fully qualified Lean names but do not receive synthetic theorem identifiers.
 | `NCG-EQV-002` | `Equivalence.normSq_complexCoordinates` | Energy Preservation under Encoding |
 | `NCG-EQV-003` | `Equivalence.complexCoordinates_finiteOperator` | Finite-Operator Naturality |
 | `NCG-EQV-004` | `Equivalence.finiteOperator_eq_zero_iff_complexCoordinates_eq_zero` | Finite Zero-Set Equivalence |
-| `NCG-EQV-005` | `Equivalence.complexCoordinates_realCarryState_eq_powerMonomial` | Real-State/Power-Monomial Coordinate Identity |
+| `NCG-EQV-005` | `Equivalence.complexCoordinates_realCarryState_eq_powerMonomial` | Radial-State/Power-Monomial Coordinate Identity |
 | `NCG-EQV-006` | `Equivalence.complexCoordinates_finiteRealOperator_eq_finiteBracketChart` | Finite Real–Analytic Operator Identity |
 | `NCG-EQV-007` | `Equivalence.boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero` | Camera-Three Boundary/Continuation Zero Equivalence |
-| `NCG-EQV-008` | `Equivalence.isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero` | Real/Analytic Full-Zero Presentation Identity |
-| `NCG-EQV-009` | `Equivalence.canonicalCarryOperatorZero_re_eq_half` | Canonical Analytic Radial Confinement |
+| `NCG-EQV-008` | `Equivalence.isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero` | Real/Analytic Radial-Presentation Identity |
+| `NCG-EQV-009` | `Equivalence.canonicalCarryOperatorZero_re_eq_half` | Canonical Analytic Radial-Presentation Uniqueness |
 
 All declarations above are relative to the root namespace
 `NativeCarryGeometry`.

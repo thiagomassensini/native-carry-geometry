@@ -1,45 +1,54 @@
 import NativeCarryGeometry.Measure.CarryProbability
-import NativeCarryGeometry.Measure.QuadraticAmplitude
+import NativeCarryGeometry.Operator.QuadraticDomain
 import NativeCarryGeometry.Operator.BoundaryOperator
 
 /-!
-# Zero-set factorization of the real carry operator
+# Native zeros and radial-presentation factorization
 
-The zero predicate retains both parts of the operator construction:
+The native operator is assembled upstream from the carry-mass tower.  Its zero
+predicate is therefore just boundary closure of that already weighted state.
 
-1. the quadratic domain inherited from positional carry mass;
-2. convergence of the bracket resultants to zero.
-
-The proof deliberately passes through the positional/real domain crosswalk.
-This makes the formal dependency chain from carry mass to operator
-factorization visible in the proof term.
+The two-coordinate `(sigma,time)` family below is a secondary radial
+presentation.  Its factorization theorem says when that deformation represents
+the native tower; it does not inject mass into the operator after construction.
 -/
 
 namespace NativeCarryGeometry.Operator
 
 noncomputable section
 
+/-- Zero predicate of the native real operator: the tower is already weighted. -/
+abbrev IsNativeRealCarryOperatorZero
+    (camera : ℕ) (time : ℝ) : Prop :=
+  NativeBoundaryConvergesToZero camera time
+
 /--
-Complete zero predicate for the real carry operator.  Boundary closure alone is
-not promoted to an operator zero after discarding the quadratic domain.
+A zero in the radial deformation chart that genuinely represents the native
+mass-built tower.
 -/
-def IsRealCarryOperatorZero
+def IsRadialDeformationPresentationZero
     (camera : ℕ) (sigma time : ℝ) : Prop :=
   RealCarryEnergyCompatible sigma time ∧
-    BoundaryConvergesToZero camera sigma time
+    RadialDeformationBoundaryConvergesToZero camera sigma time
+
+/-- Compatibility alias for the radial-presentation predicate. -/
+abbrev IsRealCarryOperatorZero
+    (camera : ℕ) (sigma time : ℝ) : Prop :=
+  IsRadialDeformationPresentationZero camera sigma time
 
 /--
-NCG-OPR-004: Real Carry Operator Zero-Set Factorization.
+NCG-OPR-004: Radial Presentation Factorization.
 
-For every natural camera width, the full zero set is the product of the unique
-quadratic shell with that camera's boundary-resonance set.
+For every natural camera width, a radial deformation represents a native zero
+exactly on the unique native shell and at a native boundary resonance.
 -/
 theorem isRealCarryOperatorZero_iff
     (camera : ℕ) (sigma time : ℝ) :
     IsRealCarryOperatorZero camera sigma time ↔
       sigma = (1 : ℝ) / 2 ∧
         IsBoundaryResonance camera time := by
-  unfold IsRealCarryOperatorZero IsBoundaryResonance
+  unfold IsRealCarryOperatorZero
+    IsRadialDeformationPresentationZero
   constructor
   · rintro ⟨henergy, hclose⟩
     have hpositional :
@@ -50,7 +59,8 @@ theorem isRealCarryOperatorZero_iff
       (Measure.positionalMassCompatible_iff
         2 (by norm_num) sigma).1 hpositional
     subst sigma
-    exact ⟨rfl, hclose⟩
+    exact ⟨rfl,
+      (radialDeformationBoundary_half_iff_native camera time).1 hclose⟩
   · rintro ⟨hsigma, hclose⟩
     subst sigma
     have hpositional :
@@ -61,16 +71,24 @@ theorem isRealCarryOperatorZero_iff
         RealCarryEnergyCompatible ((1 : ℝ) / 2) time :=
       (Measure.positionalMassCompatible_iff_realEnergyCompatible
         2 (by norm_num) ((1 : ℝ) / 2) time).1 hpositional
-    exact ⟨henergy, hclose⟩
+    exact ⟨henergy,
+      (radialDeformationBoundary_half_iff_native camera time).2 hclose⟩
 
-/-- NCG-OPR-005: Radial Confinement Corollary. -/
+/-- The native operator zero and boundary resonance are literally the same predicate. -/
+theorem isNativeRealCarryOperatorZero_iff
+    (camera : ℕ) (time : ℝ) :
+    IsNativeRealCarryOperatorZero camera time ↔
+      IsBoundaryResonance camera time :=
+  Iff.rfl
+
+/-- NCG-OPR-005: Radial-Presentation Uniqueness Corollary. -/
 theorem realCarryOperatorZero_sigma_eq_half
     {camera : ℕ} {sigma time : ℝ}
     (hzero : IsRealCarryOperatorZero camera sigma time) :
     sigma = (1 : ℝ) / 2 :=
   ((isRealCarryOperatorZero_iff camera sigma time).1 hzero).1
 
-/-- NCG-OPR-006: Off-Shell Nonvanishing Corollary. -/
+/-- NCG-OPR-006: Off-Shell Nonrepresentation Corollary. -/
 theorem not_realCarryOperatorZero_of_sigma_ne_half
     {camera : ℕ} {sigma time : ℝ}
     (hoff : sigma ≠ (1 : ℝ) / 2) :

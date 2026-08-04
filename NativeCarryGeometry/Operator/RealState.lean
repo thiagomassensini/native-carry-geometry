@@ -1,4 +1,4 @@
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import NativeCarryGeometry.Measure.QuadraticAmplitude
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 
 namespace NativeCarryGeometry.Internal.Analytic.Cp
@@ -22,10 +22,24 @@ def nativeCarryRealDirection (theta : ℝ) : NativeCarryRealPlane :=
   rw [add_comm, Real.sin_sq_add_cos_sq]
 
 /--
-Real-plane sample with an arbitrary radial amplitude exponent.  Camera indices
-are positive; the nonpositive branch only makes the field total on `Z`.
+Native real-plane sample.  Its amplitude is read directly from the
+carry-measure tower; there is no free radial exponent in the native state.
+The nonpositive branch only makes the field total on `Z`.
 -/
-def nativeCarryRealPlaneSampleAt
+def nativeCarryRealPlaneSample
+    (t : ℝ) (n : ℤ) : NativeCarryRealPlane :=
+  if 0 < n then
+    let amplitude := NativeCarryGeometry.Measure.nativeTowerAmplitude n
+    let angle := -t * Real.log (n : ℝ)
+    (amplitude * Real.cos angle, amplitude * Real.sin angle)
+  else
+    0
+
+/--
+Secondary radial deformation of the native tower.  The parameter `sigma` is a
+comparison coordinate; it is not part of the native operator's input data.
+-/
+def nativeCarryRealPlaneRadialDeformation
     (sigma t : ℝ) (n : ℤ) : NativeCarryRealPlane :=
   if 0 < n then
     let amplitude := (n : ℝ) ^ (-sigma)
@@ -34,10 +48,37 @@ def nativeCarryRealPlaneSampleAt
   else
     0
 
-/-- Critical sample selected by the quadratic carry normalization. -/
-def nativeCarryRealPlaneSample
-    (t : ℝ) (n : ℤ) : NativeCarryRealPlane :=
-  nativeCarryRealPlaneSampleAt ((1 : ℝ) / 2) t n
+/-- Compatibility name for the arbitrary radial deformation. -/
+abbrev nativeCarryRealPlaneSampleAt
+    (sigma t : ℝ) (n : ℤ) : NativeCarryRealPlane :=
+  nativeCarryRealPlaneRadialDeformation sigma t n
+
+/-- The carry-built native state is the half-exponent deformation chart. -/
+theorem nativeCarryRealPlaneSample_eq_sampleAt_half
+    (t : ℝ) (n : ℤ) :
+    nativeCarryRealPlaneSample t n =
+      nativeCarryRealPlaneSampleAt ((1 : ℝ) / 2) t n := by
+  by_cases hn : 0 < n
+  · have hcast : ((n.toNat : ℕ) : ℝ) = (n : ℝ) := by
+      have hnat : (n.toNat : ℤ) = n :=
+        Int.toNat_of_nonneg (le_of_lt hn)
+      exact_mod_cast hnat
+    have hamp :
+        NativeCarryGeometry.Measure.nativeTowerAmplitude n =
+          (n : ℝ) ^ (-((1 : ℝ) / 2)) := by
+      simp only [NativeCarryGeometry.Measure.nativeTowerAmplitude, if_pos hn]
+      unfold NativeCarryGeometry.Measure.criticalAmplitude
+        NativeCarryGeometry.Internal.Carry.Cp.criticalAmplitude
+      rw [hcast]
+      congr 1
+      norm_num
+    rw [nativeCarryRealPlaneSample,
+      nativeCarryRealPlaneSampleAt,
+      nativeCarryRealPlaneRadialDeformation]
+    simp only [if_pos hn]
+    rw [hamp]
+  · simp [nativeCarryRealPlaneSample, nativeCarryRealPlaneSampleAt,
+      nativeCarryRealPlaneRadialDeformation, hn]
 
 @[simp] theorem nativeCarryRealPlaneSampleAt_of_pos
     (sigma t : ℝ) {n : ℤ} (hn : 0 < n) :
@@ -45,12 +86,14 @@ def nativeCarryRealPlaneSample
       let amplitude := (n : ℝ) ^ (-sigma)
       let angle := -t * Real.log (n : ℝ)
       (amplitude * Real.cos angle, amplitude * Real.sin angle) := by
-  simp [nativeCarryRealPlaneSampleAt, hn]
+  simp [nativeCarryRealPlaneSampleAt,
+    nativeCarryRealPlaneRadialDeformation, hn]
 
 @[simp] theorem nativeCarryRealPlaneSampleAt_of_nonpos
     (sigma t : ℝ) {n : ℤ} (hn : n ≤ 0) :
     nativeCarryRealPlaneSampleAt sigma t n = 0 := by
-  simp [nativeCarryRealPlaneSampleAt, not_lt.mpr hn]
+  simp [nativeCarryRealPlaneSampleAt,
+    nativeCarryRealPlaneRadialDeformation, not_lt.mpr hn]
 
 /--
 The quadratic energy of a positive sample is the square of its radial
@@ -81,14 +124,13 @@ theorem nativeCarryRealPlaneEnergy_sampleAt
       ring
 
 /--
-At the critical exponent, the sample energy is exactly the inverse integer
-mass.
+The carry-built native sample has exactly inverse-integer energy.
 -/
 theorem nativeCarryRealPlaneEnergy_sample
     (t : ℝ) {n : ℤ} (hn : 0 < n) :
     nativeCarryRealPlaneEnergy (nativeCarryRealPlaneSample t n) =
       ((n : ℝ))⁻¹ := by
-  rw [nativeCarryRealPlaneSample,
+  rw [nativeCarryRealPlaneSample_eq_sampleAt_half,
     nativeCarryRealPlaneEnergy_sampleAt ((1 : ℝ) / 2) t hn]
   norm_num [Real.rpow_neg_one]
 
@@ -126,6 +168,7 @@ theorem nativeCarryRealPlaneMassCompatible_iff
   · intro hsigma
     subst sigma
     intro n hn
+    rw [← nativeCarryRealPlaneSample_eq_sampleAt_half]
     exact nativeCarryRealPlaneEnergy_sample
       t (lt_trans (by norm_num) hn)
 
@@ -144,24 +187,42 @@ abbrev quadraticEnergy (u : RealCarryPlane) : ℝ :=
 abbrev rotationDirection (theta : ℝ) : RealCarryPlane :=
   Internal.Analytic.Cp.nativeCarryRealDirection theta
 
-abbrev realCarryState
-    (sigma time : ℝ) (n : ℤ) : RealCarryPlane :=
-  Internal.Analytic.Cp.nativeCarryRealPlaneSampleAt sigma time n
-
-abbrev criticalRealCarryState
+/-- The native state, already assembled from the carry-mass tower. -/
+abbrev nativeRealCarryState
     (time : ℝ) (n : ℤ) : RealCarryPlane :=
   Internal.Analytic.Cp.nativeCarryRealPlaneSample time n
 
-abbrev RealCarryEnergyCompatible
+/-- A secondary radial deformation used to compare exponents. -/
+abbrev radialDeformationState
+    (sigma time : ℝ) (n : ℤ) : RealCarryPlane :=
+  Internal.Analytic.Cp.nativeCarryRealPlaneSampleAt sigma time n
+
+/-- Compatibility alias: this name denotes the radial deformation family. -/
+abbrev realCarryState
+    (sigma time : ℝ) (n : ℤ) : RealCarryPlane :=
+  radialDeformationState sigma time n
+
+/-- Compatibility alias for the carry-built native state. -/
+abbrev criticalRealCarryState
+    (time : ℝ) (n : ℤ) : RealCarryPlane :=
+  nativeRealCarryState time n
+
+/-- The deformation represents the native carry mass exactly. -/
+abbrev RadialDeformationRepresentsNativeMass
     (sigma time : ℝ) : Prop :=
   Internal.Analytic.Cp.NativeCarryRealPlaneMassCompatible sigma time
+
+/-- Compatibility alias for radial-presentation mass compatibility. -/
+abbrev RealCarryEnergyCompatible
+    (sigma time : ℝ) : Prop :=
+  RadialDeformationRepresentsNativeMass sigma time
 
 /-- NCG-REA-001: Real Rotation Unit-Energy Theorem. -/
 @[simp] theorem quadraticEnergy_rotationDirection (theta : ℝ) :
     quadraticEnergy (rotationDirection theta) = 1 :=
   Internal.Analytic.Cp.nativeCarryRealPlaneEnergy_direction theta
 
-/-- NCG-REA-002: Real-State Energy Invariance. -/
+/-- NCG-REA-002: Radial-Deformation Energy Invariance. -/
 theorem quadraticEnergy_realCarryState
     (sigma time : ℝ) {n : ℤ} (hn : 0 < n) :
     quadraticEnergy (realCarryState sigma time n) =
@@ -169,7 +230,14 @@ theorem quadraticEnergy_realCarryState
   Internal.Analytic.Cp.nativeCarryRealPlaneEnergy_sampleAt
     sigma time hn
 
-/-- NCG-REA-003: Real Carry Energy Rigidity. -/
+/-- The native state carries inverse-integer energy by construction. -/
+theorem quadraticEnergy_nativeRealCarryState
+    (time : ℝ) {n : ℤ} (hn : 0 < n) :
+    quadraticEnergy (nativeRealCarryState time n) =
+      ((n : ℝ))⁻¹ :=
+  Internal.Analytic.Cp.nativeCarryRealPlaneEnergy_sample time hn
+
+/-- NCG-REA-003: Radial-Deformation Mass Rigidity. -/
 theorem realCarryEnergyCompatible_iff
     (sigma time : ℝ) :
     RealCarryEnergyCompatible sigma time ↔
