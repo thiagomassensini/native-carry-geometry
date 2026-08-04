@@ -2,7 +2,7 @@
 
 ## 1. Locked environment
 
-Release `v0.2.0` uses:
+Release `v0.3.0` uses:
 
 | Component | Lock |
 |---|---|
@@ -22,7 +22,7 @@ Install [`elan`](https://github.com/leanprover/elan), then:
 ```bash
 git clone https://github.com/thiagomassensini/native-carry-geometry.git
 cd native-carry-geometry
-git checkout v0.2.0
+git checkout v0.3.0
 lake build --wfail NativeCarryGeometry
 ```
 
@@ -39,7 +39,7 @@ sha256sum lean-toolchain lake-manifest.json
 ```
 
 Do not run an unconstrained dependency update and then cite the resulting build
-as reproduction of `v0.2.0`.
+as reproduction of `v0.3.0`.
 
 ## 3. Kernel audit
 
@@ -52,13 +52,14 @@ The minimum release audit consists of:
 5. exporting all public NCG theorem types;
 6. computing and comparing canonical type digests;
 7. recording the axioms reported for every public theorem;
-8. failing if generated registry files differ from committed release data.
+8. checking every versioned text file against the semantic contract;
+9. failing if generated registry files differ from committed release data.
 
-For each cited theorem, an auditor should inspect the equivalent of:
+For the principal one-zero theorem, an auditor should inspect:
 
 ```lean
-#check NativeCarryGeometry.Operator.isRealCarryOperatorZero_iff
-#print axioms NativeCarryGeometry.Operator.isRealCarryOperatorZero_iff
+#check NativeCarryGeometry.Equivalence.isNativeCarryOperatorZero_iff_analyticReadout_eq_zero
+#print axioms NativeCarryGeometry.Equivalence.isNativeCarryOperatorZero_iff_analyticReadout_eq_zero
 ```
 
 The audit distinguishes ordinary Lean/Mathlib foundations from any axiom
@@ -88,16 +89,10 @@ Each public audit theorem has a stable identifier of the form:
 NCG-<FAMILY>-<NUMBER>
 ```
 
-For example:
+For example, `NCG-EQV-017` identifies:
 
 ```text
-NCG-OPR-004
-```
-
-identifies
-
-```text
-NativeCarryGeometry.Operator.isRealCarryOperatorZero_iff
+NativeCarryGeometry.Equivalence.isNativeCarryOperatorZero_iff_analyticReadout_eq_zero
 ```
 
 A `type-sha256` digest is computed from the UTF-8 bytes of this exact,
@@ -149,27 +144,28 @@ Before approving a release, verify mechanically or by source inspection that:
 
 - no theorem asserts a pointwise equality between `b⁻ᵏ` and `n⁻¹`;
 - `b` and `camera` are not silently identified;
-- `NCG-OPR-004` remains universally quantified over `camera : ℕ`;
-- `NCG-EQV-007` and `NCG-EQV-008` retain camera `3` and the canonical-strip
-  premise;
-- `IsNativeRealCarryOperatorZero` has no radial parameter or post-hoc mass
+- `NCG-OPR-007` remains universally quantified over `camera : ℕ`;
+- `NCG-EQV-007` retains camera `3` and the canonical-strip premise;
+- `IsNativeCarryOperatorZero` has no radial parameter or post-hoc mass
   conjunct;
-- `IsCanonicalCarryOperatorZero` is documented as the ambient radial-chart
-  compatibility predicate, not the primary native zero;
+- `RadialChartCancelsAt` is never documented as an operator zero;
+- `RadialChartRepresentsNativeZero` and
+  `AnalyticChartRepresentsNativeZero` are documented as representation
+  relations;
 - odd-prime hypotheses remain present on the camera-specific analytic
   theorems;
 - generic camera `2` is not documented as the nondegenerate binary camera;
 - no excluded historical route enters the proof dependency of
-  `NCG-OPR-004`.
+  `NCG-OPR-007`.
 
 ## 8. Citation record
 
 An auditable citation has the form:
 
 ```text
-Theorem NCG-OPR-004,
+Theorem NCG-EQV-017,
 type-sha256 <digest>,
-Native Carry Geometry v0.2.0,
+Native Carry Geometry v0.3.0,
 proof commit <commit>.
 ```
 
