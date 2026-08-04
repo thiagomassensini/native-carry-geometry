@@ -10,6 +10,13 @@ intervalo simetrico. As hipoteses "p primo e impar" entram nos teoremas de
 cardinalidade e cobertura residual, que serao adicionados separadamente.
 -/
 
+/-!
+`NativeCarryGeometry.Internal.Genuine.Cp` e um caminho interno legado. Esta
+secao e aritmetica finita; nao depende de operador, continuacao analitica ou
+predicado de zero. A API publica correspondente e
+`NativeCarryGeometry.Arithmetic.Balanced`.
+-/
+
 namespace NativeCarryGeometry.Internal.Genuine.Cp
 
 noncomputable section
