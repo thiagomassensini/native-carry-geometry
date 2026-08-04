@@ -135,9 +135,9 @@ theorem nativeCarryRealPlaneEnergy_sample
   norm_num [Real.rpow_neg_one]
 
 /--
-An exponent belongs to the native real-vector domain when every positive
-integer above the degenerate base `1` carries exactly the inverse quadratic
-mass.
+An ambient radial exponent represents the upstream native mass when every
+positive integer above the degenerate input `1` has exactly the inverse-integer
+quadratic energy.
 -/
 def NativeCarryRealPlaneMassCompatible
     (sigma t : ℝ) : Prop :=
@@ -147,8 +147,8 @@ def NativeCarryRealPlaneMassCompatible
       ((n : ℝ))⁻¹
 
 /--
-The native real-vector domain has exactly one radial exponent.  The phase time
-is arbitrary and does not participate in the rigidity.
+The ambient radial chart represents native mass at exactly one exponent.  The
+phase time is arbitrary and does not participate in the rigidity.
 -/
 theorem nativeCarryRealPlaneMassCompatible_iff
     (sigma t : ℝ) :
@@ -192,7 +192,7 @@ abbrev nativeRealCarryState
     (time : ℝ) (n : ℤ) : RealCarryPlane :=
   Internal.Analytic.Cp.nativeCarryRealPlaneSample time n
 
-/-- A secondary radial deformation used to compare exponents. -/
+/-- An ambient radial comparison chart used to compare amplitude exponents. -/
 abbrev radialDeformationState
     (sigma time : ℝ) (n : ℤ) : RealCarryPlane :=
   Internal.Analytic.Cp.nativeCarryRealPlaneSampleAt sigma time n
@@ -222,7 +222,7 @@ abbrev RealCarryEnergyCompatible
     quadraticEnergy (rotationDirection theta) = 1 :=
   Internal.Analytic.Cp.nativeCarryRealPlaneEnergy_direction theta
 
-/-- NCG-REA-002: Radial-Deformation Energy Invariance. -/
+/-- NCG-REA-002: Radial-Deformation Quadratic-Energy Invariance (Legacy Declaration Name). -/
 theorem quadraticEnergy_realCarryState
     (sigma time : ℝ) {n : ℤ} (hn : 0 < n) :
     quadraticEnergy (realCarryState sigma time n) =
@@ -242,16 +242,17 @@ theorem quadraticEnergy_radialDeformationState
       (n : ℝ) ^ (-2 * sigma) :=
   quadraticEnergy_realCarryState sigma time hn
 
-/-- NCG-REA-004: Native State Inverse-Mass Energy.
+/-- NCG-REA-004: Native State Carry-Mass Energy.
 
-The native state carries inverse-integer energy by construction. -/
+The native state carries the inverse-integer carry mass as quadratic energy by
+construction. -/
 theorem quadraticEnergy_nativeRealCarryState
     (time : ℝ) {n : ℤ} (hn : 0 < n) :
     quadraticEnergy (nativeRealCarryState time n) =
       ((n : ℝ))⁻¹ :=
   Internal.Analytic.Cp.nativeCarryRealPlaneEnergy_sample time hn
 
-/-- NCG-REA-003: Radial-Deformation Mass Rigidity. -/
+/-- NCG-REA-003: Radial-Deformation Native-Mass Rigidity (Legacy Declaration Name). -/
 theorem realCarryEnergyCompatible_iff
     (sigma time : ℝ) :
     RealCarryEnergyCompatible sigma time ↔
