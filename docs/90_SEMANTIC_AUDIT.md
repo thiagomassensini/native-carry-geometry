@@ -9,7 +9,7 @@ Release `v0.3.0` was reviewed against one repository-wide contract:
 3. amplitude is the proved quadratic root of that mass;
 4. `sigma` belongs to an ambient radial chart and varies amplitude/norm;
 5. `ℝ²` and `ℂ` are faithful coordinates of the same additive operator;
-6. `IsNativeCarryOperatorZero` is the one operator-zero predicate;
+6. `IsNativeCarryOperatorZero` is the one native operator-zero predicate;
 7. ambient chart cancellation is not renamed as another operator zero.
 
 The review covered every versioned text file. Semantic-bearing files received
@@ -34,15 +34,15 @@ checksums, registry generation, dependency checks, and
 | `Bracket/RadialCurvature.lean` | auxiliary radial detector | detector null locus explicitly non-operator |
 | `Operator/RealState.lean` | native state and radial chart | canonical sigma/norm theorems added |
 | `Operator/QuadraticDomain.lean` | mass-domain crosswalk | canonical representation name added |
-| `Operator/FiniteRealOperator.lean` | finite native resultants | one finite zero plus chart-representation relation |
+| `Operator/FiniteRealOperator.lean` | finite native resultants | one finite native operator-zero predicate plus chart-representation relation |
 | `Operator/BoundaryOperator.lean` | native boundary and ambient cancellation | `RadialChartCancelsAt` made canonical |
-| `Operator/ZeroSetFactorization.lean` | one zero and representation factorization | `IsNativeCarryOperatorZero` made canonical |
+| `Operator/ZeroSetFactorization.lean` | native operator-zero predicate and representation factorization | `IsNativeCarryOperatorZero` made canonical |
 | `Analytic/FiniteBracketChart.lean` | finite power chart | verified; no operator-zero definition |
 | `Analytic/BracketSeries.lean` | bracket convergence | verified; no operator-zero definition |
 | `Analytic/BracketHolomorphy.lean` | holomorphy | verified; no operator-zero definition |
 | `Analytic/CanonicalContinuation.lean` | ambient analytic chart | cancellation label corrected |
 | `Equivalence/ComplexCoordinates.lean` | R² ≃ C | explicit complex norm identities added |
-| `Equivalence/RealAnalyticBoundary.lean` | boundary/readout identity | principal one-zero theorem added |
+| `Equivalence/RealAnalyticBoundary.lean` | boundary/readout identity | principal zero-locus identity theorem added |
 | `Audit/TheoremId.lean` | kernel registry command | verified unchanged |
 | `Audit/ExportTheoremTypes.lean` | generated theorem driver | regenerated from the 75-row registry |
 
@@ -56,10 +56,10 @@ checksums, registry generation, dependency checks, and
 | `docs/10_POSITIONAL_GEOMETRY.md` | verified: arithmetic layer remains pre-operator |
 | `docs/20_CARRY_MASS_AND_AMPLITUDE.md` | clarified integer weights and sigma/norm law |
 | `docs/30_BRACKET_AND_CURVATURE.md` | detector loci separated from operator zeros |
-| `docs/40_REAL_OPERATOR.md` | rewritten around the one native zero |
+| `docs/40_REAL_OPERATOR.md` | rewritten around the native operator-zero predicate |
 | `docs/50_CANONICAL_ANALYTIC_PRESENTATION.md` | ambient continuation described as a chart |
 | `docs/60_REAL_ANALYTIC_EQUIVALENCE.md` | rewritten as identity of the same operator |
-| `docs/70_ZERO_SET_FACTORIZATION.md` | rewritten as one zero plus representation |
+| `docs/70_ZERO_SET_FACTORIZATION.md` | rewritten as one native operator-zero predicate plus representation |
 | `docs/80_THEOREM_REGISTRY.md` | updated for 75 results and canonical labels |
 | `docs/85_SOURCE_PROVENANCE.md` | removed “complete analytic predicate” ontology |
 | `docs/88_EXCLUDED_RESEARCH_ROUTES.md` | aligned exclusions with the native proof DAG |
@@ -91,7 +91,7 @@ checksums, registry generation, dependency checks, and
 | `IsRealCarryOperatorZero` | `RadialChartRepresentsNativeZero` |
 | `IsCanonicalCarryOperatorZero` | `AnalyticChartRepresentsNativeZero` |
 | `IsNativeRealCarryOperatorZero` | `IsNativeCarryOperatorZero` |
-| `IsNativeCanonicalCarryOperatorZero` | analytic-coordinate spelling of the same native zero |
+| `IsNativeCanonicalCarryOperatorZero` | analytic-coordinate spelling of the same native operator-zero locus |
 
 Legacy names remain reducible aliases so downstream Lean code continues to
 compile. They are excluded from the canonical ontology.
