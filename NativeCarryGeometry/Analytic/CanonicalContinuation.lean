@@ -18,7 +18,7 @@ Definimos entao o quociente Cp
 `cpGenuineQuotient p s = bracketedDirichletChart p s / cpChartFactor p s`.
 
 Ele e holomorfo no interior da faixa, coincide com a serie Genuine original
-em `re(s)>1` e possui exatamente os mesmos zeros da carta onde o fator nao
+em `re(s)>1` e define exatamente o mesmo locus nulo da carta onde o fator nao
 zera. O indice `p` permanece explicito: compatibilidade entre quocientes de
 cameras primas distintas nao e presumida neste checkpoint.
 -/
@@ -180,7 +180,7 @@ theorem analyticOnNhd_cpGenuineQuotient_genuineCriticalStrip
   exact hchart.div hfactor fun s hs ↦
     cpChartFactor_ne_zero_on_genuineCriticalStrip p hp hs
 
-/-- Zero da carta e zero do quociente Genuine Cp sao equivalentes no
+/-- Cancelamento da carta e cancelamento do quociente analítico legado são equivalentes no
 interior da faixa critica. -/
 theorem bracketedDirichletChart_zero_iff_cpGenuineQuotient_zero
     (p : ℕ) (hp : Nat.Prime p) {s : ℂ}
@@ -359,7 +359,7 @@ theorem bracketedDirichletChart_eq_cpChartFactor_mul_genuineContinuation
   rw [bracketedDirichletChart_eq_factor_mul_cpGenuineQuotient p hp hs,
     cpGenuineQuotient_eq_genuineContinuation p hp hpodd hs]
 
-/-- Os zeros de qualquer carta prima impar sao exatamente os zeros do mesmo
+/-- O locus nulo de qualquer carta prima ímpar é exatamente o locus nulo do mesmo
 Genuine canonico dentro da faixa critica. -/
 theorem bracketedDirichletChart_zero_iff_genuineContinuation_zero
     (p : ℕ) (hp : Nat.Prime p) (hpodd : Odd p)
@@ -422,7 +422,7 @@ theorem analyticOnNhd_canonicalCarryContinuation :
     AnalyticOnNhd ℂ canonicalCarryContinuation canonicalStrip :=
   Internal.Analytic.Cp.analyticOnNhd_genuineContinuation_genuineCriticalStrip
 
-/-- NCG-ANL-008: Canonical Chart-Cancellation Representation by Any Odd Prime Camera. -/
+/-- NCG-ANL-008: Odd-Prime Camera Ambient Chart-Cancellation Locus Identity. -/
 theorem bracketSeries_zero_iff_canonicalCarryContinuation_zero
     (camera : ℕ) (hprime : Nat.Prime camera) (hodd : Odd camera)
     {s : ℂ} (hs : s ∈ canonicalStrip) :
