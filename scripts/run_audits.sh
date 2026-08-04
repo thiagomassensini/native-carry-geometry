@@ -35,6 +35,7 @@ python3 "${script_dir}/generate_theorem_registry.py" \
     CITATION.cff
     .zenodo.json
     .release/v0.1.0.md
+    .release/v0.2.0.md
   )
   while IFS= read -r -d '' path; do
     files+=("${path#./}")

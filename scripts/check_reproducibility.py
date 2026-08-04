@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify the exact Lean/Mathlib lock used by the v0.1.0 audit."""
+"""Verify the exact Lean/Mathlib lock used by the current release audit."""
 
 from __future__ import annotations
 

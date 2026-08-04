@@ -2,7 +2,7 @@
 
 ## 1. Citation model
 
-Release `v0.1.0` designates 59 citeable mathematical results. Each receives a
+Release `v0.2.0` designates 59 citeable mathematical results. Each receives a
 stable semantic identifier:
 
 ```text

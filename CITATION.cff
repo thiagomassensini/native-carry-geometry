@@ -8,8 +8,8 @@ authors:
 repository-code: "https://github.com/thiagomassensini/native-carry-geometry"
 url: "https://github.com/thiagomassensini/native-carry-geometry"
 license: Apache-2.0
-version: 0.1.0
-date-released: 2026-07-29
+version: 0.2.0
+date-released: 2026-08-04
 abstract: >-
   A Lean 4 formalization from positional carry decomposition and uniform carry
   mass to quadratic amplitude rigidity, a real centered-bracket operator,

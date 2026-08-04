@@ -90,7 +90,7 @@ and reproves the energy and finite-zero statements for that representation.
 ### 5.3. Full analytic zero predicate
 
 The historical boundary theorem identifies camera-three closure with
-canonical scalar cancellation. Release `v0.1.0` defines a complete analytic
+canonical scalar cancellation. Release `v0.2.0` defines a complete analytic
 operator predicate that retains real energy compatibility and proves the full
 predicate identity as `NCG-EQV-008`.
 
@@ -122,7 +122,7 @@ For exact source declaration and commit values, use
 
 A valid audit citation must bind:
 
-1. release `v0.1.0`;
+1. release `v0.2.0`;
 2. the final proof commit of this repository;
 3. the NCG identifier;
 4. the elaborated type digest;

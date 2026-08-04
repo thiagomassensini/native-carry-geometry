@@ -50,8 +50,10 @@ def main() -> int:
     parser.add_argument("--audit-artifact", type=Path, action="append", default=[])
     args = parser.parse_args()
 
-    if args.tag != "v0.1.0":
-        raise AuditFailure("this publisher manifest is restricted to tag v0.1.0")
+    if args.tag not in {"v0.1.0", "v0.2.0"}:
+        raise AuditFailure(
+            "this publisher manifest is restricted to tags v0.1.0 and v0.2.0"
+        )
     if git("status", "--porcelain"):
         raise AuditFailure("working tree is not clean before manifest generation")
 

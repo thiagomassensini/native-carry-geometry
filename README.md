@@ -22,7 +22,7 @@ positional decomposition
 → radial-presentation uniqueness
 ```
 
-- Release: `v0.1.0`
+- Release: `v0.2.0`
 - Lean and Mathlib line: `v4.32.0`
 - Historical source lock:
 [`thiagomassensini/primos@7d8d0b345b329935674edc24e5ac08ad9f7b5804`](https://github.com/thiagomassensini/primos/tree/7d8d0b345b329935674edc24e5ac08ad9f7b5804)
