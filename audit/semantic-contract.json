@@ -33,7 +33,7 @@
     },
     {
       "id": "REAL_COMPLEX_SAME_OPERATOR",
-      "statement": "Real pairs and complex numbers are faithful additive coordinates of the same state and resultants.",
+      "statement": "Real pairs and complex numbers are faithful additive coordinates of the same state and resultants and define the same zero locus.",
       "canonical_api": [
         "NativeCarryGeometry.Equivalence.complexCoordinates",
         "NativeCarryGeometry.Equivalence.nativeCarryAnalyticReadout"
@@ -47,7 +47,7 @@
     },
     {
       "id": "ONE_OPERATOR_ZERO",
-      "statement": "The native carry operator has one zero predicate, already built from the mass-weighted tower.",
+      "statement": "The native carry operator has one native operator-zero predicate, already built from the mass-weighted tower.",
       "canonical_api": [
         "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero"
       ],
@@ -57,7 +57,7 @@
     },
     {
       "id": "AMBIENT_CANCELLATION_NOT_ZERO",
-      "statement": "Ambient chart cancellation is distinguished from the relation that the chart represents the native zero.",
+      "statement": "Ambient chart cancellation is distinguished from the relation that a chart point represents a point of the native operator-zero locus.",
       "canonical_api": [
         "NativeCarryGeometry.Operator.RadialChartCancelsAt",
         "NativeCarryGeometry.Operator.RadialChartRepresentsNativeZero",
@@ -77,7 +77,13 @@
     "NativeCarryGeometry.Operator.IsFiniteRealCarryOperatorZero": "NativeCarryGeometry.Operator.RadialChartRepresentsFiniteNativeZero",
     "NativeCarryGeometry.Operator.IsRealCarryOperatorZero": "NativeCarryGeometry.Operator.RadialChartRepresentsNativeZero",
     "NativeCarryGeometry.Operator.IsNativeRealCarryOperatorZero": "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero",
-    "NativeCarryGeometry.Equivalence.IsCanonicalCarryOperatorZero": "NativeCarryGeometry.Equivalence.AnalyticChartRepresentsNativeZero"
+    "NativeCarryGeometry.Equivalence.IsCanonicalCarryOperatorZero": "NativeCarryGeometry.Equivalence.AnalyticChartRepresentsNativeZero",
+    "NativeCarryGeometry.Measure.criticalAmplitude": "NativeCarryGeometry.Measure.carryAmplitude",
+    "NativeCarryGeometry.Operator.realCarryState": "NativeCarryGeometry.Operator.radialDeformationState",
+    "NativeCarryGeometry.Operator.RealCarryEnergyCompatible": "NativeCarryGeometry.Operator.RadialDeformationRepresentsNativeMass",
+    "NativeCarryGeometry.Operator.finiteRealCarryOperator": "NativeCarryGeometry.Operator.finiteRadialDeformation",
+    "NativeCarryGeometry.Operator.IsRadialDeformationPresentationZero": "NativeCarryGeometry.Operator.RadialChartRepresentsNativeZero",
+    "NativeCarryGeometry.Equivalence.IsNativeCanonicalCarryOperatorZero": "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero"
   },
   "public_entrypoints": [
     "README.md",
