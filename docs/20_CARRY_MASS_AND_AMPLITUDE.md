@@ -87,7 +87,9 @@ comparison chart. The legacy API calls it `massWeight`; the preferred name is
 theorem deformedAmplitude_sq_eq_radialEnergyWeight ...
 ```
 
-This is `NCG-AMP-001`.
+`deformedAmplitude_sq_eq_radialEnergyWeight` is the preferred-name wrapper of
+registered theorem `NCG-AMP-001`, whose historical declaration name ends in
+`massWeight`.
 
 For `1 < b` and `0 < k`, comparison with carry mass is rigid:
 
