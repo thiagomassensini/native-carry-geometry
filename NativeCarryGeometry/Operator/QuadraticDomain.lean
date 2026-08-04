@@ -14,7 +14,7 @@ namespace NativeCarryGeometry.Measure
 
 noncomputable section
 
-/-- NCG-AMP-006: Quadratic Domain Crosswalk. -/
+/-- NCG-AMP-006: Positional/Native-Mass Representation Crosswalk (Legacy Declaration Name). -/
 theorem positionalMassCompatible_iff_realEnergyCompatible
     (b : ℕ) (hb : 1 < b) (sigma time : ℝ) :
     PositionalMassCompatible b sigma ↔
