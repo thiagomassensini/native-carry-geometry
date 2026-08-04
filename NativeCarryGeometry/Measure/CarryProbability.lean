@@ -6,7 +6,7 @@ import Mathlib.Tactic
 /-!
 # Uniform probability of a positional carry event
 
-At depth `k`, the residue space of a base-`b` camera has exactly `b^k`
+At depth `k`, the residue space of a positional base `b` has exactly `b^k`
 equiprobable classes.  A specified carry condition is one congruence class,
 so its finite uniform probability is `1 / b^k`.
 
@@ -44,8 +44,8 @@ def uniformCarryEvent
 /--
 Uniform Carry Probability Law.
 
-For every positive positional base and every depth, the probability of a
-specified carry congruence class is exactly the carry mass `b^(-k)`.
+For every positive positional base and every depth, the probability of the
+zero-residue carry class is exactly the carry mass `b^(-k)`.
 -/
 theorem uniformCarryEvent_probability
     (b k : ℕ) (hb : 0 < b) :

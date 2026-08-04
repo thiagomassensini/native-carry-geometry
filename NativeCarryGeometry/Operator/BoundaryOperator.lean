@@ -29,7 +29,9 @@ def NativeBoundaryConvergesToZero
     atTop (nhds 0)
 
 /--
-Boundary closure of the secondary radial deformation family.
+Cancellation of the secondary radial deformation at the boundary.  This is a
+predicate on an ambient comparison chart, not a second zero predicate for the
+native operator.
 -/
 def RadialDeformationBoundaryConvergesToZero
     (camera : ℕ) (sigma time : ℝ) : Prop :=
@@ -38,10 +40,19 @@ def RadialDeformationBoundaryConvergesToZero
       finiteRadialDeformation camera cutoff sigma time)
     atTop (nhds 0)
 
-/-- Compatibility alias for radial-deformation boundary closure. -/
-abbrev BoundaryConvergesToZero
+/-- Canonical name for cancellation in the ambient radial chart. -/
+abbrev RadialChartCancelsAt
     (camera : ℕ) (sigma time : ℝ) : Prop :=
   RadialDeformationBoundaryConvergesToZero camera sigma time
+
+/--
+Legacy compatibility alias for ambient radial-chart cancellation.  Despite the
+historical word `Boundary`, this abbreviation does not introduce an
+additional native operator-zero predicate.
+-/
+abbrev BoundaryConvergesToZero
+    (camera : ℕ) (sigma time : ℝ) : Prop :=
+  RadialChartCancelsAt camera sigma time
 
 /-- The half-exponent deformation chart is exactly the native boundary. -/
 theorem radialDeformationBoundary_half_iff_native

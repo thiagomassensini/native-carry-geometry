@@ -2,9 +2,10 @@
 
 ## 1. Purpose
 
-The analytic layer is constructed from the same finite centered-bracket charts
-used by the real operator. It supplies a canonical complex-coordinate
-presentation; it is not used to prove the real zero-set factorization.
+The analytic layer is constructed from the same finite centered-bracket
+algebra used by the real presentation. It stores the rotating `ℝ²` samples
+as complex coordinates and then continues the ambient radial chart. It does
+not construct another operator or another zero predicate.
 
 The complex parameter is written
 
@@ -118,14 +119,31 @@ The principal theorems are:
 |---|---|---|
 | `NCG-ANL-006` | `bracketSeries_eq_factor_mul_canonicalCarryContinuation` | camera bracket series equals the nonzero factor times the canonical representative |
 | `NCG-ANL-007` | `analyticOnNhd_canonicalCarryContinuation` | analyticity on the canonical strip |
-| `NCG-ANL-008` | `bracketSeries_zero_iff_canonicalCarryContinuation_zero` | any odd prime camera represents the same scalar zero set in the strip |
+| `NCG-ANL-008` | `bracketSeries_zero_iff_canonicalCarryContinuation_zero` | any odd prime camera represents the same ambient chart-cancellation locus in the strip |
 
-`NCG-ANL-008` is a statement about the bracket series and the ambient canonical
-scalar representative. The native operator readout is obtained by restricting
-this representative to `s.re = 1/2`, which was already fixed by the carry-built
-tower. The equivalence layer proves the exact native real/complex zero identity.
+`NCG-ANL-008` is a statement about cancellation of the ambient bracket chart.
+It is not an `OperatorZero` theorem. The native operator readout is obtained
+by restricting the same coordinate formula to `s.re = 1/2`, already fixed by
+the carry-built tower. `NCG-EQV-017` then proves the exact identity between
+the native operator-zero predicate and the analytic readout with the same zero
+locus.
 
-## 7. Dependency direction
+
+## 7. Sigma in the analytic coordinate
+
+For $s=\sigma+it$, the complex sample is exactly the coordinate image of the
+real radial sample. The named theorem `NCG-EQV-016` makes its norm law
+explicit:
+
+$
+\operatorname{normSq}(n^{-s})=n^{-2\sigma}.
+$
+
+Therefore moving the real coordinate `Re(s)` is precisely moving radial amplitude
+and quadratic norm. The complex plane does not add a degree of freedom beyond
+that already visible in the radial comparison chart.
+
+## 8. Dependency direction
 
 The logical order is:
 
@@ -140,5 +158,5 @@ centered bracket
 ```
 
 No theorem in this layer constructs the native mass or is a premise of
-`NCG-OPR-004`. The analytic layer provides faithful coordinates after the real
+`NCG-OPR-007`. The analytic layer provides faithful coordinates after the real
 operator has already been assembled.

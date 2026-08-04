@@ -15,11 +15,12 @@ Para os offsets balanceados `Aₚ`, definimos o tilt local
 
 O parametro transversal e `delta = sigma - 1/2`. Este arquivo prova, para
 todo primo impar, que o tilt se anula quando `delta = 0` e que a saturacao da
-norma do operador de ramo implica essa anulacao.
+norma da familia radial deformada implica essa anulacao.
 
 A reciproca exige a rigidez de sinal do tilt no dominio considerado. Ela e
-isolada na proposicao `TiltRigidityAt`; nao e assumida por definicao e nenhuma
-instancia global e declarada aqui.
+isolada na proposicao `TiltRigidityAt` e provada abaixo sob a hipotese explicita
+do centro admissivel. Todo locus nulo deste arquivo pertence a detectores
+escalares de deformacao; nenhum deles define um zero do operador nativo.
 -/
 
 open scoped BigOperators
@@ -75,14 +76,14 @@ theorem branchDefect_zero_implies_cpTiltAtSigma_zero
 
 /--
 Rigidez local necessaria para a volta tilt--norma: no semiplano `sigma > 0`,
-o unico zero do tilt naquele centro deve ser `delta = 0`.
+o unico ponto do locus nulo do tilt naquele centro deve ser `delta = 0`.
 -/
 structure TiltRigidityAt (p : ℕ) (center : ℝ) : Prop where
   zero_only :
     ∀ {sigma : ℝ}, 0 < sigma → cpTiltAtSigma p sigma center = 0 →
       criticalDisplacement sigma = 0
 
-/-- Sob rigidez do tilt, tilt e defeito da norma possuem exatamente o mesmo zero. -/
+/-- Sob rigidez, tilt e defeito da norma possuem o mesmo locus nulo escalar; nao e um zero do operador. -/
 theorem branchDefect_eq_zero_iff_cpTiltAtSigma_eq_zero
     (p : ℕ) (hp : Nat.Prime p) (hpodd : Odd p)
     (center : ℝ) (rigidity : TiltRigidityAt p center)
@@ -116,7 +117,7 @@ A prova tem tres passos finitos e explicitos:
    `-1 < delta < 0`.
 
 No semiplano `sigma > 0`, temos sempre
-`delta = sigma - 1/2 > -1`. Portanto o unico zero admissivel e `delta = 0`.
+`delta = sigma - 1/2 > -1`. Portanto o unico ponto nulo admissivel do detector e `delta = 0`.
 -/
 
 open scoped BigOperators
@@ -427,7 +428,7 @@ theorem tiltRigidityAt_of_halfRange_lt_center
     rw [hzero] at hsign
     linarith
 
-/-- Forma escalar da rigidez: os zeros do tilt sao exatamente `sigma = 1/2`. -/
+/-- Forma escalar da rigidez: o locus nulo do tilt e exatamente `sigma = 1/2`; nao e um zero do operador. -/
 theorem cpTiltAtSigma_eq_zero_iff_half
     (p : ℕ) (hp : Nat.Prime p) (hpodd : Odd p)
     {sigma center : ℝ} (hsigma : 0 < sigma)
@@ -446,7 +447,7 @@ theorem cpTiltAtSigma_eq_zero_iff_half
 
 /--
 Versao sem hipotese abstrata da ponte norma--tilt: em todo centro admissivel,
-o defeito quadratico e o tilt possuem exatamente o mesmo zero.
+o defeito quadratico e o tilt possuem exatamente o mesmo locus nulo escalar.
 -/
 theorem branchDefect_eq_zero_iff_cpTiltAtSigma_eq_zero_of_admissible_center
     (p : ℕ) (hp : Nat.Prime p) (hpodd : Odd p)

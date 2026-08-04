@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import re
 import sys
 from dataclasses import dataclass
@@ -185,6 +186,18 @@ def main() -> int:
 
     rows, errors = read_registry(args.registry)
     active_rows = [row for row in rows if row.status not in INACTIVE_STATUSES]
+
+    source_lock_path = REPOSITORY_ROOT / "audit" / "source-lock.json"
+    try:
+        source_lock = json.loads(source_lock_path.read_text(encoding="utf-8"))
+        locked_count = source_lock["registry"]["id_count"]
+        if locked_count != len(active_rows):
+            errors.append(
+                "audit/source-lock.json registry.id_count is "
+                f"{locked_count}, expected {len(active_rows)} active IDs"
+            )
+    except (OSError, KeyError, TypeError, json.JSONDecodeError) as error:
+        errors.append(f"invalid audit/source-lock.json registry count: {error}")
 
     reached, _, _ = public_import_closure()
     annotations: list[Annotation] = []

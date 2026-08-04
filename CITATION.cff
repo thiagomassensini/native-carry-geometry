@@ -8,13 +8,15 @@ authors:
 repository-code: "https://github.com/thiagomassensini/native-carry-geometry"
 url: "https://github.com/thiagomassensini/native-carry-geometry"
 license: Apache-2.0
-version: 0.2.0
+version: 0.3.0
 date-released: 2026-08-04
 abstract: >-
-  A Lean 4 formalization from positional carry decomposition and uniform carry
-  mass to quadratic amplitude rigidity, a real centered-bracket operator,
-  a native mass-built real operator, radial-presentation uniqueness, and a
-  scope-preserving real/analytic coordinate identity.
+  A Lean 4 formalization from positional quotient-residue geometry and carry
+  mass to quadratic amplitude rigidity and one native centered-bracket
+  operator. Real pairs and complex numbers are proved faithful coordinates of
+  the same mass-built state and resultant, with the same zero locus; sigma is
+  isolated as an
+  ambient quadratic-norm deformation coordinate.
 keywords:
   - Lean 4
   - formalized mathematics
@@ -22,5 +24,5 @@ keywords:
   - carry geometry
   - centered differences
   - quadratic amplitude
-  - operator zero sets
+  - native operator-zero predicate
   - reproducible proof audit

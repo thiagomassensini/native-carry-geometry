@@ -1,4 +1,4 @@
-# The Real Carry Operator
+# The Native Carry Operator in Real Coordinates
 
 ## 1. Real state space
 
@@ -45,7 +45,7 @@ quadraticEnergy (nativeRealCarryState time n) = (n : ℝ)⁻¹
 
 ## 3. Secondary radial deformation
 
-For empirical and rigidity comparisons, the repository also exposes
+For norm and rigidity comparisons, the repository also exposes
 
 $$
 u_{\sigma,t}(n)
@@ -56,7 +56,7 @@ $$
 as `radialDeformationState sigma time n`. The old public name
 `realCarryState` is retained as a compatibility alias for this deformation.
 
-`NCG-REA-002` states, under `0 < n`,
+`NCG-REA-005` states, under `0 < n`,
 
 $$
 E(u_{\sigma,t}(n))=n^{-2\sigma}.
@@ -64,15 +64,16 @@ $$
 
 The time parameter rotates direction and does not alter energy.
 
-`RealCarryEnergyCompatible sigma time` now reads as a presentation test: does
-the free deformation reproduce the mass of the native tower for all `n > 1`?
+`RadialDeformationRepresentsNativeMass sigma time` asks whether the ambient
+deformation reproduces the mass already fixed by the native tower for all
+`n > 1`.
 
 The index `n=1` is excluded because its energy is one for every `sigma`.
 
-`NCG-REA-003` proves:
+`NCG-REA-006` proves:
 
 ```lean
-RealCarryEnergyCompatible sigma time ↔
+RadialDeformationRepresentsNativeMass sigma time ↔
   sigma = (1 : ℝ) / 2
 ```
 
@@ -128,20 +129,20 @@ $$
 quadraticEnergy u = 0 ↔ u = 0
 ```
 
-The native finite zero is simply:
+The canonical finite native zero is:
 
 ```lean
-IsFiniteNativeRealCarryOperatorZero camera cutoff time
+IsFiniteNativeCarryOperatorZero camera cutoff time
 ```
 
-The registered `NCG-OPR-003` concerns the radial compatibility presentation
-and factors it as:
+The ambient relation is
+`RadialChartRepresentsFiniteNativeZero camera cutoff sigma time`.
+`NCG-OPR-008` factors that representation as:
 
 ```lean
-IsFiniteRealCarryOperatorZero camera cutoff sigma time ↔
+RadialChartRepresentsFiniteNativeZero camera cutoff sigma time ↔
   sigma = 1 / 2 ∧
-    quadraticEnergy
-      (criticalFiniteRealCarryOperator camera cutoff time) = 0
+    IsFiniteNativeCarryOperatorZero camera cutoff time
 ```
 
 Visible energy must not be confused with the sum of energies of the individual
@@ -162,25 +163,22 @@ def NativeBoundaryConvergesToZero
 
 No finite cutoff is required to be exactly zero.
 
-A boundary resonance is exactly this native zero:
+The canonical operator-zero predicate is literally this native boundary:
 
 ```lean
-def IsBoundaryResonance
+abbrev IsNativeCarryOperatorZero
     (camera : ℕ) (time : ℝ) : Prop :=
   NativeBoundaryConvergesToZero camera time
 ```
 
-Consequently the native operator zero is:
+`IsBoundaryResonance` and the older coordinate-labelled
+`IsNativeRealCarryOperatorZero` are definitionally equal legacy-compatibility aliases.
 
-```lean
-abbrev IsNativeRealCarryOperatorZero
-    (camera : ℕ) (time : ℝ) : Prop :=
-  NativeBoundaryConvergesToZero camera time
-```
-
-The deformation boundary and its compatibility predicate are separate APIs.
-At `sigma = 1/2`, Lean proves the deformation boundary equivalent to the
-native boundary.
+The ambient deformation has only a cancellation predicate,
+`RadialChartCancelsAt camera sigma time`. At `sigma = 1/2`, Lean proves
+that chart cancellation is equivalent to the native boundary. Away from the
+mass-preserving shell it does not satisfy the native operator-zero
+representation relation.
 
 ## 7. Camera cases
 
@@ -193,14 +191,16 @@ The finite operator is total for all natural cameras.
 - odd prime cameras additionally admit the balanced-residue and finite-prefix
   identities used by the analytic layer.
 
-The universal radial-presentation theorem includes the degenerate cases because
+The universal radial-chart representation theorem includes the degenerate cases because
 its camera parameter is unrestricted. This totality must not be read as a claim
 that every natural width supplies a nondegenerate physical observation rule.
 
 ## 8. No hidden operator object
 
-The phrase “real carry operator” denotes the mass-built native state, its finite
-resultants, and its boundary zero. The radial deformation is a tool for varying
-the quadratic exponent, not an input of that operator. The release does not
+The phrase “real carry operator” denotes real coordinates for the mass-built
+native state, its finite resultants, and its native operator-zero predicate.
+Complex
+coordinates describe the same object. The radial deformation is a tool for
+varying amplitude and quadratic norm, not an input of another operator. The release does not
 claim a separately constructed total linear map whose value is an
 already-evaluated infinite limit.

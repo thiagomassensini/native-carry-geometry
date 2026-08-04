@@ -1,24 +1,39 @@
-# Theorem audit registry
+# Theorem and Semantic Audit Registry
 
-`theorems.tsv` is the single machine-readable registry of citeable NCG
-results. Its 64 rows correspond one-to-one with the 64 distinct `NCG-*`
-identifiers currently attached to public Lean declarations.
+`theorems.tsv` is the machine-readable registry of citeable NCG results.
+Release `v0.3.0` contains 75 active IDs and therefore exactly 75 elaborated
+signature preimages.
 
 The first three columns are stable:
 
 1. `id`: permanent citation identifier;
 2. `declaration`: fully qualified public Lean name;
-3. `module`: importable Lean module name, without `.lean`.
+3. `module`: importable Lean module name.
 
-The remaining columns record the academic label, declaration kind, migration
-classification, historical source declaration and origin commit, public
-dependencies used by composed results, elaborated type digest, and audit notes.
-Rows are sorted lexicographically by `id`.
+The remaining columns record label, theorem kind, migration class, historical
+source, dependency IDs, elaborated type digest, and audit notes. Rows are
+sorted lexicographically by ID.
+
+## Canonical semantic surface
+
+The registry is interpreted through five contracts:
+
+| Contract | Canonical API | Principal evidence |
+|---|---|---|
+| Mass is upstream | `nativeTowerMass`, `nativeTowerAmplitude` | `NCG-MAS-003`, `NCG-REA-004` |
+| Sigma varies quadratic norm | `radialEnergyWeight`, `radialDeformationState` | `NCG-REA-005/006`, `NCG-EQV-013/015/016` |
+| Real and complex are coordinates | `complexCoordinates` | `NCG-EQV-010/011/014` |
+| One native operator-zero predicate | `IsNativeCarryOperatorZero` | `NCG-EQV-017` |
+| Ambient cancellation is a chart relation | `RadialChartCancelsAt`, `RadialChartRepresentsNativeZero`, `AnalyticChartRepresentsNativeZero` | `NCG-OPR-007/008`, `NCG-EQV-018/019` |
+
+Older names remain reducible compatibility aliases. Their registered signatures
+are retained for citation stability, but they do not define additional zero
+objects.
 
 ## Hash policy
 
-All 64 `type_sha256` values are generated from the elaborated Lean
-environment. The exact UTF-8 preimage is:
+Every `type_sha256` is generated from the elaborated Lean environment using
+this newline-terminated UTF-8 preimage:
 
 ```text
 format=ncg-signature-v1
@@ -28,83 +43,72 @@ mathlib=81a5d257c8e410db227a6665ed08f64fea08e997
 type-repr=<(repr info.type).pretty 1000000>
 ```
 
-Every field ends with a line feed, including `type-repr`. The declaration type
-is not split into separately serialized universe or binder fields: those are
-already present in Lean's `repr` of the elaborated expression. Source-text
-hashes, hand-entered values, comments, and proof bodies are not part of this
-digest. The proof body is identified separately by the Git commit, tree,
+Source text, comments, hand-entered values, and proof bodies are not part of
+this digest. Proof bodies are fixed separately by the repository commit, tree,
 annotated tag, and release manifest.
+
+Generated authorities are:
+
+- `theorem-registry.json`: full theorem metadata and elaborated types;
+- `axioms.json`: transitive axiom inventory;
+- `preimages/NCG-*.txt`: exact digest preimages;
+- `NativeCarryGeometry/Audit/ExportTheoremTypes.lean`: generated Lean driver.
+
+None is edited by hand.
 
 ## Migration classifications
 
-- `renamed_wrapper`: public theorem with an exact historical source result
-  under formalized nomenclature.
-- `renamed_abbrev`: citeable equivalence exposed as a public abbreviation.
-- `reproved_wrapper`: historical mathematical result reproved for a revised
-  public representation.
-- `reproved_composed`: historical mathematical result reconstructed from the
-  registered public chain.
-- `composed_new`: new public result obtained by composing registered results;
-  no exact historical declaration is claimed.
-- `strengthened_new_representation`: historical content is retained through a
-  stronger public representation.
+- `renamed_wrapper`: historical theorem exposed under public nomenclature;
+- `renamed_abbrev`: citeable equivalence exposed as an abbreviation;
+- `reproved_wrapper`: historical result reproved for a revised representation;
+- `reproved_composed`: historical result reconstructed through public results;
+- `composed_new`: new public composition with no claimed exact source theorem;
+- `strengthened_new_representation`: historical content retained through a
+  stronger representation.
 
-The `dependencies` column is authoritative for the new or composition-based
-rows. `api:` prefixes identify supporting public definitions rather than
-citeable theorem IDs.
+## Public definitions without NCG IDs
 
-## Public API without NCG citation IDs
+NCG IDs are reserved for citeable results. Supporting public definitions keep
+their Lean names without synthetic IDs.
 
-NCG identifiers are reserved for citeable mathematical results. Public
-definitions and supporting structures remain addressable by fully qualified
-Lean name, but they are not theorem citations and therefore do not receive
-synthetic NCG IDs merely for appearing in the API.
+| Layer | Canonical supporting definitions |
+|---|---|
+| Arithmetic | `quotientAtDepth`, `residueAtDepth`, `positionalDepth`, centers, offsets, incidences |
+| Measure | `carryMass`, `carryAmplitude`, `radialEnergyWeight`, `nativeTowerMass`, `nativeTowerAmplitude` |
+| Bracket | `centeredSecondDifference`, `saturatedBracket`, balanced camera and curvature detectors |
+| Native operator | `nativeRealCarryState`, `finiteNativeRealCarryOperator`, `NativeBoundaryConvergesToZero`, `IsNativeCarryOperatorZero` |
+| Ambient radial chart | `radialDeformationState`, `finiteRadialDeformation`, `RadialChartCancelsAt`, `RadialChartRepresentsNativeZero` |
+| Analytic coordinates | `complexCoordinates`, `canonicalCarryContinuation`, `nativeCarryAnalyticReadout`, `AnalyticChartRepresentsNativeZero` |
 
-| Module | Public definitions and abbreviations without NCG IDs |
-| --- | --- |
-| `NativeCarryGeometry.Arithmetic.PositionalDecomposition` | `NativeCarryGeometry.Arithmetic.quotientAtDepth`, `residueAtDepth`, `positionalDepth` |
-| `NativeCarryGeometry.Arithmetic.BinaryCenter` | `NativeCarryGeometry.Arithmetic.Binary.binaryCenter`, `OddLeg`, `BinaryIncidence`, `binaryEffectiveDepth` |
-| `NativeCarryGeometry.Arithmetic.BalancedResidue` | `NativeCarryGeometry.Arithmetic.Balanced.halfRange`, `balancedOffsets`, `BalancedOffset`, `NonzeroResidue`, `Nonmultiple`, `Incidence` |
-| `NativeCarryGeometry.Arithmetic.CarryDepth` | `NativeCarryGeometry.Arithmetic.Balanced.canonicalOffset`, `effectiveDepth`, `centerDepth` |
-| `NativeCarryGeometry.Measure.CarryMass` | `NativeCarryGeometry.Measure.carryMass`, `criticalAmplitude`, `deformedAmplitude`, `radialRatio`, `massWeight`, `nativeTowerMass`, `nativeTowerAmplitude` |
-| `NativeCarryGeometry.Measure.CarryProbability` | `NativeCarryGeometry.Measure.uniformFiniteProbability`, `uniformCarryEvent` |
-| `NativeCarryGeometry.Measure.QuadraticAmplitude` | `NativeCarryGeometry.Measure.PositionalMassCompatible`, `radialBranchEnergy` |
-| `NativeCarryGeometry.Bracket.CenteredDifference` | `NativeCarryGeometry.Bracket.centeredSecondDifference`, `saturatedBracket` |
-| `NativeCarryGeometry.Bracket.BalancedCamera` | `NativeCarryGeometry.Bracket.Balanced.halfRange`, `balancedBracket`, `alignedCenter`, `finiteBracketChart` |
-| `NativeCarryGeometry.Bracket.RadialCurvature` | `NativeCarryGeometry.Bracket.Curvature.balancedRadialCurvature`, `balancedRadialCurvatureAtSigma`, `pairedRadialCurvature` |
-| `NativeCarryGeometry.Operator.RealState` | `NativeCarryGeometry.Operator.RealCarryPlane`, `quadraticEnergy`, `rotationDirection`, `nativeRealCarryState`, `radialDeformationState`, compatibility aliases `realCarryState`/`criticalRealCarryState`, `RadialDeformationRepresentsNativeMass` |
-| `NativeCarryGeometry.Operator.QuadraticDomain` | downstream positional/real radial-presentation crosswalk (`NCG-AMP-006`) |
-| `NativeCarryGeometry.Operator.FiniteRealOperator` | `NativeCarryGeometry.Operator.finiteSaturatedBracketOperator`, `finiteNativeRealCarryOperator`, `finiteRadialDeformation`, compatibility aliases, `visibleEnergy`, native and radial finite-zero predicates |
-| `NativeCarryGeometry.Operator.BoundaryOperator` | `NativeCarryGeometry.Operator.NativeBoundaryConvergesToZero`, `RadialDeformationBoundaryConvergesToZero`, compatibility alias `BoundaryConvergesToZero`, `IsBoundaryResonance` |
-| `NativeCarryGeometry.Operator.ZeroSetFactorization` | `NativeCarryGeometry.Operator.IsNativeRealCarryOperatorZero`, `IsRadialDeformationPresentationZero`, compatibility alias `IsRealCarryOperatorZero` |
-| `NativeCarryGeometry.Analytic.FiniteBracketChart` | `NativeCarryGeometry.Analytic.powerMonomial`, `positivePowerPrefix`, `convergentPowerSeries` |
-| `NativeCarryGeometry.Analytic.BracketSeries` | `NativeCarryGeometry.Analytic.bracketSeries`, `finiteBracketSeries` |
-| `NativeCarryGeometry.Analytic.BracketHolomorphy` | `NativeCarryGeometry.Analytic.bracketHalfPlane` |
-| `NativeCarryGeometry.Analytic.CanonicalContinuation` | `NativeCarryGeometry.Analytic.cameraNormalizationFactor`, `canonicalStrip`, `normalizedBracketChart`, `canonicalCarryContinuation` |
-| `NativeCarryGeometry.Equivalence.ComplexCoordinates` | `NativeCarryGeometry.Equivalence.complexCoordinates` |
-| `NativeCarryGeometry.Equivalence.RealAnalyticBoundary` | `NativeCarryGeometry.Equivalence.canonicalParameter`, `nativeCanonicalParameter`, `nativeCarryAnalyticReadout`, `IsNativeCanonicalCarryOperatorZero`, radial compatibility predicate `IsCanonicalCarryOperatorZero` |
+Legacy aliases are documented in
+[`docs/70_ZERO_SET_FACTORIZATION.md`](../docs/70_ZERO_SET_FACTORIZATION.md).
 
-Supporting public lemmas without an `NCG-*` annotation retain their Lean names
-but are likewise outside the citeable registry.
+## Provenance
 
-## Provenance scope and known asymmetries
+`source-lock.json` pins the selected historical source tree:
 
-`source-lock.json` pins the historical source to
-`thiagomassensini/primos@7d8d0b345b329935674edc24e5ac08ad9f7b5804`
-and release `v0.52.0`. A source declaration and commit in `theorems.tsv`
-assert historical provenance, not byte identity of the new wrapper.
+```text
+thiagomassensini/primos
+release v0.52.0
+commit 7d8d0b345b329935674edc24e5ac08ad9f7b5804
+```
 
-Four deliberate asymmetries are recorded rather than hidden:
+A source declaration records mathematical provenance, not byte identity. New
+canonical wrappers in `v0.3.0` are classified as `composed_new` and cite
+their public dependency IDs.
 
-1. `NCG-AMP-007` and `NCG-AMP-008` are new registered critical-value
-   corollaries and have no exact historical declarations.
-2. `NCG-EQV-008` is the ambient radial-presentation identity; the historical
-   source proves only the boundary/continuation equivalence registered as
-   `NCG-EQV-007`. The native identity is exposed separately without a mass
-   conjunct.
-3. `NCG-EQV-009` is a uniqueness corollary for the ambient radial analytic
-   presentation, not a mass source and not a statement about arbitrary scalar
-   zeros.
-4. `NCG-EQV-004` maps to the closest historical packaged finite-zero theorem,
-   while the current proof uses injectivity of the stronger coordinate
-   equivalence.
+## Continuous checks
+
+The ordinary audit verifies:
+
+1. all 75 IDs are unique, sorted, source-annotated, and elaborated;
+2. all 75 hashes are nonempty and match regenerated types;
+3. JSON, axiom rows, driver entries, and preimage files have the same count;
+4. only the explicit foundational axiom allowlist is used;
+5. the source lock reports the current active-ID count;
+6. every versioned text file passes the one-operator semantic contract;
+7. all project Lean files are reachable from the root and respect dependency
+   boundaries.
+
+See [Semantic Audit Coverage](../docs/90_SEMANTIC_AUDIT.md) for the human
+file-by-file review.

@@ -1,0 +1,293 @@
+name: Publish audited v0.3.0
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .release/v0.3.0.md
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: Exact 40-character main commit to release
+        required: true
+        type: string
+      confirmation:
+        description: Type publish-v0.3.0 exactly
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+
+concurrency:
+  group: publish-native-carry-v0.3.0
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Revalidate and publish v0.3.0
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      RELEASE_TAG: v0.3.0
+      REQUESTED_SHA: ${{ github.event_name == 'workflow_dispatch' && inputs.commit_sha || github.sha }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Validate explicit release request
+        env:
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            [[ "${CONFIRMATION}" == "publish-v0.3.0" ]]
+          elif [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            true
+          else
+            echo "Unsupported publisher event: ${GITHUB_EVENT_NAME}" >&2
+            exit 1
+          fi
+          [[ "${REQUESTED_SHA}" =~ ^[0-9a-f]{40}$ ]]
+          [[ "${GITHUB_REF}" == "refs/heads/main" ]]
+
+      - name: Check out requested commit with complete history
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.commit_sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Validate release sentinel on merge trigger
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          [[ -f .release/v0.3.0.md ]]
+          [[ "$(tr -d '\r' < .release/v0.3.0.md)" == $'publish-v0.3.0\nrequest=1' ]]
+
+      - name: Prove requested commit is current main
+        run: |
+          set -euo pipefail
+          [[ "$(git rev-parse HEAD)" == "${REQUESTED_SHA}" ]]
+          git fetch --no-tags origin refs/heads/main:refs/remotes/origin/main
+          [[ "$(git rev-parse refs/remotes/origin/main)" == "${REQUESTED_SHA}" ]]
+          [[ -z "$(git status --porcelain)" ]]
+
+      - name: Inspect existing publication state
+        id: publication_state
+        run: |
+          set -euo pipefail
+          if gh release view "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            git fetch --force origin "refs/tags/${RELEASE_TAG}:refs/tags/${RELEASE_TAG}"
+            [[ "$(git cat-file -t "${RELEASE_TAG}")" == "tag" ]]
+            [[ "$(git rev-parse "${RELEASE_TAG}^{commit}")" == "${REQUESTED_SHA}" ]]
+            local_tag_object="$(git rev-parse "${RELEASE_TAG}^{tag}")"
+            remote_tag_object="$(
+              git ls-remote origin "refs/tags/${RELEASE_TAG}" | awk '{print $1}'
+            )"
+            remote_tag_commit="$(
+              git ls-remote origin "refs/tags/${RELEASE_TAG}^{}" | awk '{print $1}'
+            )"
+            [[ "${remote_tag_object}" == "${local_tag_object}" ]]
+            [[ "${remote_tag_commit}" == "${REQUESTED_SHA}" ]]
+            state="$(
+              gh release view "${RELEASE_TAG}" \
+                --repo "${GITHUB_REPOSITORY}" \
+                --json isDraft,isPrerelease \
+                --jq '[.isDraft, .isPrerelease] | @tsv'
+            )"
+            [[ "${state}" == $'false\tfalse' ]]
+            assets="$(
+              gh release view "${RELEASE_TAG}" \
+                --repo "${GITHUB_REPOSITORY}" \
+                --json assets \
+                --jq '.assets[].name' |
+                LC_ALL=C sort
+            )"
+            expected_assets="$(
+              printf '%s\n' \
+                "audit-evidence-${RELEASE_TAG}.tar.gz" \
+                "release-assets-${RELEASE_TAG}.sha256" \
+                "release-manifest-${RELEASE_TAG}.json" |
+                LC_ALL=C sort
+            )"
+            [[ "${assets}" == "${expected_assets}" ]]
+            existing_dir="${RUNNER_TEMP}/existing-${RELEASE_TAG}"
+            mkdir -p -- "${existing_dir}"
+            gh release download "${RELEASE_TAG}" \
+              --repo "${GITHUB_REPOSITORY}" \
+              --dir "${existing_dir}"
+            (
+              cd -- "${existing_dir}"
+              sha256sum --check "release-assets-${RELEASE_TAG}.sha256"
+            )
+            python3 - \
+              "${existing_dir}/release-manifest-${RELEASE_TAG}.json" \
+              "${REQUESTED_SHA}" \
+              "${local_tag_object}" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          manifest = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          release = manifest["release"]
+          if release["commit"] != sys.argv[2]:
+              raise SystemExit("existing release manifest commit mismatch")
+          if release["annotated_tag_object"] != sys.argv[3]:
+              raise SystemExit("existing release manifest tag-object mismatch")
+          PY
+            echo "already_published=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "already_published=false" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Verify pinned reproducibility inputs
+        if: steps.publication_state.outputs.already_published != 'true'
+        run: python3 scripts/check_reproducibility.py
+
+      - name: Set up Lean and Mathlib cache
+        if: steps.publication_state.outputs.already_published != 'true'
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
+        with:
+          use-github-cache: true
+          use-mathlib-cache: true
+
+      - name: Build public root with warnings as errors
+        if: steps.publication_state.outputs.already_published != 'true'
+        run: lake build --wfail NativeCarryGeometry
+
+      - name: Run complete repository audits
+        if: steps.publication_state.outputs.already_published != 'true'
+        env:
+          AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-release/audit
+        run: bash scripts/run_audits.sh "${AUDIT_OUTPUT}"
+
+      - name: Record compiler and exact source revision
+        if: steps.publication_state.outputs.already_published != 'true'
+        env:
+          AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-release/audit
+        run: |
+          mkdir -p -- "${AUDIT_OUTPUT}"
+          {
+            echo "commit=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse 'HEAD^{tree}')"
+            lean --version | head -n 1
+            lake --version
+          } > "${AUDIT_OUTPUT}/build-environment.txt"
+
+      - name: Recheck main after all validation
+        if: steps.publication_state.outputs.already_published != 'true'
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/heads/main:refs/remotes/origin/main
+          [[ "$(git rev-parse HEAD)" == "${REQUESTED_SHA}" ]]
+          [[ "$(git rev-parse refs/remotes/origin/main)" == "${REQUESTED_SHA}" ]]
+          [[ -z "$(git status --porcelain)" ]]
+
+      - name: Create or verify the immutable annotated tag
+        if: steps.publication_state.outputs.already_published != 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --tags origin "refs/tags/${RELEASE_TAG}" >/dev/null 2>&1; then
+            git fetch --force origin "refs/tags/${RELEASE_TAG}:refs/tags/${RELEASE_TAG}"
+            [[ "$(git cat-file -t "${RELEASE_TAG}")" == "tag" ]]
+            [[ "$(git rev-parse "${RELEASE_TAG}^{commit}")" == "${REQUESTED_SHA}" ]]
+          else
+            git tag --annotate "${RELEASE_TAG}" "${REQUESTED_SHA}" \
+              --message "Native Carry Geometry ${RELEASE_TAG}"
+            [[ "$(git cat-file -t "${RELEASE_TAG}")" == "tag" ]]
+            git push origin "refs/tags/${RELEASE_TAG}"
+          fi
+          local_tag_object="$(git rev-parse "${RELEASE_TAG}^{tag}")"
+          remote_tag_object="$(
+            git ls-remote origin "refs/tags/${RELEASE_TAG}" | awk '{print $1}'
+          )"
+          remote_tag_commit="$(
+            git ls-remote origin "refs/tags/${RELEASE_TAG}^{}" | awk '{print $1}'
+          )"
+          [[ "${remote_tag_object}" == "${local_tag_object}" ]]
+          [[ "${remote_tag_commit}" == "${REQUESTED_SHA}" ]]
+
+      - name: Generate post-tag release evidence
+        if: steps.publication_state.outputs.already_published != 'true'
+        env:
+          AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-release/audit
+          RELEASE_OUTPUT: ${{ runner.temp }}/native-carry-release
+        run: |
+          set -euo pipefail
+          mkdir -p -- "${RELEASE_OUTPUT}"
+          python3 scripts/create_release_manifest.py \
+            --tag "${RELEASE_TAG}" \
+            --output "${RELEASE_OUTPUT}/release-manifest-${RELEASE_TAG}.json"
+          tar \
+            --create \
+            --gzip \
+            --file "${RELEASE_OUTPUT}/audit-evidence-${RELEASE_TAG}.tar.gz" \
+            --directory "${AUDIT_OUTPUT}" \
+            .
+          (
+            cd -- "${RELEASE_OUTPUT}"
+            sha256sum \
+              "release-manifest-${RELEASE_TAG}.json" \
+              "audit-evidence-${RELEASE_TAG}.tar.gz" \
+              > "release-assets-${RELEASE_TAG}.sha256"
+          )
+          {
+            echo "# Native Carry Geometry ${RELEASE_TAG}"
+            echo
+            echo "One mass-built native operator with one native operator-zero predicate and faithful real/complex coordinates; sigma is an ambient quadratic-norm deformation."
+            echo
+            echo "- Commit: \`${REQUESTED_SHA}\`"
+            echo "- Lean/Mathlib: fixed by the attached manifest and repository locks."
+            echo "- Publication gate: kernel build with warnings as errors plus static audits."
+          } > "${RELEASE_OUTPUT}/release-notes.md"
+
+      - name: Publish immutable GitHub release
+        if: steps.publication_state.outputs.already_published != 'true'
+        env:
+          RELEASE_OUTPUT: ${{ runner.temp }}/native-carry-release
+        run: |
+          set -euo pipefail
+          gh release create "${RELEASE_TAG}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --verify-tag \
+            --title "Native Carry Geometry ${RELEASE_TAG}" \
+            --notes-file "${RELEASE_OUTPUT}/release-notes.md" \
+            "${RELEASE_OUTPUT}/release-manifest-${RELEASE_TAG}.json" \
+            "${RELEASE_OUTPUT}/audit-evidence-${RELEASE_TAG}.tar.gz" \
+            "${RELEASE_OUTPUT}/release-assets-${RELEASE_TAG}.sha256"
+          state="$(
+            gh release view "${RELEASE_TAG}" \
+              --repo "${GITHUB_REPOSITORY}" \
+              --json isDraft,isPrerelease \
+              --jq '[.isDraft, .isPrerelease] | @tsv'
+          )"
+          [[ "${state}" == $'false\tfalse' ]]
+          local_tag_object="$(git rev-parse "${RELEASE_TAG}^{tag}")"
+          remote_tag_object="$(
+            git ls-remote origin "refs/tags/${RELEASE_TAG}" | awk '{print $1}'
+          )"
+          remote_tag_commit="$(
+            git ls-remote origin "refs/tags/${RELEASE_TAG}^{}" | awk '{print $1}'
+          )"
+          [[ "${remote_tag_object}" == "${local_tag_object}" ]]
+          [[ "${remote_tag_commit}" == "${REQUESTED_SHA}" ]]
+
+      - name: Upload publisher evidence to workflow run
+        if: steps.publication_state.outputs.already_published != 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-carry-release-${{ env.RELEASE_TAG }}
+          path: ${{ runner.temp }}/native-carry-release
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Report idempotent publication result
+        if: steps.publication_state.outputs.already_published == 'true'
+        run: |
+          echo "${RELEASE_TAG} already exists, is public, and points to ${REQUESTED_SHA}."

@@ -1,220 +1,276 @@
-# Formal Scope
+# Formal Scope and Semantic Contract
 
-## 1. Purpose
+## 1. Authority
 
-This repository formalizes an intrinsic chain from positional carry geometry
-to a mass-built real operator and then to faithful complex/analytic
-coordinates. The audit root is `NativeCarryGeometry.lean`.
+The audit root is `NativeCarryGeometry.lean`. Elaborated Lean types are the
+formal authority. This document fixes how those types are named and cited so
+that an auxiliary chart is never mistaken for a second operator.
 
-The formalization is organized around two independent natural parameters:
+The core dependency direction is:
 
-- a **positional base** `b`, used for quotient–residue decomposition, maximal
-  base-power depth, carry probability, mass, and amplitude;
-- a **camera width** `camera`, used for a finite centered-bracket observation
-  rule and its limit.
+```text
+positional QR → carry depth → carry mass → quadratic amplitude
+→ native tower → native state → bracket operator
+→ real/complex coordinate equivalence
+```
 
-No theorem silently identifies these parameters.
+Mass and amplitude are upstream data. The zero predicate does not manufacture
+or append them later.
 
-## 2. Core objects
+## 2. Two independent parameters
 
-For `b > 1` and depth `k`, the positional carry mass is
+- A positional base `b` is used for quotient–residue decomposition, maximal
+  base-power depth, carry probability, mass, and amplitude.
+- A camera width `camera` is used for the finite centered-bracket observation
+  rule and its boundary limit.
 
-$$
-\operatorname{carryMass}(b,k)=b^{-k}.
-$$
+No theorem silently identifies base and camera.
 
-The native vertical tower is constructed in the measure layer:
+## 3. Upstream mass and amplitude
+
+For `b > 1` and depth `k`:
+
+$
+\begin{aligned}
+\operatorname{carryMass}(b,k)&=b^{-k},\\
+\operatorname{carryAmplitude}(b,k)&=b^{-k/2}.
+\end{aligned}
+$
+
+The native integer tower is assembled in the measure layer:
 
 ```lean
 nativeTowerMass n
 nativeTowerAmplitude n
 ```
 
-with the proved identity
+with:
 
 ```lean
+-- NCG-MAS-003
 (nativeTowerAmplitude n) ^ 2 = nativeTowerMass n
 ```
 
-The native real state therefore has no radial input:
+For positive `n`, this is the inverse-integer mass $n^{-1}$ and its
+quadratic root $n^{-1/2}$. The native state reads this amplitude; the
+operator never receives a later mass condition.
 
-$$
-u_t(n)
-=
-n^{-1/2}
+## 4. Native state and radial comparison chart
+
+The native state has phase time as its free parameter:
+
+$
+u_t(n)=n^{-1/2}
 \bigl(\cos(-t\log n),\sin(-t\log n)\bigr).
-$$
+$
 
-For comparison, the secondary radial deformation at positional depth is
-
-$$
-\operatorname{deformedAmplitude}(b,\sigma,k)=b^{-k\sigma}.
-$$
-
-The corresponding integer-indexed deformation assigns to a positive integer
-
-$$
-u_{\sigma,t}(n)
-=
-n^{-\sigma}
-\bigl(\cos(-t\log n),\sin(-t\log n)\bigr)
-\in\mathbb R^2.
-$$
-
-Its quadratic energy is
-
-$$
-\|u_{\sigma,t}(n)\|^2=n^{-2\sigma},
-$$
-
-independent of `time`.
-
-For each natural camera and cutoff, the native finite operator applies centered
-second differences to `u_t`. Its boundary predicate is convergence of the
-resulting vectors to zero as the cutoff tends to infinity. The deformed family
-is retained as an auxiliary presentation chart.
-
-## 3. Native and radial-presentation zero predicates
-
-The native real zero predicate is just zero of the already weighted boundary:
+Lean names it:
 
 ```lean
-abbrev IsNativeRealCarryOperatorZero
+nativeRealCarryState time n
+```
+
+The ambient radial comparison chart replaces only the amplitude:
+
+$
+u_{\sigma,t}(n)=n^{-\sigma}
+\bigl(\cos(-t\log n),\sin(-t\log n)\bigr).
+$
+
+Lean names it:
+
+```lean
+radialDeformationState sigma time n
+```
+
+Its quadratic energy is:
+
+$
+\lVert u_{\sigma,t}(n)\rVert^2=n^{-2\sigma}.
+$
+
+The exact public results are:
+
+```lean
+-- NCG-REA-005
+quadraticEnergy (radialDeformationState sigma time n) =
+  (n : ℝ) ^ (-2 * sigma)
+
+-- NCG-REA-006
+RadialDeformationRepresentsNativeMass sigma time ↔
+  sigma = (1 : ℝ) / 2
+```
+
+Thus `sigma` is not an additional native-operator input. It is the coordinate
+that varies amplitude and quadratic norm in the ambient chart.
+
+## 5. One native operator-zero predicate
+
+The one native operator-zero predicate is:
+
+```lean
+abbrev IsNativeCarryOperatorZero
     (camera : ℕ) (time : ℝ) : Prop :=
   NativeBoundaryConvergesToZero camera time
 ```
 
-There is no mass conjunct here because mass was used to construct the tower.
+It applies to the tower already carrying its mass.
 
-The legacy two-coordinate public name is retained as a compatibility alias for
-the radial-presentation predicate:
+The names `IsNativeRealCarryOperatorZero` and
+`IsNativeCanonicalCarryOperatorZero` are legacy coordinate-labelled aliases.
+They do not introduce additional operator-zero predicates.
 
-```lean
-abbrev IsRealCarryOperatorZero
-    (camera : ℕ) (sigma time : ℝ) : Prop :=
-  RadialDeformationRepresentsNativeMass sigma time ∧
-    RadialDeformationBoundaryConvergesToZero camera sigma time
-```
-
-Its first conjunct means “this deformation is the native tower”; it is not a
-condition injected into the operator.
-
-The native analytic zero is likewise only the zero of the native readout:
+The principal theorem is:
 
 ```lean
-IsNativeCanonicalCarryOperatorZero time
+-- NCG-EQV-017
+Operator.IsNativeCarryOperatorZero 3 time ↔
+  nativeCarryAnalyticReadout time = 0
 ```
 
-The two-coordinate compatibility predicate preserves the radial-chart test:
+This is the same native operator-zero locus in real and analytic coordinates.
+
+## 6. Complex coordinates preserve the construction
+
+The additive equivalence
+
+$
+J:\mathbb{R}^{2}\simeq\mathbb{C},
+\qquad J(x,y)=x+iy.
+$
+
+is `complexCoordinates`. Lean proves that it is injective, preserves norm
+square, commutes with the finite bracket, and preserves finite zeros.
+
+For positive `n`:
 
 ```lean
-def IsCanonicalCarryOperatorZero (s : ℂ) : Prop :=
-  Operator.RealCarryEnergyCompatible s.re s.im ∧
-    Analytic.canonicalCarryContinuation s = 0
+-- NCG-EQV-013
+Complex.normSq
+    (complexCoordinates
+      (radialDeformationState sigma time n)) =
+  (n : ℝ) ^ (-2 * sigma)
+
+-- NCG-EQV-014
+Complex.normSq
+    (complexCoordinates
+      (nativeRealCarryState time n)) =
+  (n : ℝ)⁻¹
 ```
 
-Thus `ℝ²` and `ℂ` are two faithful coordinate presentations. Neither changes
-the native weights or the zero predicate.
+The power monomial at $s=\sigma+it$ is the same real rotating sample stored
+in complex coordinates. Complex notation contributes no new mass or algebra
+and cannot change the resultant's zero locus.
 
-## 4. Exact principal claims
+## 7. Ambient chart cancellation and native representation
 
-The repository proves:
+Raw cancellation of the comparison family is named:
+
+```lean
+RadialChartCancelsAt camera sigma time
+```
+
+The corresponding analytic equation is
+`canonicalCarryContinuation s = 0`. These are chart-cancellation statements,
+and do not define an additional operator-zero predicate.
+
+A chart represents the native operator only if it also preserves the upstream
+mass:
+
+```lean
+RadialChartRepresentsNativeZero camera sigma time
+AnalyticChartRepresentsNativeZero s
+```
+
+Their factorizations are:
+
+```lean
+-- NCG-OPR-007
+RadialChartRepresentsNativeZero camera sigma time ↔
+  sigma = (1 : ℝ) / 2 ∧
+    IsNativeCarryOperatorZero camera time
+
+-- NCG-EQV-018
+AnalyticChartRepresentsNativeZero s ↔
+  s.re = (1 : ℝ) / 2 ∧
+    canonicalCarryContinuation s = 0
+```
+
+The first coordinate is therefore representation data. Once the chart
+represents the native tower, it is provably on the native shell and its
+cancellation belongs to the same native operator-zero locus.
+
+Historical names such as `IsRealCarryOperatorZero`,
+`IsFiniteRealCarryOperatorZero`, and
+`IsCanonicalCarryOperatorZero` remain aliases for compatibility. New
+documentation and theorem labels use verbs such as `RepresentsNativeZero`
+rather than introducing a second zero noun.
+
+## 8. Exact principal claims
+
+This repository proves:
 
 1. canonical quotient–residue decomposition at every depth;
-2. unique factorization at maximal base-power depth for every positive
-   integer and every base `b > 1`, including composite bases;
-3. the uniform probability of the distinguished carry congruence class;
-4. quadratic amplitude rigidity:
-   \[
-   b^{-2k\sigma}=b^{-k}\iff \sigma=\tfrac12
-   \]
-   for `b > 1` and `k > 0`;
-5. equivalence of the positional mass-compatible domain and the real
-   energy-compatible domain;
-6. energy invariance under the real logarithmic rotation;
-7. additive naturality of the finite bracket operator;
-8. native boundary-zero predicate for every `camera : ℕ`;
-9. faithful encoding of the real plane by two analytic coordinates;
-10. finite real–analytic operator identity for odd prime cameras;
-11. boundary equivalence for camera `3` in the canonical open strip;
-12. native real–analytic zero-predicate identity for camera `3`;
-13. uniqueness of the half-exponent radial presentation.
+2. unique maximal-depth factorization for every positive integer and every
+   base `b > 1`, including composite bases;
+3. uniform probability of the distinguished zero-residue carry event;
+4. carry mass and its quadratic-root amplitude;
+5. local and global multibase quadratic rigidity;
+6. construction of the native integer tower before the operator;
+7. energy invariance under real logarithmic rotation;
+8. additive naturality of the centered bracket;
+9. faithful R² ≃ C coordinate encoding;
+10. exact finite native real/complex identity;
+11. exact native boundary/analytic-readout identity for camera `3`;
+12. explicit complex norm law $n^{-2\sigma}$;
+13. uniqueness of the mass-preserving radial representation.
 
-## 5. Exact restrictions
+## 9. Exact restrictions
 
-### 5.1. Positional base is not camera width
+### 9.1. Camera-three analytic crosswalk
 
-The quadratic-domain crosswalk is downstream of the tower and proves an
-equivalence of radial-presentation conditions. It does not define mass, and it
-does not prove
+The boundary/analytic chart crosswalk is restricted to camera `3` and:
 
-$$
-b^{-k}=n^{-1}
-$$
+```lean
+s ∈ Analytic.canonicalStrip
+```
 
-for individual samples, and it does not assert `b = camera`.
+where `canonicalStrip = {s | 0 < s.re ∧ s.re < 1}`.
 
-### 5.2. Camera universality is radial
+### 9.2. Odd-prime hypotheses
 
-`NCG-OPR-004` is universally quantified over `camera : ℕ`; every camera obeys
-the same radial-presentation uniqueness law. The theorem does not assert:
+Balanced-residue equivalences, normalized analytic-camera compatibility, and
+certain finite chart identities retain explicit `Nat.Prime` and `Odd`
+hypotheses. These do not propagate to multibase quadratic rigidity.
 
-- definitional equality of distinct raw camera sums;
-- equality of every pair of temporal resonance sets;
-- existence, infinitude, or enumeration of resonance times;
-- a convergence rate uniform in the camera.
+### 9.3. Total degenerate cameras
 
-### 5.3. Analytic boundary crosswalk
-
-`NCG-EQV-007` and `NCG-EQV-008` are explicitly restricted to:
-
-- camera `3`;
-- `s ∈ Analytic.canonicalStrip`;
-- `Analytic.canonicalStrip = {s | 0 < s.re ∧ s.re < 1}`.
-
-These premises are part of the statements and must be preserved in citations.
-
-### 5.4. Odd-prime camera lemmas
-
-Balanced-residue equivalences, finite bracket-chart identities, bracket-series
-factorizations, and normalized camera comparison retain their `Nat.Prime` and
-`Odd` hypotheses. These local hypotheses do not propagate to positional
-quadratic rigidity or the universal real zero-set theorem.
-
-### 5.5. Degenerate total cameras
-
-The generic camera uses
+The generic family uses:
 
 ```lean
 halfRange camera = (camera - 1) / 2
 ```
 
-with natural-number subtraction and division. Hence:
+so `camera = 0, 1, 2` are degenerate generic cases. The binary adjacent-center
+arithmetic is nondegenerate but separate.
 
-| `camera` | `halfRange camera` | Generic status |
-|---:|---:|---|
-| `0` | `0` | degenerate |
-| `1` | `0` | degenerate |
-| `2` | `0` | degenerate |
-| odd `camera ≥ 3` | `(camera - 1)/2` | symmetric full-width window |
-| even `camera ≥ 4` | `camera/2 - 1` | valid additive detector of width `camera - 1` |
-
-The arithmetic binary-center construction is nondegenerate, but it is not
-definitionally the generic finite camera at width `2`.
-
-## 6. Nonclaims
+## 10. Nonclaims
 
 This release does not claim:
 
 - that the native operator has a free `sigma` input;
-- that raw deformation-boundary closure alone forces `sigma = 1/2`;
-- that internal energy vanishes when the vector resultant vanishes;
-- that finite cutoff zeros are required for boundary closure;
-- that the critical infinite state is an ordinary square-summable vector;
-- that every natural camera is a complete positional residue system;
-- that mass is supplied by the operator or by its zero predicate;
-- that prime bases cause the quadratic exponent;
-- that the curvature route is a premise of the terminal factorization;
-- that any excluded historical extension is false.
+- that raw ambient chart cancellation alone forces `sigma = 1/2`;
+- that raw chart cancellation is an operator zero;
+- that internal energy vanishes whenever a sum of nonzero terms cancels;
+- that a finite cutoff must vanish for boundary convergence;
+- that every camera has the same temporal resonance set;
+- that every natural camera is a nondegenerate residue system;
+- that mass is supplied by the operator or its zero predicate;
+- that primality causes the half exponent;
+- that curvature, Green, a completed operator, an external analytic
+  identification, or any hypothesis about such an external function is a
+  premise of the native result.
 
-The authoritative statement of every result is its elaborated Lean type.
+These restrictions do not weaken the native statement. They keep one native
+operator, one mass-built state, and one operator-zero predicate distinct from
+the larger ambient comparison chart.

@@ -17,6 +17,8 @@ python3 "${script_dir}/check_no_placeholders.py" \
   --report "${output_dir}/source-trust.json"
 python3 "${script_dir}/check_dependency_boundary.py" \
   --report "${output_dir}/dependency-boundary.json"
+python3 "${script_dir}/check_semantic_contract.py" \
+  --report "${output_dir}/semantic-contract.json"
 python3 "${script_dir}/check_theorem_registry.py" \
   --report "${output_dir}/theorem-registry.json"
 python3 "${script_dir}/generate_theorem_registry.py" \
@@ -36,6 +38,7 @@ python3 "${script_dir}/generate_theorem_registry.py" \
     .zenodo.json
     .release/v0.1.0.md
     .release/v0.2.0.md
+    .release/v0.3.0.md
   )
   while IFS= read -r -d '' path; do
     files+=("${path#./}")

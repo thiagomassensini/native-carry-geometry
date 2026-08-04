@@ -14,13 +14,24 @@ namespace NativeCarryGeometry.Measure
 
 noncomputable section
 
-/-- NCG-AMP-006: Quadratic Domain Crosswalk. -/
+/-- NCG-AMP-006: Positional/Native-Mass Representation Crosswalk (Legacy Declaration Name). -/
 theorem positionalMassCompatible_iff_realEnergyCompatible
     (b : ℕ) (hb : 1 < b) (sigma time : ℝ) :
     PositionalMassCompatible b sigma ↔
       Operator.RealCarryEnergyCompatible sigma time := by
   rw [positionalMassCompatible_iff b hb sigma,
     Operator.realCarryEnergyCompatible_iff sigma time]
+
+/--
+Canonical-name form: the positional mass domain and the radial deformation
+represent the same already-constructed native mass shell.
+-/
+theorem positionalMassCompatible_iff_radialDeformationRepresentsNativeMass
+    (b : ℕ) (hb : 1 < b) (sigma time : ℝ) :
+    PositionalMassCompatible b sigma ↔
+      Operator.RadialDeformationRepresentsNativeMass sigma time :=
+  positionalMassCompatible_iff_realEnergyCompatible
+    b hb sigma time
 
 end
 end NativeCarryGeometry.Measure

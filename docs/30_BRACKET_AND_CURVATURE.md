@@ -80,8 +80,7 @@ $$
 ## 4. Radial curvature
 
 The curvature layer applies the balanced second-difference mechanism to a
-radial deformation. It records a local sign test independent of the terminal
-zero-set proof.
+radial deformation. It records a local sign test independent of the native chart-representation proof.
 
 | ID | Declaration | Exact scope |
 |---|---|---|
@@ -90,7 +89,7 @@ zero-set proof.
 | `NCG-CUR-003` | `balancedRadialCurvature_neg_of_neg` | odd prime camera, `-1 < delta < 0`, admissible center |
 | `NCG-CUR-004` | `balancedRadialCurvature_eq_zero_iff` | odd prime camera, `0 < sigma`, admissible center |
 
-The final rigidity statement is
+The final detector-rigidity statement is
 
 $$
 \operatorname{balancedRadialCurvatureAtSigma}(c,\sigma,x)=0
@@ -102,8 +101,10 @@ under its stated hypotheses.
 
 ## 5. Logical status
 
-Curvature confirms the same radial locus by a sign argument, but it is not a
-premise of `NCG-OPR-004`. The terminal zero-set factorization uses the
-quadratic-domain crosswalk and boundary closure directly. Removing the
-curvature module from that proof path would not create a missing step in the
-confinement theorem.
+Curvature confirms the same mass-preserving radial coordinate by a sign
+argument, but its vanishing is the null locus of an auxiliary detector, not an
+operator zero. It is not a premise of `NCG-OPR-007`.
+
+The native chart-representation factorization uses upstream quadratic mass
+rigidity and the half-chart identity directly. No implication from boundary
+cancellation to curvature is required for the one-operator theorem.

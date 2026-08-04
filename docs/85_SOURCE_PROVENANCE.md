@@ -72,9 +72,9 @@ byte-for-byte identity.
 
 ### 5.1. Explicit carry-to-operator dependency
 
-The terminal real zero-set theorem is reproved through the public positional
-domain crosswalk. The historical result already had the same terminal
-statement; the new proof term makes the carry-origin dependency visible.
+The native tower is constructed from carry mass before the operator. The
+radial representation theorem is reproved through the public positional-domain
+crosswalk so that this causal dependency is visible in the proof term.
 
 ### 5.2. Additive coordinate equivalence
 
@@ -85,19 +85,26 @@ uses the stronger and more natural equivalence
 RealCarryPlane ≃+ ℂ
 ```
 
-and reproves the energy and finite-zero statements for that representation.
+and reproves energy, finite-resultant, and zero-locus preservation for that
+coordinate representation.
 
-### 5.3. Full analytic zero predicate
+### 5.3. One native operator-zero predicate and ambient chart relations
 
-The historical boundary theorem identifies camera-three closure with
-canonical scalar cancellation. Release `v0.2.0` defines a complete analytic
-operator predicate that retains real energy compatibility and proves the full
-predicate identity as `NCG-EQV-008`.
+The historical camera-three theorem identifies real radial-chart cancellation
+with analytic-chart cancellation. Release `v0.3.0` gives the native
+operator-zero predicate the canonical name `IsNativeCarryOperatorZero` and registers its analytic
+coordinate identity as `NCG-EQV-017`.
+
+The wider propositions `RadialChartRepresentsNativeZero` and
+`AnalyticChartRepresentsNativeZero` are representation relations: they retain
+the upstream mass law while comparing ambient charts. Historical names that
+look like additional zero predicates remain aliases only.
 
 ### 5.4. Registered corollaries
 
-`NCG-AMP-007`, `NCG-AMP-008`, and `NCG-EQV-009` are explicit public
-corollaries composed in this repository. They are not misreported as exact
+`NCG-AMP-007`, `NCG-AMP-008`, `NCG-EQV-009`, and the canonical
+one-operator wrappers added in `v0.3.0` are explicit public compositions in
+this repository. They are not misreported as exact
 historical declarations.
 
 ## 6. Provenance checkpoints by layer
@@ -111,7 +118,7 @@ checkpoints represented in the locked history are:
 | binary and balanced incidence geometry | center, residue, and depth constructions |
 | carry mass and quadratic rigidity | local and global amplitude laws |
 | real state and finite camera | rotating state, energy, additive bracket operator |
-| native real zero and radial-presentation factorization | mass-built native predicate plus universal camera compatibility theorem and corollaries |
+| native zero and radial-chart representation factorization | mass-built native predicate plus universal camera compatibility theorem and corollaries |
 | canonical analytic presentation | bracket convergence, normalization, camera compatibility |
 | real–analytic boundary crosswalk | positive samples, finite charts, and camera-three boundary equivalence |
 
@@ -122,7 +129,7 @@ For exact source declaration and commit values, use
 
 A valid audit citation must bind:
 
-1. release `v0.2.0`;
+1. release `v0.3.0`;
 2. the final proof commit of this repository;
 3. the NCG identifier;
 4. the elaborated type digest;

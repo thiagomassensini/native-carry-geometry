@@ -4,9 +4,11 @@ import Mathlib.Tactic
 
 
 /-!
-# Lei finita do Genuine
+# Lei finita do bracket balanceado
 
-Esta e a identidade central anterior a toda analise:
+Esta e a identidade central anterior a toda analise. O namespace interno
+`Genuine` e um nome historico para esta algebra finita; ele nao denota um
+segundo operador:
 
 `canal direto das pernas - canal bracketado = centros sobreviventes`.
 
@@ -44,7 +46,7 @@ theorem localCancellation (legs coefficient centerValue : R) :
   ring
 
 /--
-Lei Genuine finita. Cada termo de perna cancela literalmente e resta apenas o
+Lei finita do bracket balanceado. Cada termo de perna cancela literalmente e resta apenas o
 termo central ponderado. A identidade vale para qualquer conjunto finito de
 centros e nao depende da origem analitica dos valores.
 -/
@@ -63,7 +65,7 @@ theorem finiteCancellation
 end NativeCarryGeometry.Internal.Genuine
 
 /-!
-# Camera Genuine Cp finita
+# Camera balanceada Cp finita
 
 Para uma camera de base `p`, as pernas sao indexadas pelos offsets balanceados
 nao nulos. O bracket subtrai `(p-1)` copias do centro. A lei de cancelamento e
@@ -380,14 +382,14 @@ end
 end NativeCarryGeometry.Internal.Genuine.Cp
 
 /-!
-# Identificacao da braquetada saturada com a camera Genuine Cp
+# Identificacao da braquetada saturada com a camera balanceada Cp
 
 Este arquivo fecha uma identidade puramente finita. Para primo impar, os
 offsets balanceados nao nulos sao exatamente os pares
 
 `-halfRange(p), ..., -1, 1, ..., halfRange(p)`.
 
-Logo o `Genuine.Cp.bracket`, definido pela soma das pernas menos `p-1`
+Logo o bracket interno legado, definido pela soma das pernas menos `p-1`
 copias do centro, coincide com a soma das segundas diferencas de raios
 `1, ..., halfRange(p)`.
 -/
