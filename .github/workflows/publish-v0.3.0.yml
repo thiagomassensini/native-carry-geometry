@@ -240,7 +240,7 @@ jobs:
           {
             echo "# Native Carry Geometry ${RELEASE_TAG}"
             echo
-            echo "One mass-built native operator, one zero, and faithful real/complex coordinates; sigma is an ambient quadratic-norm deformation."
+            echo "One mass-built native operator with one native operator-zero predicate and faithful real/complex coordinates; sigma is an ambient quadratic-norm deformation."
             echo
             echo "- Commit: \`${REQUESTED_SHA}\`"
             echo "- Lean/Mathlib: fixed by the attached manifest and repository locks."
