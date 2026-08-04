@@ -85,13 +85,14 @@ uses the stronger and more natural equivalence
 RealCarryPlane ≃+ ℂ
 ```
 
-and reproves energy, finite-resultant, and zero preservation for that coordinate representation.
+and reproves energy, finite-resultant, and zero-locus preservation for that
+coordinate representation.
 
-### 5.3. One native zero and ambient chart relations
+### 5.3. One native operator-zero predicate and ambient chart relations
 
 The historical camera-three theorem identifies real radial-chart cancellation
-with analytic-chart cancellation. Release `v0.3.0` gives the one native zero
-the canonical name `IsNativeCarryOperatorZero` and registers its analytic
+with analytic-chart cancellation. Release `v0.3.0` gives the native
+operator-zero predicate the canonical name `IsNativeCarryOperatorZero` and registers its analytic
 coordinate identity as `NCG-EQV-017`.
 
 The wider propositions `RadialChartRepresentsNativeZero` and
