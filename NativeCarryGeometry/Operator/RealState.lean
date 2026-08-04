@@ -230,6 +230,18 @@ theorem quadraticEnergy_realCarryState
   Internal.Analytic.Cp.nativeCarryRealPlaneEnergy_sampleAt
     sigma time hn
 
+/--
+NCG-REA-005: Canonical Radial-Deformation Quadratic-Norm Identity.
+
+The parameter `sigma` is exactly a quadratic-norm exponent:
+`n^(-sigma)` in amplitude becomes `n^(-2*sigma)` in energy.
+-/
+theorem quadraticEnergy_radialDeformationState
+    (sigma time : ℝ) {n : ℤ} (hn : 0 < n) :
+    quadraticEnergy (radialDeformationState sigma time n) =
+      (n : ℝ) ^ (-2 * sigma) :=
+  quadraticEnergy_realCarryState sigma time hn
+
 /-- NCG-REA-004: Native State Inverse-Mass Energy.
 
 The native state carries inverse-integer energy by construction. -/
@@ -246,6 +258,18 @@ theorem realCarryEnergyCompatible_iff
       sigma = (1 : ℝ) / 2 :=
   Internal.Analytic.Cp.nativeCarryRealPlaneMassCompatible_iff
     sigma time
+
+/--
+NCG-REA-006: Canonical Radial-Deformation Mass Rigidity.
+
+An ambient radial deformation represents the native mass if and only if its
+quadratic-norm exponent is the half exponent.
+-/
+theorem radialDeformationRepresentsNativeMass_iff
+    (sigma time : ℝ) :
+    RadialDeformationRepresentsNativeMass sigma time ↔
+      sigma = (1 : ℝ) / 2 :=
+  realCarryEnergyCompatible_iff sigma time
 
 end
 end NativeCarryGeometry.Operator
