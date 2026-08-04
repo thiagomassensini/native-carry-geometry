@@ -125,18 +125,18 @@ The principal theorems are:
 It is not an `OperatorZero` theorem. The native operator readout is obtained
 by restricting the same coordinate formula to `s.re = 1/2`, already fixed by
 the carry-built tower. `NCG-EQV-017` then proves the exact identity between
-the one native zero and its analytic readout.
+the native operator-zero predicate and its analytic readout.
 
 
 ## 7. Sigma in the analytic coordinate
 
-For (s=sigma+it), the complex sample is exactly the coordinate image of the
-real radial sample. The new named theorem `NCG-EQV-016` makes its norm law
+For $s=\sigma+it$, the complex sample is exactly the coordinate image of the
+real radial sample. The named theorem `NCG-EQV-016` makes its norm law
 explicit:
 
-[
-normSq(n^{-s}) = n^{-2sigma}.
-]
+$
+\operatorname{normSq}(n^{-s})=n^{-2\sigma}.
+$
 
 Therefore moving the real coordinate `Re(s)` is precisely moving radial amplitude
 and quadratic norm. The complex plane does not add a degree of freedom beyond
