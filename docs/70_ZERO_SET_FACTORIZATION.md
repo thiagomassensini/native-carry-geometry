@@ -64,8 +64,8 @@ theorem radialChartRepresentsNativeZero_iff
 For each camera, the graph of native representations is therefore:
 
 [
-left{rac12ight}	imes
-{t:operatorname{IsNativeCarryOperatorZero}(camera,t)}.
+{1/2} ×
+{ t | IsNativeCarryOperatorZero(camera,t) }.
 ]
 
 This is not a classification of multiple zeros. It says exactly when a member
@@ -133,9 +133,9 @@ The one native operator zero is then identified with its analytic readout by
 `NCG-EQV-017`:
 
 [
-operatorname{IsNativeCarryOperatorZero}(3,t)
+IsNativeCarryOperatorZero(3,t)
 iff
-operatorname{nativeCarryAnalyticReadout}(t)=0.
+nativeCarryAnalyticReadout(t) = 0.
 ]
 
 The complex number stores the same two real coordinates. It does not add a
