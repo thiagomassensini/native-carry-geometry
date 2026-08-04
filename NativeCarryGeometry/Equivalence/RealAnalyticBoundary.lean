@@ -3,15 +3,16 @@ import NativeCarryGeometry.Operator.ZeroSetFactorization
 import NativeCarryGeometry.Equivalence.ComplexCoordinates
 
 /-!
-# Genuine zero to the primitive real boundary
+# Ambient analytic cancellation and the real radial chart
 
-This module connects the scalar Genuine chart to the primitive camera before
-any quadratic-domain conclusion is used.
+This module identifies cancellation of the ambient analytic chart with
+cancellation of the real radial chart before any quadratic-domain conclusion
+is used. These are coordinate presentations, not different operator zeros.
 
 For `s = sigma + time * I`, the complex packaging of the real rotating sample
 at `(sigma,time)` is exactly the Dirichlet monomial `n^(-s)`.  Additive
 naturality then identifies every finite primitive resultant with the finite
-Genuine chart.  Passing to the limit proves that every Genuine zero in the
+Genuine chart.  Passing to the limit proves that every analytic-chart cancellation in the
 open strip closes the raw primitive real boundary.
 
 No external classical identification, Green relation, or Cayley transform
@@ -72,7 +73,7 @@ theorem nativeCarryRealPlaneComplexPackaging_sampleAt_eq_dirichletTerm
     congr 1
     ring_nf
 
-/-- The packaged finite primitive resultant is the finite Dirichlet Genuine
+/-- The packaged finite primitive resultant is the finite Dirichlet bracket
 chart at the same `(sigma,time)` parameter. -/
 theorem nativeCarryRealPlaneComplexPackaging_finiteChartAt_eq_dirichlet
     (p M : ℕ) (hp : Nat.Prime p) (hpodd : Odd p)
@@ -138,7 +139,7 @@ theorem nativeCarryRealPlaneComplexPackaging_finiteChartAt_eq_dirichlet
         exact mul_pos hpZ hkZ
       rw [hprefix, hcenters]
 
-/-- A Genuine zero closes the raw primitive real camera at the same radial
+/-- An ambient analytic-chart cancellation closes the real radial chart at the same radial
 and phase coordinates. -/
 theorem genuineContinuation_zero_to_nativeCarryRealBoundaryClosure
     {s : ℂ} (hs : s ∈ genuineCriticalStrip)
@@ -209,7 +210,7 @@ theorem genuineContinuation_zero_to_nativeCarryRealBoundaryClosure
   exact hre.prodMk_nhds him
 
 /-- Conversely, a closing primitive real boundary packages to a closing
-Dirichlet chart and therefore is a Genuine zero. -/
+Dirichlet chart and therefore cancels the analytic chart. -/
 theorem nativeCarryRealBoundaryClosure_to_genuineContinuation_zero
     {s : ℂ} (hs : s ∈ genuineCriticalStrip)
     (hclose :
@@ -275,9 +276,9 @@ theorem nativeCarryRealBoundaryClosure_to_genuineContinuation_zero
     (bracketedDirichletChart_zero_iff_genuineContinuation_zero
       3 (by norm_num) (by norm_num) hs).1 hchart
 
-/-- The scalar Genuine and the primitive real-plane camera have exactly the
-same zero set in the open strip; complex notation only packages two real
-coordinates. -/
+/-- The ambient analytic chart and the real radial chart have exactly the same
+cancellation locus in the open strip; complex notation only packages two real
+coordinates. This statement does not define an operator-zero predicate. -/
 theorem nativeCarryRealBoundaryClosure_iff_genuineContinuation_zero
     {s : ℂ} (hs : s ∈ genuineCriticalStrip) :
     NativeCarryGeometry.Operator.BoundaryConvergesToZero 3 s.re s.im ↔
@@ -427,6 +428,16 @@ theorem boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero
     hs
 
 /--
+Canonical-name form of NCG-EQV-007.  Both sides describe cancellation of the
+ambient radial chart; neither side is a second native operator-zero predicate.
+-/
+theorem radialChartCancelsAt_iff_canonicalChartCancelsAt
+    {s : ℂ} (hs : s ∈ Analytic.canonicalStrip) :
+    Operator.RadialChartCancelsAt 3 s.re s.im ↔
+      Analytic.canonicalCarryContinuation s = 0 :=
+  boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero hs
+
+/--
 NCG-EQV-011: Native Boundary/Analytic Readout Zero Identity.
 
 The native real boundary and native analytic readout have exactly the same
@@ -458,7 +469,10 @@ theorem isNativeCarryOperatorZero_iff_analyticReadout_eq_zero
       nativeCarryAnalyticReadout time = 0 :=
   nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero time
 
-/-- Native analytic zero: zero of the readout of the already weighted tower. -/
+/--
+Legacy coordinate-labelled name for the zero read through the analytic
+coordinates of the already weighted native tower. It is not a different zero.
+-/
 abbrev IsNativeCanonicalCarryOperatorZero (time : ℝ) : Prop :=
   nativeCarryAnalyticReadout time = 0
 
