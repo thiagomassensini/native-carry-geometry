@@ -230,7 +230,9 @@ theorem quadraticEnergy_realCarryState
   Internal.Analytic.Cp.nativeCarryRealPlaneEnergy_sampleAt
     sigma time hn
 
-/-- The native state carries inverse-integer energy by construction. -/
+/-- NCG-REA-004: Native State Inverse-Mass Energy.
+
+The native state carries inverse-integer energy by construction. -/
 theorem quadraticEnergy_nativeRealCarryState
     (time : ℝ) {n : ℤ} (hn : 0 < n) :
     quadraticEnergy (nativeRealCarryState time n) =

@@ -1,7 +1,7 @@
 # Theorem audit registry
 
 `theorems.tsv` is the single machine-readable registry of citeable NCG
-results. Its 59 rows correspond one-to-one with the 59 distinct `NCG-*`
+results. Its 64 rows correspond one-to-one with the 64 distinct `NCG-*`
 identifiers currently attached to public Lean declarations.
 
 The first three columns are stable:
@@ -17,7 +17,7 @@ Rows are sorted lexicographically by `id`.
 
 ## Hash policy
 
-All 59 `type_sha256` values are generated from the elaborated Lean
+All 64 `type_sha256` values are generated from the elaborated Lean
 environment. The exact UTF-8 preimage is:
 
 ```text

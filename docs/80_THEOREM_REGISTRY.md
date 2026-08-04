@@ -2,7 +2,7 @@
 
 ## 1. Citation model
 
-Release `v0.2.0` designates 59 citeable mathematical results. Each receives a
+Release `v0.2.0` designates 64 citeable mathematical results. Each receives a
 stable semantic identifier:
 
 ```text
@@ -41,6 +41,7 @@ fully qualified Lean names but do not receive synthetic theorem identifiers.
 | `NCG-PRB-001` | `Measure.uniformCarryEvent_probability` | Uniform Carry Probability Law |
 | `NCG-MAS-001` | `Measure.criticalAmplitude_sq_eq_carryMass` | Critical Amplitude–Mass Identity |
 | `NCG-MAS-002` | `Measure.carryMass_effectiveDepth_eq_centerDepth` | Carry-Mass Depth Transport |
+| `NCG-MAS-003` | `Measure.nativeTowerAmplitude_sq_eq_mass` | Native Tower Amplitude–Mass Identity |
 | `NCG-AMP-001` | `Measure.deformedAmplitude_sq_eq_massWeight` | Deformed Amplitude Energy Identity |
 | `NCG-AMP-002` | `Measure.deformedAmplitude_sq_eq_carryMass_iff` | Local Quadratic Amplitude Rigidity |
 | `NCG-AMP-003` | `Measure.positionalMassCompatible_iff` | Global Quadratic Amplitude Rigidity |
@@ -71,6 +72,7 @@ fully qualified Lean names but do not receive synthetic theorem identifiers.
 | `NCG-REA-001` | `Operator.quadraticEnergy_rotationDirection` | Real Rotation Unit-Energy Theorem |
 | `NCG-REA-002` | `Operator.quadraticEnergy_realCarryState` | Radial-Deformation Energy Invariance |
 | `NCG-REA-003` | `Operator.realCarryEnergyCompatible_iff` | Radial-Deformation Mass Rigidity |
+| `NCG-REA-004` | `Operator.quadraticEnergy_nativeRealCarryState` | Native State Inverse-Mass Energy |
 | `NCG-OPR-001` | `Operator.map_finiteSaturatedBracketOperator` | Additive Naturality of the Finite Operator |
 | `NCG-OPR-002` | `Operator.quadraticEnergy_eq_zero_iff` | Faithfulness of Visible Energy |
 | `NCG-OPR-003` | `Operator.isFiniteRealCarryOperatorZero_iff` | Finite Radial-Presentation Factorization |
@@ -104,6 +106,9 @@ fully qualified Lean names but do not receive synthetic theorem identifiers.
 | `NCG-EQV-007` | `Equivalence.boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero` | Camera-Three Boundary/Continuation Zero Equivalence |
 | `NCG-EQV-008` | `Equivalence.isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero` | Real/Analytic Radial-Presentation Identity |
 | `NCG-EQV-009` | `Equivalence.canonicalCarryOperatorZero_re_eq_half` | Canonical Analytic Radial-Presentation Uniqueness |
+| `NCG-EQV-010` | `Equivalence.finiteNativeOperator_eq_zero_iff_complexCoordinates_eq_zero` | Native Finite Zero Coordinate Identity |
+| `NCG-EQV-011` | `Equivalence.nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero` | Native Boundary/Analytic Readout Zero Identity |
+| `NCG-EQV-012` | `Equivalence.isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero` | Native Real/Analytic Operator Zero Identity |
 
 All declarations above are relative to the root namespace
 `NativeCarryGeometry`.
@@ -124,7 +129,7 @@ type-repr=<(repr info.type).pretty 1000000>
 Every field ends with LF, including the final field. The deterministic
 exporter loads each declaration under the pinned toolchain, reads its
 elaborated type from the environment, hashes the preimage, and then repeats
-the export in check mode. The 59 committed preimages are stored under
+the export in check mode. The 64 committed preimages are stored under
 `audit/preimages/`.
 
 A source-text hash, proof-body hash, line number, or hand-entered value is not
@@ -148,7 +153,10 @@ compositions:
 - `NCG-EQV-008` combines the retained energy domain with `NCG-EQV-007`;
 - `NCG-EQV-009` combines `NCG-EQV-008` with `NCG-OPR-005`;
 - `NCG-OPR-004` is deliberately reproved through `NCG-AMP-003` and
-  `NCG-AMP-006`, making the carry-domain dependency visible.
+  `NCG-AMP-006`, making the carry-domain dependency visible;
+- `NCG-MAS-003` and `NCG-REA-004` expose the mass-built native tower and state;
+- `NCG-EQV-010/011/012` register the finite, boundary, and operator-level
+  real/analytic zero identities of that same native object.
 
 These relationships are machine-readable in the `dependencies` column of
 `audit/theorems.tsv`.

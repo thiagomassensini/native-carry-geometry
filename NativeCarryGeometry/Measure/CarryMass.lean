@@ -123,7 +123,9 @@ def nativeTowerMass (n : ℤ) : ℝ :=
 def nativeTowerAmplitude (n : ℤ) : ℝ :=
   if 0 < n then criticalAmplitude n.toNat 1 else 0
 
-/-- The native tower is assembled with the carry mass already built in. -/
+/-- NCG-MAS-003: Native Tower Amplitude-Mass Identity.
+
+The native tower is assembled with the carry mass already built in. -/
 @[simp] theorem nativeTowerAmplitude_sq_eq_mass
     (n : ℤ) :
     (nativeTowerAmplitude n) ^ 2 = nativeTowerMass n := by

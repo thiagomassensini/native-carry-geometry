@@ -1,0 +1,60 @@
+name: Regenerate v0.2.0 native theorem registry
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - synchronize
+
+permissions:
+  contents: write
+
+concurrency:
+  group: regenerate-native-carry-v0.2.0-registry
+  cancel-in-progress: false
+
+jobs:
+  regenerate:
+    name: Generate kernel-derived registry artifacts
+    if: >-
+      github.event.pull_request.head.ref == 'fix/native-operator-genesis' &&
+      github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+
+    steps:
+      - name: Check out exact PR head
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Set up pinned Lean and Mathlib cache
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
+        with:
+          use-github-cache: true
+          use-mathlib-cache: true
+
+      - name: Generate theorem registry from elaborated Lean types
+        run: python3 scripts/generate_theorem_registry.py --write
+
+      - name: Commit only generated audit artifacts
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+          git add             NativeCarryGeometry/Audit/ExportTheoremTypes.lean             audit/axioms.json             audit/theorem-registry.json             audit/theorems.tsv             audit/preimages
+          if git diff --cached --quiet; then
+            echo "Registry artifacts were already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(audit): register native v0.2.0 theorems"
+          git fetch --no-tags origin "refs/heads/${HEAD_BRANCH}:refs/remotes/origin/${HEAD_BRANCH}"
+          [[ "$(git rev-parse "refs/remotes/origin/${HEAD_BRANCH}")" == "${EXPECTED_HEAD}" ]]
+          git push origin "HEAD:refs/heads/${HEAD_BRANCH}"

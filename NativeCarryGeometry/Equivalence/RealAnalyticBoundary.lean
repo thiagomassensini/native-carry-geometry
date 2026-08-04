@@ -409,6 +409,8 @@ theorem boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero
     hs
 
 /--
+NCG-EQV-011: Native Boundary/Analytic Readout Zero Identity.
+
 The native real boundary and native analytic readout have exactly the same
 zeros.  No additional mass predicate appears because both sides already use
 the carry-built tower.
@@ -430,7 +432,9 @@ theorem nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero
 abbrev IsNativeCanonicalCarryOperatorZero (time : ℝ) : Prop :=
   nativeCarryAnalyticReadout time = 0
 
-/-- Native real and complex zero predicates are literally equivalent. -/
+/-- NCG-EQV-012: Native Real/Analytic Operator Zero Identity.
+
+Native real and analytic zero predicates are literally equivalent. -/
 theorem isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero
     (time : ℝ) :
     Operator.IsNativeRealCarryOperatorZero 3 time ↔

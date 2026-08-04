@@ -278,7 +278,9 @@ theorem finiteOperator_eq_zero_iff_complexCoordinates_eq_zero
     apply complexCoordinates_injective
     simpa using hzero
 
-/-- Complex coordinates neither add nor remove zeros of the native operator. -/
+/-- NCG-EQV-010: Native Finite Zero Coordinate Identity.
+
+Complex coordinates neither add nor remove zeros of the native operator. -/
 theorem finiteNativeOperator_eq_zero_iff_complexCoordinates_eq_zero
     (camera cutoff : ℕ) (time : ℝ) :
     Operator.finiteNativeRealCarryOperator
