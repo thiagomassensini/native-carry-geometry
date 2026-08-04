@@ -9,7 +9,7 @@ This repository is audit-oriented. Its public semantics are fixed by the
 contract below; theorem types, generated signature digests, and dependency
 checks enforce the implementation.
 
-- Development release: `v0.3.0`
+- Release: `v0.3.0`
 - Lean and Mathlib line: `v4.32.0`
 - Historical source lock:
   [`thiagomassensini/primos@7d8d0b345b329935674edc24e5ac08ad9f7b5804`](https://github.com/thiagomassensini/primos/tree/7d8d0b345b329935674edc24e5ac08ad9f7b5804)
@@ -24,7 +24,7 @@ Quotient–residue geometry and carry depth determine the carry mass
 \operatorname{carryMass}(b,k)=b^{-k}.
 \]
 
-in the measure layer. The integer tower then uses
+The measure layer establishes this law. The integer tower then uses
 
 ```lean
 nativeTowerMass n
@@ -49,14 +49,14 @@ nativeRealCarryState time n
 ```
 
 The larger comparison chart replaces only the native amplitude
-(n^{-1/2}) by (n^{-sigma}):
+$n^{-1/2}$ by $n^{-\sigma}$:
 
 ```lean
 radialDeformationState sigma time n
 ```
 
 The direction, phase law, bracket algebra, and camera are unchanged. Lean
-states the effect of (sigma) directly:
+states the effect of $\sigma$ directly:
 
 ```lean
 -- NCG-REA-005
@@ -184,7 +184,7 @@ quotient–residue decomposition
 → analytic readout of the same zero
 ```
 
-The (sigma)-radial family branches off only as a comparison chart for
+The $\sigma$-radial family branches off only as a comparison chart for
 amplitude and norm; it is not an extra input to the native operator.
 
 ## Exact scope
@@ -231,8 +231,8 @@ width `2`.
 ### Explicit nonclaim
 
 This repository does not prove that arbitrary ambient chart cancellation
-forces (sigma=1/2). It proves that the chart represents the native
-mass-built operator exactly at (sigma=1/2). This is the typed distinction
+forces $\sigma=1/2$. It proves that the chart represents the native
+mass-built operator exactly at $\sigma=1/2$. This is the typed distinction
 between `RadialChartCancelsAt` and
 `RadialChartRepresentsNativeZero`.
 
