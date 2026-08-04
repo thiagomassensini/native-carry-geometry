@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit the repository-wide one-operator semantic contract."""
+"""Audit the repository-wide one-native-operator semantic contract."""
 
 from __future__ import annotations
 
@@ -29,7 +29,18 @@ FORBIDDEN_PUBLIC_PHRASES = {
     "mass injection": "state that mass is constructed upstream",
     "full analytic zero predicate": "use AnalyticChartRepresentsNativeZero",
     "complete analytic operator predicate": "use a chart-representation relation",
-    "different zero predicates": "state the one native zero and its coordinates",
+    "different zero predicates": (
+        "state that there is one native operator-zero predicate and that "
+        "coordinate presentations define the same zero locus"
+    ),
+    "one native zero": "say one native operator-zero predicate",
+    "one operator zero": "say one native operator-zero predicate",
+    "one boundary zero": "say native operator-zero predicate",
+    "same native zero": "say the same native operator-zero locus",
+    "unique native zero": "say the one native operator-zero predicate",
+    "zero species": "distinguish predicates, loci, and chart relations directly",
+    "different kinds of zero": "say no additional operator-zero predicate",
+    "another operator zero": "say an additional operator-zero predicate",
 }
 
 LEGACY_NAMES = {
@@ -38,13 +49,20 @@ LEGACY_NAMES = {
     "IsNativeRealCarryOperatorZero",
     "IsNativeCanonicalCarryOperatorZero",
     "IsCanonicalCarryOperatorZero",
+    "IsRadialDeformationPresentationZero",
+    "BoundaryConvergesToZero",
+    "RealCarryEnergyCompatible",
+    "finiteRealCarryOperator",
+    "realCarryState",
+    "massWeight",
+    "criticalAmplitude",
 }
 
 REQUIRED_TEXT = {
     "README.md": [
         "Mass comes before the operator",
         "Sigma is a quadratic-norm deformation coordinate",
-        "There is one operator-zero predicate",
+        "There is one native operator-zero predicate",
         "IsNativeCarryOperatorZero",
         "RadialChartCancelsAt",
         "RadialChartRepresentsNativeZero",
@@ -78,7 +96,7 @@ REQUIRED_TEXT = {
         "analyticChartRepresentsNativeZero_iff",
     ],
     "docs/00_SCOPE.md": [
-        "One operator and one zero",
+        "One native operator-zero predicate",
         "Ambient chart cancellation and native representation",
     ],
     "docs/60_REAL_ANALYTIC_EQUIVALENCE.md": [
@@ -86,7 +104,7 @@ REQUIRED_TEXT = {
         "There is no “real zero” and “complex zero”",
     ],
     "docs/70_ZERO_SET_FACTORIZATION.md": [
-        "One Native Zero and Radial-Chart Representation",
+        "One Native Operator-Zero Predicate and Radial-Chart Representation",
         "Historical aliases",
     ],
     "docs/80_THEOREM_REGISTRY.md": [
@@ -95,7 +113,7 @@ REQUIRED_TEXT = {
     ],
     "audit/README.md": [
         "Release `v0.3.0` contains 75",
-        "One operator zero",
+        "One native operator-zero predicate",
     ],
     "lakefile.toml": ['version = "0.3.0"'],
     "CITATION.cff": ["version: 0.3.0"],
@@ -103,8 +121,83 @@ REQUIRED_TEXT = {
     ".github/workflows/publish-v0.3.0.yml": [
         "RELEASE_TAG: v0.3.0",
         "publish-v0.3.0",
+        "one native operator-zero predicate",
     ],
 }
+
+EXPECTED_CONTRACT_STATEMENTS = {
+    "REAL_COMPLEX_SAME_OPERATOR": (
+        "Real pairs and complex numbers are faithful additive coordinates of "
+        "the same state and resultants and define the same zero locus."
+    ),
+    "ONE_OPERATOR_ZERO": (
+        "The native carry operator has one native operator-zero predicate, "
+        "already built from the mass-weighted tower."
+    ),
+    "AMBIENT_CANCELLATION_NOT_ZERO": (
+        "Ambient chart cancellation is distinguished from the relation that "
+        "a chart point represents a point of the native operator-zero locus."
+    ),
+}
+
+EXPECTED_LEGACY_ALIASES = {
+    "NativeCarryGeometry.Measure.criticalAmplitude":
+        "NativeCarryGeometry.Measure.carryAmplitude",
+    "NativeCarryGeometry.Measure.massWeight":
+        "NativeCarryGeometry.Measure.radialEnergyWeight",
+    "NativeCarryGeometry.Operator.realCarryState":
+        "NativeCarryGeometry.Operator.radialDeformationState",
+    "NativeCarryGeometry.Operator.RealCarryEnergyCompatible":
+        "NativeCarryGeometry.Operator.RadialDeformationRepresentsNativeMass",
+    "NativeCarryGeometry.Operator.finiteRealCarryOperator":
+        "NativeCarryGeometry.Operator.finiteRadialDeformation",
+    "NativeCarryGeometry.Operator.BoundaryConvergesToZero":
+        "NativeCarryGeometry.Operator.RadialChartCancelsAt",
+    "NativeCarryGeometry.Operator.IsRadialDeformationPresentationZero":
+        "NativeCarryGeometry.Operator.RadialChartRepresentsNativeZero",
+    "NativeCarryGeometry.Operator.IsFiniteRealCarryOperatorZero":
+        "NativeCarryGeometry.Operator.RadialChartRepresentsFiniteNativeZero",
+    "NativeCarryGeometry.Operator.IsRealCarryOperatorZero":
+        "NativeCarryGeometry.Operator.RadialChartRepresentsNativeZero",
+    "NativeCarryGeometry.Operator.IsNativeRealCarryOperatorZero":
+        "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero",
+    "NativeCarryGeometry.Equivalence.IsCanonicalCarryOperatorZero":
+        "NativeCarryGeometry.Equivalence.AnalyticChartRepresentsNativeZero",
+    "NativeCarryGeometry.Equivalence.IsNativeCanonicalCarryOperatorZero":
+        "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero",
+}
+
+REQUIRED_REGISTRY_LABELS = {
+    "NCG-ANL-008":
+        "Odd-Prime Camera Ambient Chart-Cancellation Locus Identity",
+    "NCG-EQV-004":
+        "Finite Resultant Coordinate Zero-Locus Identity",
+    "NCG-EQV-007":
+        "Camera-Three Real/Analytic Chart-Cancellation Locus Identity",
+    "NCG-EQV-010":
+        "Native Finite Resultant Coordinate Zero-Locus Identity",
+    "NCG-EQV-011":
+        "Native Boundary/Analytic Readout Zero-Locus Identity",
+    "NCG-EQV-012":
+        "Legacy Coordinate-Labelled Native Operator Zero-Locus Identity",
+    "NCG-EQV-017":
+        "Native Operator/Analytic Readout Zero-Locus Identity",
+    "NCG-OPR-007":
+        "Canonical Radial-Chart Native Representation Factorization",
+    "NCG-OPR-008":
+        "Canonical Finite Radial-Chart Native Representation Factorization",
+    "NCG-REA-004":
+        "Native State Carry-Mass Energy",
+}
+
+FORBIDDEN_REGISTRY_LABELS = {
+    "Finite Zero-Set Equivalence",
+    "Finite Real/Analytic Operator Identity",
+    "Camera-Three Boundary/Continuation Zero Equivalence",
+    "One Native Operator Zero Analytic Identity",
+    "Native State Inverse-Mass Energy",
+}
+
 
 
 def versioned_text_files() -> tuple[list[Path], list[str]]:
@@ -144,6 +237,25 @@ def main() -> int:
         errors.append(f"invalid audit/semantic-contract.json: {error}")
         semantic_contract = {"contracts": []}
 
+    contracts_by_id = {
+        str(contract.get("id")): contract
+        for contract in semantic_contract.get("contracts", [])
+    }
+    for contract_id, expected_statement in EXPECTED_CONTRACT_STATEMENTS.items():
+        actual = contracts_by_id.get(contract_id, {}).get("statement")
+        if actual != expected_statement:
+            errors.append(
+                f"audit/semantic-contract.json: statement mismatch for "
+                f"{contract_id}"
+            )
+    legacy_aliases = semantic_contract.get("legacy_aliases", {})
+    for legacy, canonical in EXPECTED_LEGACY_ALIASES.items():
+        if legacy_aliases.get(legacy) != canonical:
+            errors.append(
+                f"audit/semantic-contract.json: missing canonical map "
+                f"{legacy} -> {canonical}"
+            )
+
     try:
         registry_rows = list(
             csv.DictReader(
@@ -163,6 +275,19 @@ def main() -> int:
     ]
     registry_by_id = {(row.get("id") or "").strip(): row for row in active_rows}
     active_ids = set(registry_by_id)
+    for theorem_id, expected_label in REQUIRED_REGISTRY_LABELS.items():
+        actual_label = (registry_by_id.get(theorem_id, {}).get("label") or "").strip()
+        if actual_label != expected_label:
+            errors.append(
+                f"audit/theorems.tsv: label mismatch for {theorem_id}"
+            )
+    for theorem_id, row in registry_by_id.items():
+        label = (row.get("label") or "").strip()
+        if label in FORBIDDEN_REGISTRY_LABELS:
+            errors.append(
+                f"audit/theorems.tsv: legacy-ambiguous label for "
+                f"{theorem_id}: {label}"
+            )
     for contract in semantic_contract.get("contracts", []):
         contract_id = contract.get("id", "<missing>")
         for witness in contract.get("witness_ids", []):
@@ -192,6 +317,19 @@ def main() -> int:
                 errors.append(
                     f"{artifact}: ID set differs from audit/theorems.tsv"
                 )
+            if artifact == "audit/theorem-registry.json":
+                artifact_by_id = {
+                    str(item["id"]): item for item in payload[key]
+                }
+                for theorem_id, row in registry_by_id.items():
+                    generated = artifact_by_id.get(theorem_id, {})
+                    for field in ("declaration", "label", "type_sha256"):
+                        if str(generated.get(field, "")).strip() != (
+                            row.get(field) or ""
+                        ).strip():
+                            errors.append(
+                                f"{artifact}: {field} mismatch for {theorem_id}"
+                            )
         except (KeyError, TypeError, json.JSONDecodeError) as error:
             errors.append(f"invalid generated artifact {artifact}: {error}")
 
@@ -265,6 +403,24 @@ def main() -> int:
                 + ", ".join(str(code) for code in controls)
             )
         if relative.endswith(".md"):
+            narrative = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+            if re.search(r"(?m)^\s*[\[\]]\s*$", narrative):
+                errors.append(
+                    f"{relative}: bare bracket used as a math delimiter"
+                )
+            display_delimiter = "$" * 2
+            if narrative.count(display_delimiter) % 2:
+                errors.append(f"{relative}: unbalanced display-math delimiters")
+            if narrative.count(r"\[") != narrative.count(r"\]"):
+                errors.append(f"{relative}: unbalanced \\[ / \\] delimiters")
+            without_displays = narrative.replace(display_delimiter, "")
+            inline_dollars = re.findall(r"(?<!\\)\$", without_displays)
+            if len(inline_dollars) % 2:
+                errors.append(f"{relative}: unbalanced inline math delimiters")
+            if re.search(r"(?<=[0-9)}\]])iff\b", narrative):
+                errors.append(
+                    f"{relative}: possible lost TeX escape before 'iff'"
+                )
             lost_tex_patterns = (
                 (r"(?<!\\)operatorname\{", "operatorname{"),
                 (r"(?<!\\)mathbb\{", "mathbb{"),
@@ -281,7 +437,7 @@ def main() -> int:
                     )
 
     payload = {
-        "check": "one-operator-semantic-contract",
+        "check": "one-native-operator-semantic-contract",
         "files_inspected": len(files),
         "public_narratives_inspected": len(PUBLIC_NARRATIVE),
         "required_contract_files": len(REQUIRED_TEXT),
@@ -301,7 +457,7 @@ def main() -> int:
             print(f"ERROR: {error}")
         return 1
     print(
-        "PASS: one-operator semantic contract; "
+        "PASS: one-native-operator semantic contract; "
         f"{len(files)} versioned text files inspected"
     )
     return 0
