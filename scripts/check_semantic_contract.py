@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
+import re
 from pathlib import Path
 
 from auditlib import REPOSITORY_ROOT
@@ -117,6 +119,87 @@ def main() -> int:
         for path in files
     }
 
+    try:
+        semantic_contract = json.loads(
+            by_relative["audit/semantic-contract.json"]
+        )
+        if semantic_contract.get("release") != "v0.3.0":
+            errors.append("audit/semantic-contract.json release must be v0.3.0")
+    except (KeyError, json.JSONDecodeError) as error:
+        errors.append(f"invalid audit/semantic-contract.json: {error}")
+        semantic_contract = {"contracts": []}
+
+    try:
+        registry_rows = list(
+            csv.DictReader(
+                by_relative["audit/theorems.tsv"].splitlines(),
+                delimiter="\t",
+            )
+        )
+    except (KeyError, csv.Error) as error:
+        errors.append(f"invalid audit/theorems.tsv: {error}")
+        registry_rows = []
+
+    active_rows = [
+        row
+        for row in registry_rows
+        if (row.get("status") or "active").strip().lower()
+        not in {"retired", "reserved"}
+    ]
+    registry_by_id = {(row.get("id") or "").strip(): row for row in active_rows}
+    active_ids = set(registry_by_id)
+    for contract in semantic_contract.get("contracts", []):
+        contract_id = contract.get("id", "<missing>")
+        for witness in contract.get("witness_ids", []):
+            row = registry_by_id.get(witness)
+            if row is None:
+                errors.append(
+                    f"semantic contract {contract_id}: missing witness {witness}"
+                )
+                continue
+            digest = (row.get("type_sha256") or "").strip()
+            if not re.fullmatch(r"[0-9a-f]{64}", digest):
+                errors.append(
+                    f"semantic contract {contract_id}: witness {witness} "
+                    "has no generated type digest"
+                )
+
+    for artifact, key in (
+        ("audit/theorem-registry.json", "theorems"),
+        ("audit/axioms.json", "theorems"),
+    ):
+        try:
+            payload = json.loads(by_relative[artifact])
+            artifact_ids = {
+                str(item["id"]) for item in payload[key]
+            }
+            if artifact_ids != active_ids:
+                errors.append(
+                    f"{artifact}: ID set differs from audit/theorems.tsv"
+                )
+        except (KeyError, TypeError, json.JSONDecodeError) as error:
+            errors.append(f"invalid generated artifact {artifact}: {error}")
+
+    preimage_ids = {
+        Path(relative).stem
+        for relative in by_relative
+        if relative.startswith("audit/preimages/") and relative.endswith(".txt")
+    }
+    if preimage_ids != active_ids:
+        errors.append(
+            "audit/preimages ID set differs from audit/theorems.tsv"
+        )
+
+    try:
+        source_lock = json.loads(by_relative["audit/source-lock.json"])
+        if source_lock["registry"]["id_count"] != len(active_ids):
+            errors.append(
+                "audit/source-lock.json registry.id_count differs from "
+                "the active theorem count"
+            )
+    except (KeyError, TypeError, json.JSONDecodeError) as error:
+        errors.append(f"invalid audit/source-lock.json: {error}")
+
     for relative, required in REQUIRED_TEXT.items():
         text = by_relative.get(relative)
         if text is None:
@@ -175,6 +258,8 @@ def main() -> int:
         "files_inspected": len(files),
         "public_narratives_inspected": len(PUBLIC_NARRATIVE),
         "required_contract_files": len(REQUIRED_TEXT),
+        "registered_theorems": len(active_ids),
+        "semantic_contracts": len(semantic_contract.get("contracts", [])),
         "errors": sorted(set(errors)),
         "status": "pass" if not errors else "fail",
     }
