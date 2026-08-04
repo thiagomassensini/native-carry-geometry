@@ -135,10 +135,10 @@ real radial sample. The new named theorem `NCG-EQV-016` makes its norm law
 explicit:
 
 [
-operatorname{normSq}(n^{-s})=n^{-2sigma}.
+normSq(n^{-s}) = n^{-2sigma}.
 ]
 
-Therefore moving (operatorname{Re}(s)) is precisely moving radial amplitude
+Therefore moving the real coordinate `Re(s)` is precisely moving radial amplitude
 and quadratic norm. The complex plane does not add a degree of freedom beyond
 that already visible in the radial comparison chart.
 
