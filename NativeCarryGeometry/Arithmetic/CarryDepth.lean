@@ -102,7 +102,7 @@ theorem offsetDepth_canonical
   rfl
 
 /--
-Ponte peso--carry Cₚ: a maior profundidade entre todas as pernas balanceadas
+Identificacao carry--profundidade Cₚ: a maior profundidade entre todas as pernas balanceadas
 e exatamente a profundidade `p`-adica do centro unico da bijecao global.
 -/
 theorem effectiveDepth_eq_centerDepth
