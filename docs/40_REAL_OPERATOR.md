@@ -177,7 +177,8 @@ abbrev IsNativeCarryOperatorZero
 The ambient deformation has only a cancellation predicate,
 `RadialChartCancelsAt camera sigma time`. At `sigma = 1/2`, Lean proves
 that chart cancellation is equivalent to the native boundary. Away from the
-mass-preserving shell it is not classified as an operator zero.
+mass-preserving shell it does not satisfy the native operator-zero
+representation relation.
 
 ## 7. Camera cases
 
@@ -197,7 +198,8 @@ that every natural width supplies a nondegenerate physical observation rule.
 ## 8. No hidden operator object
 
 The phrase “real carry operator” denotes real coordinates for the mass-built
-native state, its finite resultants, and its one boundary zero. Complex
+native state, its finite resultants, and its native operator-zero predicate.
+Complex
 coordinates describe the same object. The radial deformation is a tool for
 varying amplitude and quadratic norm, not an input of another operator. The release does not
 claim a separately constructed total linear map whose value is an
