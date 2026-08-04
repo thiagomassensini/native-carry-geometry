@@ -1,212 +1,218 @@
-# Real–Analytic Presentation Equivalence
+# Real–Analytic Identity of the Same Operator
 
-## 1. Coordinate equivalence
+## 1. The identity, not an analogy
 
 The map
 
-$$
-J:\mathbb R^2\longrightarrow\mathbb C,
-\qquad
-J(x,y)=x+iy,
-$$
+[
+J:mathbb R^2longrightarrowmathbb C,
+qquad
+J(x,y)=x+iy
+]
 
 is implemented as an additive equivalence:
 
 ```lean
-def complexCoordinates :
-    Operator.RealCarryPlane ≃+ ℂ
+complexCoordinates : Operator.RealCarryPlane ≃+ ℂ
 ```
 
-It is a change of coordinates, not an additional dynamical operation.
+It is a coordinate change. It is not a new dynamical operation, a completed
+operator, or an external analytic identification.
 
-The native API makes this explicit: `complexCoordinates_finiteNativeOperator`
-maps the mass-built real resultant to the corresponding complex-coordinate
-resultant, and `finiteNativeOperator_eq_zero_iff_complexCoordinates_eq_zero`
-proves that zeros are preserved in both directions.
+Lean proves:
 
-The public finite-coordinate results are:
+- injectivity of (J) (`NCG-EQV-001`);
+- (operatorname{normSq}(J(u))=E(u)) (`NCG-EQV-002`);
+- naturality through the complete finite bracket (`NCG-EQV-003`);
+- preservation of finite resultant zeros in both directions
+  (`NCG-EQV-004` and `NCG-EQV-010`).
 
-| ID | Declaration | Content |
-|---|---|---|
-| `NCG-EQV-001` | `complexCoordinates_injective` | faithful encoding |
-| `NCG-EQV-002` | `normSq_complexCoordinates` | preservation of quadratic energy |
-| `NCG-EQV-003` | `complexCoordinates_finiteOperator` | finite-operator naturality |
-| `NCG-EQV-004` | `finiteOperator_eq_zero_iff_complexCoordinates_eq_zero` | finite zero preservation in both directions |
+Hence:
 
-In particular,
+[
+R=0iff J(R)=0.
+]
 
-$$
-R=0\iff J(R)=0.
-$$
+There is no “real zero” and “complex zero” to compare. There is one resultant
+and two faithful coordinate records.
 
-## 2. Native state identity and radial extension
+## 2. Sigma is the quadratic-norm coordinate
 
-The native complex parameter is
+For positive `n`, the ambient radial sample is:
+
+[
+u_{sigma,t}(n)
+=
+n^{-sigma}
+(cos(-tlog n),sin(-tlog n)).
+]
+
+Its complex coordinate is exactly:
+
+[
+J(u_{sigma,t}(n))=n^{-(sigma+it)}.
+]
+
+This is `NCG-EQV-005`. The norm identities are now named directly:
 
 ```lean
-def nativeCanonicalParameter (time : ℝ) : ℂ :=
-  ⟨1 / 2, time⟩
+-- NCG-EQV-013
+Complex.normSq
+    (complexCoordinates
+      (radialDeformationState sigma time n)) =
+  (n : ℝ) ^ (-2 * sigma)
+
+-- NCG-EQV-016
+Complex.normSq
+    (powerMonomial (canonicalParameter sigma time) n) =
+  (n : ℝ) ^ (-2 * sigma)
 ```
 
-and Lean proves
+Thus varying (sigma=operatorname{Re}(s)) in the complex plane is exactly
+varying the amplitude (n^{-sigma}) and its quadratic norm
+(n^{-2sigma}). It is a change of radial chart, not a change of operator.
+
+## 3. Native mass in both coordinates
+
+The mass-built state has:
+
+[
+E(u_t(n))=n^{-1}.
+]
+
+By `NCG-EQV-014`:
+
+[
+operatorname{normSq}(J(u_t(n)))=n^{-1}.
+]
+
+The ambient complex radial chart preserves this native mass for all
+nondegenerate positive inputs exactly at one half:
 
 ```lean
-complexCoordinates (nativeRealCarryState time n) =
-  powerMonomial (nativeCanonicalParameter time) n
+-- NCG-EQV-015
+(∀ n : ℤ, 1 < n →
+  Complex.normSq
+      (complexCoordinates
+        (radialDeformationState sigma time n)) =
+    (n : ℝ)⁻¹) ↔
+  sigma = (1 : ℝ) / 2
 ```
 
-Thus the appearance of `i` is only the coordinate map
-`(x,y) ↦ x + iy`; it does not change the tower, algebra, or zeros.
+This is the coordinate form of the same quadratic rigidity already proved from
+carry mass. Complex notation neither creates nor selects the mass.
 
-The ambient radial extension uses
+## 4. Complete finite operator identity
 
-```lean
-def canonicalParameter (sigma time : ℝ) : ℂ :=
-  ⟨sigma, time⟩
-```
-
-For every positive integer input, `NCG-EQV-005` proves:
-
-```lean
-complexCoordinates (realCarryState sigma time n) =
-  powerMonomial (canonicalParameter sigma time) n
-```
-
-The hypothesis `0 < n` is explicit. The total real-state definition is zero on
-nonpositive integers, while the power-monomial identity is used only on the
-positive index set of the camera.
-
-## 3. Finite operator identity
-
-For an odd prime camera, the native API proves:
+For every camera and cutoff, additive naturality gives:
 
 ```lean
 complexCoordinates
     (finiteNativeRealCarryOperator camera cutoff time) =
-  finiteBracketChart camera cutoff
-    (powerMonomial (nativeCanonicalParameter time))
+  finiteSaturatedBracketOperator camera cutoff
+    (fun n => complexCoordinates
+      (nativeRealCarryState time n))
 ```
 
-The registered generic chart theorem `NCG-EQV-006` states:
+For odd prime cameras, the right-hand side is also the finite analytic bracket
+chart evaluated at the same samples. This is an equality of complete
+resultants, not merely equality of norms or zero sets.
 
-```lean
-complexCoordinates
-    (finiteRealCarryOperator camera cutoff sigma time) =
-  finiteBracketChart camera cutoff
-    (powerMonomial (canonicalParameter sigma time))
-```
+## 5. The one native zero
 
-This is an equality of the complete finite resultants. Its prime and oddness
-hypotheses arise from the balanced-camera chart identity.
-
-## 4. Native boundary representation
-
-The native analytic readout is the ambient continuation evaluated on the
-already fixed native parameter:
+The native analytic readout is:
 
 ```lean
 nativeCarryAnalyticReadout time :=
-  canonicalCarryContinuation (nativeCanonicalParameter time)
+  canonicalCarryContinuation ⟨1 / 2, time⟩
 ```
 
-Lean proves directly:
+The canonical zero predicate is:
 
 ```lean
-NativeBoundaryConvergesToZero 3 time ↔
+Operator.IsNativeCarryOperatorZero camera time
+```
+
+The principal theorem is:
+
+```lean
+-- NCG-EQV-017
+Operator.IsNativeCarryOperatorZero 3 time ↔
   nativeCarryAnalyticReadout time = 0
 ```
 
-Equivalently:
+Both sides already use the mass-built native tower. No additional mass premise
+is attached to the zero, and no second zero object is introduced.
+
+The older theorem `NCG-EQV-012` uses the coordinate-labelled aliases
+`IsNativeRealCarryOperatorZero` and
+`IsNativeCanonicalCarryOperatorZero`. It is a compatibility spelling of this
+same identity.
+
+## 6. Ambient chart cancellation
+
+For an arbitrary point (s=sigma+it) of the canonical strip, the wider chart
+crosswalk is:
 
 ```lean
-IsNativeRealCarryOperatorZero 3 time ↔
-  IsNativeCanonicalCarryOperatorZero time
+radialChartCancelsAt_iff_canonicalChartCancelsAt
 ```
 
-No energy/mass condition is appended: both sides already use the native tower.
-
-## 5. Ambient radial representation theorem
-
-The more general radial chart crosswalk is:
+with type:
 
 ```lean
-theorem boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero
-    {s : ℂ} (hs : s ∈ Analytic.canonicalStrip) :
-    Operator.BoundaryConvergesToZero 3 s.re s.im ↔
-      Analytic.canonicalCarryContinuation s = 0
+Operator.RadialChartCancelsAt 3 s.re s.im ↔
+  Analytic.canonicalCarryContinuation s = 0
 ```
 
-This is `NCG-EQV-007`.
+This relates cancellation in two coordinate descriptions of the ambient radial
+chart. It is deliberately not named `OperatorZero`.
 
-Two restrictions are part of the theorem:
+The restrictions are part of the theorem:
 
-1. the real boundary camera is exactly `3`;
-2. `s` belongs to the open canonical strip
-   `0 < s.re ∧ s.re < 1`.
+- camera is exactly `3`;
+- `s ∈ canonicalStrip`;
+- `canonicalStrip = {s | 0 < s.re ∧ s.re < 1}`.
 
-The theorem is bidirectional. It identifies boundary closure in the real
-presentation with scalar cancellation of the canonical analytic
-representative in this domain.
+## 7. When the ambient chart represents the native operator
 
-## 6. Radial-presentation identity
-
-The compatibility predicate for an ambient complex parameter is:
+The real and analytic representation relations are:
 
 ```lean
-def IsCanonicalCarryOperatorZero (s : ℂ) : Prop :=
-  Operator.RealCarryEnergyCompatible s.re s.im ∧
-    Analytic.canonicalCarryContinuation s = 0
+Operator.RadialChartRepresentsNativeZero camera sigma time
+AnalyticChartRepresentsNativeZero s
 ```
 
-The energy condition means that this ambient radial parameter represents the
-native mass. It is not the definition of the native analytic zero.
-
-`NCG-EQV-008` proves:
+Inside the camera-three crosswalk, Lean proves that these two relations are
+equivalent. Independently of the strip, the analytic factorization is:
 
 ```lean
-theorem isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero
-    {s : ℂ} (hs : s ∈ Analytic.canonicalStrip) :
-    Operator.IsRealCarryOperatorZero 3 s.re s.im ↔
-      IsCanonicalCarryOperatorZero s
+-- NCG-EQV-018
+AnalyticChartRepresentsNativeZero s ↔
+  s.re = (1 : ℝ) / 2 ∧
+    canonicalCarryContinuation s = 0
 ```
 
-The proof is a typed conjunction of:
-
-- identical real energy compatibility on both sides;
-- the boundary equivalence `NCG-EQV-007`.
-
-It does not add mass to a native operator; it classifies the ambient radial
-presentation.
-
-## 7. Analytic radial-presentation uniqueness
-
-`NCG-EQV-009` states:
+and the uniqueness corollary is:
 
 ```lean
-theorem canonicalCarryOperatorZero_re_eq_half
-    {s : ℂ} (hs : s ∈ Analytic.canonicalStrip)
-    (hzero : IsCanonicalCarryOperatorZero s) :
-    s.re = (1 : ℝ) / 2
+-- NCG-EQV-019
+AnalyticChartRepresentsNativeZero s →
+  s.re = (1 : ℝ) / 2
 ```
 
-The proof transports the ambient analytic presentation to the real
-camera-three presentation using `NCG-EQV-008`, then applies
-`NCG-OPR-005`.
+The reason is exactly quadratic mass preservation, not a second boundary,
+curvature, Green, or external-function argument.
 
-This theorem says that the ambient deformation represents the native tower only
-at real coordinate `1/2`. It does not claim that every unconstrained scalar
-cancellation is a native operator zero.
+## 8. Vocabulary enforced by the audit
 
-## 8. What is and is not camera-independent
+| Concept | Canonical name | Meaning |
+|---|---|---|
+| Native operator zero | `IsNativeCarryOperatorZero` | boundary zero of the mass-built tower |
+| Real coordinate encoding | `complexCoordinates` | additive equivalence (mathbb R^2simeqmathbb C) |
+| Ambient radial cancellation | `RadialChartCancelsAt` | cancellation of a comparison chart |
+| Analytic ambient cancellation | `canonicalCarryContinuation s = 0` | same chart cancellation in complex coordinates |
+| Native representation relation | `RadialChartRepresentsNativeZero` / `AnalyticChartRepresentsNativeZero` | mass preservation plus chart cancellation |
 
-The repository proves three different statements:
-
-1. every natural real camera obeys the same radial-presentation factorization;
-2. odd prime normalized analytic cameras give the same canonical
-   representative in the strip;
-3. camera `3` is connected bidirectionally to that representative at the
-   boundary.
-
-These statements compose coherently, but they are not an assertion that every
-raw finite or boundary formula is definitionally identical for every natural
-camera.
+Legacy aliases remain source compatible, but public documentation and new
+theorems use this vocabulary.
