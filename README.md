@@ -106,9 +106,9 @@ Complex.normSq
   (n : ℝ) ^ (-2 * sigma)
 ```
 
-No complex coordinate can add or remove a zero of the underlying resultant.
+Complex coordinates cannot change the underlying resultant's zero locus.
 
-### 4. There is one operator-zero predicate
+### 4. There is one native operator-zero predicate
 
 The canonical name is:
 
@@ -127,12 +127,13 @@ theorem isNativeCarryOperatorZero_iff_analyticReadout_eq_zero
       nativeCarryAnalyticReadout time = 0
 ```
 
-This is one zero seen in two coordinate systems. The legacy names
+The two sides define the same native operator-zero locus in time. The legacy
+names
 `IsNativeRealCarryOperatorZero` and
 `IsNativeCanonicalCarryOperatorZero` remain compatibility aliases; they do
-not denote different kinds of zero.
+not introduce additional operator-zero predicates.
 
-### 5. Ambient chart cancellation is not another operator zero
+### 5. Ambient chart cancellation is not an additional native operator-zero predicate
 
 The radial family is useful for proving rigidity, so its raw boundary
 cancellation remains available as:
@@ -165,7 +166,8 @@ AnalyticChartRepresentsNativeZero s ↔
     canonicalCarryContinuation s = 0
 ```
 
-Consequently, an off-half radial chart does not represent an operator zero.
+Consequently, an off-half radial chart does not satisfy the native
+operator-zero representation relation.
 The repository does not reclassify a raw chart cancellation as a second zero.
 
 ## Dependency chain
@@ -179,9 +181,9 @@ quotient–residue decomposition
 → native rotating state
 → centered second difference
 → finite native camera
-→ native boundary zero
+→ native operator-zero predicate
 → faithful R² ↔ ℂ coordinates
-→ analytic readout of the same zero
+→ analytic readout with the same zero locus
 ```
 
 The $\sigma$-radial family branches off only as a comparison chart for
@@ -260,10 +262,10 @@ procedure.
 | [Positional geometry](docs/10_POSITIONAL_GEOMETRY.md) | QR decomposition, centers, residues, and depth |
 | [Carry mass and amplitude](docs/20_CARRY_MASS_AND_AMPLITUDE.md) | Upstream mass, quadratic amplitude, and multibase rigidity |
 | [Bracket and curvature](docs/30_BRACKET_AND_CURVATURE.md) | Centered differences and auxiliary deformation detectors |
-| [Real operator](docs/40_REAL_OPERATOR.md) | Native state, finite resultants, and the one boundary zero |
+| [Real operator](docs/40_REAL_OPERATOR.md) | Native state, finite resultants, and the native operator-zero predicate |
 | [Canonical analytic presentation](docs/50_CANONICAL_ANALYTIC_PRESENTATION.md) | Complex chart construction and normalization |
-| [Real–analytic identity](docs/60_REAL_ANALYTIC_EQUIVALENCE.md) | Same operator, energy, resultant, and zero in two coordinates |
-| [Native zero and chart representation](docs/70_ZERO_SET_FACTORIZATION.md) | One zero and radial-chart factorization |
+| [Real–analytic identity](docs/60_REAL_ANALYTIC_EQUIVALENCE.md) | Same operator, energy, resultant, and zero locus in two coordinates |
+| [Native zero and chart representation](docs/70_ZERO_SET_FACTORIZATION.md) | One native operator-zero predicate and radial-chart factorization |
 | [Theorem registry](docs/80_THEOREM_REGISTRY.md) | Stable NCG identifiers and type digests |
 | [Source provenance](docs/85_SOURCE_PROVENANCE.md) | Historical lock and selective-port policy |
 | [Excluded research routes](docs/88_EXCLUDED_RESEARCH_ROUTES.md) | Extensions outside this audit root |
