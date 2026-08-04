@@ -30,7 +30,7 @@ theorem map_nativeCarryFiniteSaturatedChart
 
 /--
 For an odd prime camera, the additive saturated camera is literally the
-existing finite Genuine chart.  Primality is used only for the identification
+legacy finite balanced-bracket chart.  Primality is used only for the identification
 of the balanced-offset presentation with the symmetric radii presentation.
 -/
 theorem nativeCarryFiniteSaturatedChart_eq_finiteChart
@@ -70,7 +70,7 @@ theorem nativeCarryRealPlaneFiniteChart_eq_chartAt_half
 
 /--
 For an odd prime width, the real primitive camera is the existing generic
-Genuine chart instantiated in the real product ring.
+legacy balanced-bracket chart instantiated in the real product ring.
 -/
 theorem nativeCarryRealPlaneFiniteChart_eq_finiteChart
     (p M : ℕ) (hp : Nat.Prime p) (hpodd : Odd p) (t : ℝ) :
