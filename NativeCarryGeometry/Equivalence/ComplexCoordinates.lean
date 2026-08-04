@@ -234,6 +234,64 @@ theorem complexCoordinates_injective :
     NativeCarryGeometry.Internal.Analytic.Cp.nativeCarryRealPlaneEnergy,
     pow_two]
 
+/--
+NCG-EQV-013: Radial Complex-Norm Identity.
+
+The real coordinate `sigma` in the complex chart is exactly the exponent that
+changes quadratic norm.  Complex packaging contributes no new energy law.
+-/
+@[simp] theorem normSq_complexCoordinates_radialDeformationState
+    (sigma time : ℝ) {n : ℤ} (hn : 0 < n) :
+    Complex.normSq
+        (complexCoordinates
+          (Operator.radialDeformationState sigma time n)) =
+      (n : ℝ) ^ (-2 * sigma) := by
+  rw [normSq_complexCoordinates]
+  exact Operator.quadraticEnergy_realCarryState sigma time hn
+
+/--
+NCG-EQV-014: Native Complex-Norm Identity.
+
+The complex coordinates of the native state retain exactly the inverse-integer
+mass already constructed by the carry tower.
+-/
+@[simp] theorem normSq_complexCoordinates_nativeRealCarryState
+    (time : ℝ) {n : ℤ} (hn : 0 < n) :
+    Complex.normSq
+        (complexCoordinates
+          (Operator.nativeRealCarryState time n)) =
+      ((n : ℝ))⁻¹ := by
+  rw [normSq_complexCoordinates]
+  exact Operator.quadraticEnergy_nativeRealCarryState time hn
+
+/--
+NCG-EQV-015: Complex Radial-Chart Mass Rigidity.
+
+An ambient complex-coordinate chart preserves the native inverse-integer mass
+for every nondegenerate positive input exactly when `sigma = 1/2`.
+-/
+theorem radialComplexNormRepresentsNativeMass_iff
+    (sigma time : ℝ) :
+    (∀ n : ℤ, 1 < n →
+      Complex.normSq
+          (complexCoordinates
+            (Operator.radialDeformationState sigma time n)) =
+        ((n : ℝ))⁻¹) ↔
+      sigma = (1 : ℝ) / 2 := by
+  constructor
+  · intro hnorm
+    apply (Operator.realCarryEnergyCompatible_iff sigma time).1
+    intro n hn
+    rw [← normSq_complexCoordinates]
+    exact hnorm n hn
+  · intro hsigma
+    have henergy :
+        Operator.RealCarryEnergyCompatible sigma time :=
+      (Operator.realCarryEnergyCompatible_iff sigma time).2 hsigma
+    intro n hn
+    rw [normSq_complexCoordinates]
+    exact henergy n hn
+
 /-- NCG-EQV-003: Finite-Operator Naturality. -/
 theorem complexCoordinates_finiteOperator
     (camera cutoff : ℕ) (sigma time : ℝ) :
