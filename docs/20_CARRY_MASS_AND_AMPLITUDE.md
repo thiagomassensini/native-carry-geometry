@@ -179,13 +179,13 @@ forms:
 [
 E(u_{sigma,t}(n))
 =
-operatorname{normSq}(J(u_{sigma,t}(n)))
+E(u_{sigma,t}(n))
 =
-operatorname{normSq}(n^{-(sigma+it)})
+normSq(J(u_{sigma,t}(n)))
+=
+normSq(n^{-(sigma+it)})
 =
 n^{-2sigma}.
-]
-
 The registered theorems are `NCG-REA-005`, `NCG-EQV-013`, and
 `NCG-EQV-016`. `NCG-EQV-015` then proves that the complex-coordinate
 family preserves (n^{-1}) for every nondegenerate positive input exactly at
