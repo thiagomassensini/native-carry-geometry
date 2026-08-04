@@ -65,7 +65,7 @@ theorem isRealCarryOperatorZero_iff
       sigma = (1 : ℝ) / 2 ∧
         IsBoundaryResonance camera time := by
   unfold IsRealCarryOperatorZero
-    IsRadialDeformationPresentationZero
+    RadialChartRepresentsNativeZero
   constructor
   · rintro ⟨henergy, hclose⟩
     have hpositional :
