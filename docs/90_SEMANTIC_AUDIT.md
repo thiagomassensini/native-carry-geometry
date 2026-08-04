@@ -41,7 +41,7 @@ checksums, registry generation, dependency checks, and
 | `Analytic/BracketSeries.lean` | bracket convergence | verified; no operator-zero definition |
 | `Analytic/BracketHolomorphy.lean` | holomorphy | verified; no operator-zero definition |
 | `Analytic/CanonicalContinuation.lean` | ambient analytic chart | cancellation label corrected |
-| `Equivalence/ComplexCoordinates.lean` | (mathbb R^2simeqmathbb C) | explicit complex norm identities added |
+| `Equivalence/ComplexCoordinates.lean` | R² ≃ C | explicit complex norm identities added |
 | `Equivalence/RealAnalyticBoundary.lean` | boundary/readout identity | principal one-zero theorem added |
 | `Audit/TheoremId.lean` | kernel registry command | verified unchanged |
 | `Audit/ExportTheoremTypes.lean` | generated theorem driver | regenerated from the 75-row registry |
