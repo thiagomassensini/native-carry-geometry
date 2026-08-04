@@ -10,7 +10,7 @@ Release `v0.3.0` was reviewed against one repository-wide contract:
 4. `sigma` belongs to an ambient radial chart and varies amplitude/norm;
 5. `ℝ²` and `ℂ` are faithful coordinates of the same additive operator;
 6. `IsNativeCarryOperatorZero` is the one native operator-zero predicate;
-7. ambient chart cancellation is not renamed as another operator zero.
+7. ambient chart cancellation is not renamed as an additional operator-zero predicate.
 
 The review covered every versioned text file. Semantic-bearing files received
 source review; generated and mechanical files are covered by deterministic
