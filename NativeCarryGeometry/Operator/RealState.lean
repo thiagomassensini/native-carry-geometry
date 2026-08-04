@@ -67,7 +67,8 @@ theorem nativeCarryRealPlaneSample_eq_sampleAt_half
         NativeCarryGeometry.Measure.nativeTowerAmplitude n =
           (n : ℝ) ^ (-((1 : ℝ) / 2)) := by
       simp only [NativeCarryGeometry.Measure.nativeTowerAmplitude, if_pos hn]
-      unfold NativeCarryGeometry.Measure.criticalAmplitude
+      unfold NativeCarryGeometry.Measure.carryAmplitude
+        NativeCarryGeometry.Measure.criticalAmplitude
         NativeCarryGeometry.Internal.Carry.Cp.criticalAmplitude
       rw [hcast]
       congr 1
