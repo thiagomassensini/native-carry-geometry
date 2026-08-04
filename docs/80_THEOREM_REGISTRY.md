@@ -21,7 +21,7 @@ fully qualified Lean names but do not receive synthetic theorem identifiers.
 
 The principal public ontology for `v0.3.0` is:
 
-- `IsNativeCarryOperatorZero`: the one operator-zero predicate;
+- `IsNativeCarryOperatorZero`: the one native operator-zero predicate;
 - `RadialChartCancelsAt`: ambient comparison-chart cancellation;
 - `RadialChartRepresentsNativeZero`: a representation relation;
 - `AnalyticChartRepresentsNativeZero`: the same relation in analytic
@@ -54,15 +54,15 @@ radial-presentation results; they do not define the release ontology.
 | ID | Public declaration | Academic label |
 |---|---|---|
 | `NCG-PRB-001` | `Measure.uniformCarryEvent_probability` | Uniform Carry Probability Law |
-| `NCG-MAS-001` | `Measure.criticalAmplitude_sq_eq_carryMass` | Critical Amplitude–Mass Identity |
+| `NCG-MAS-001` | `Measure.criticalAmplitude_sq_eq_carryMass` | Carry-Amplitude–Mass Identity (Legacy Declaration Name) |
 | `NCG-MAS-002` | `Measure.carryMass_effectiveDepth_eq_centerDepth` | Carry-Mass Depth Transport |
 | `NCG-MAS-003` | `Measure.nativeTowerAmplitude_sq_eq_mass` | Native Tower Amplitude–Mass Identity |
-| `NCG-AMP-001` | `Measure.deformedAmplitude_sq_eq_massWeight` | Deformed Amplitude Energy Identity |
+| `NCG-AMP-001` | `Measure.deformedAmplitude_sq_eq_massWeight` | Radial-Deformation Quadratic-Energy Identity (Legacy Declaration Name) |
 | `NCG-AMP-002` | `Measure.deformedAmplitude_sq_eq_carryMass_iff` | Local Quadratic Amplitude Rigidity |
 | `NCG-AMP-003` | `Measure.positionalMassCompatible_iff` | Global Quadratic Amplitude Rigidity |
 | `NCG-AMP-004` | `Measure.radialBranchEnergy_eq_one_iff` | Radial Branch Saturation |
 | `NCG-AMP-005` | `Measure.radialBranchSaturation_base_independent` | Base Independence of Saturation |
-| `NCG-AMP-006` | `Measure.positionalMassCompatible_iff_realEnergyCompatible` | Quadratic Domain Crosswalk |
+| `NCG-AMP-006` | `Measure.positionalMassCompatible_iff_realEnergyCompatible` | Positional/Native-Mass Representation Crosswalk (Legacy Declaration Name) |
 | `NCG-AMP-007` | `Measure.radialBranchEnergy_half_eq_one` | Critical Radial Branch Saturation |
 | `NCG-AMP-008` | `Measure.radialBranchEnergy_half_ne_zero` | Critical Radial Branch Nondegeneracy |
 
@@ -85,17 +85,17 @@ radial-presentation results; they do not define the release ontology.
 | ID | Public declaration | Academic label |
 |---|---|---|
 | `NCG-REA-001` | `Operator.quadraticEnergy_rotationDirection` | Real Rotation Unit-Energy Theorem |
-| `NCG-REA-002` | `Operator.quadraticEnergy_realCarryState` | Radial-Deformation Energy Invariance |
-| `NCG-REA-003` | `Operator.realCarryEnergyCompatible_iff` | Radial-Deformation Mass Rigidity |
+| `NCG-REA-002` | `Operator.quadraticEnergy_realCarryState` | Radial-Deformation Quadratic-Energy Invariance (Legacy Declaration Name) |
+| `NCG-REA-003` | `Operator.realCarryEnergyCompatible_iff` | Radial-Deformation Native-Mass Rigidity (Legacy Declaration Name) |
 | `NCG-REA-004` | `Operator.quadraticEnergy_nativeRealCarryState` | Native State Carry-Mass Energy |
 | `NCG-REA-005` | `Operator.quadraticEnergy_radialDeformationState` | Canonical Radial-Deformation Quadratic-Norm Identity |
 | `NCG-REA-006` | `Operator.radialDeformationRepresentsNativeMass_iff` | Canonical Radial-Deformation Mass Rigidity |
 | `NCG-OPR-001` | `Operator.map_finiteSaturatedBracketOperator` | Additive Naturality of the Finite Operator |
 | `NCG-OPR-002` | `Operator.quadraticEnergy_eq_zero_iff` | Faithfulness of Visible Energy |
-| `NCG-OPR-003` | `Operator.isFiniteRealCarryOperatorZero_iff` | Finite Radial-Presentation Factorization |
-| `NCG-OPR-004` | `Operator.isRealCarryOperatorZero_iff` | Radial Presentation Factorization |
-| `NCG-OPR-005` | `Operator.realCarryOperatorZero_sigma_eq_half` | Radial-Presentation Uniqueness Corollary |
-| `NCG-OPR-006` | `Operator.not_realCarryOperatorZero_of_sigma_ne_half` | Legacy Off-Shell Nonrepresentation Corollary |
+| `NCG-OPR-003` | `Operator.isFiniteRealCarryOperatorZero_iff` | Legacy Finite Radial-Chart Native-Representation Factorization |
+| `NCG-OPR-004` | `Operator.isRealCarryOperatorZero_iff` | Legacy Boundary Radial-Chart Native-Representation Factorization |
+| `NCG-OPR-005` | `Operator.realCarryOperatorZero_sigma_eq_half` | Legacy Radial-Chart Native-Representation Half-Shell Corollary |
+| `NCG-OPR-006` | `Operator.not_realCarryOperatorZero_of_sigma_ne_half` | Legacy Off-Shell Native-Nonrepresentation Corollary |
 | `NCG-OPR-007` | `Operator.radialChartRepresentsNativeZero_iff` | Canonical Radial-Chart Native Representation Factorization |
 | `NCG-OPR-008` | `Operator.radialChartRepresentsFiniteNativeZero_iff` | Canonical Finite Radial-Chart Native Representation Factorization |
 
@@ -110,7 +110,7 @@ radial-presentation results; they do not define the release ontology.
 | `NCG-ANL-005` | `Analytic.normalizedBracketChart_camera_independent` | Camera Compatibility |
 | `NCG-ANL-006` | `Analytic.bracketSeries_eq_factor_mul_canonicalCarryContinuation` | Canonical Bracket Factorization |
 | `NCG-ANL-007` | `Analytic.analyticOnNhd_canonicalCarryContinuation` | Holomorphy of the Canonical Continuation |
-| `NCG-ANL-008` | `Analytic.bracketSeries_zero_iff_canonicalCarryContinuation_zero` | Canonical Chart-Cancellation Representation by Any Odd Prime Camera |
+| `NCG-ANL-008` | `Analytic.bracketSeries_zero_iff_canonicalCarryContinuation_zero` | Odd-Prime Camera Ambient Chart-Cancellation Locus Identity |
 
 ## 7. Presentation equivalence
 
@@ -118,21 +118,21 @@ radial-presentation results; they do not define the release ontology.
 |---|---|---|
 | `NCG-EQV-001` | `Equivalence.complexCoordinates_injective` | Faithful Complex Coordinate Encoding |
 | `NCG-EQV-002` | `Equivalence.normSq_complexCoordinates` | Energy Preservation under Encoding |
-| `NCG-EQV-003` | `Equivalence.complexCoordinates_finiteOperator` | Finite-Operator Naturality |
-| `NCG-EQV-004` | `Equivalence.finiteOperator_eq_zero_iff_complexCoordinates_eq_zero` | Finite Zero-Set Equivalence |
-| `NCG-EQV-005` | `Equivalence.complexCoordinates_realCarryState_eq_powerMonomial` | Radial-State/Power-Monomial Coordinate Identity |
-| `NCG-EQV-006` | `Equivalence.complexCoordinates_finiteRealOperator_eq_finiteBracketChart` | Finite Real–Analytic Operator Identity |
-| `NCG-EQV-007` | `Equivalence.boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero` | Camera-Three Boundary/Continuation Zero Equivalence |
-| `NCG-EQV-008` | `Equivalence.isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero` | Real/Analytic Radial-Presentation Identity |
-| `NCG-EQV-009` | `Equivalence.canonicalCarryOperatorZero_re_eq_half` | Canonical Analytic Radial-Presentation Uniqueness |
-| `NCG-EQV-010` | `Equivalence.finiteNativeOperator_eq_zero_iff_complexCoordinates_eq_zero` | Native Finite Zero Coordinate Identity |
-| `NCG-EQV-011` | `Equivalence.nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero` | Native Boundary/Analytic Readout Zero Identity |
-| `NCG-EQV-012` | `Equivalence.isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero` | Legacy Coordinate-Labelled Native Zero Identity |
+| `NCG-EQV-003` | `Equivalence.complexCoordinates_finiteOperator` | Ambient Finite-Chart Naturality (Legacy Declaration Name) |
+| `NCG-EQV-004` | `Equivalence.finiteOperator_eq_zero_iff_complexCoordinates_eq_zero` | Finite Resultant Coordinate Zero-Locus Identity |
+| `NCG-EQV-005` | `Equivalence.complexCoordinates_realCarryState_eq_powerMonomial` | Ambient Radial-State/Power-Monomial Coordinate Identity |
+| `NCG-EQV-006` | `Equivalence.complexCoordinates_finiteRealOperator_eq_finiteBracketChart` | Ambient Finite Radial-Chart Coordinate Identity |
+| `NCG-EQV-007` | `Equivalence.boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero` | Camera-Three Real/Analytic Chart-Cancellation Locus Identity |
+| `NCG-EQV-008` | `Equivalence.isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero` | Legacy Real/Analytic Native-Representation Identity |
+| `NCG-EQV-009` | `Equivalence.canonicalCarryOperatorZero_re_eq_half` | Legacy Analytic Native-Representation Half-Shell Corollary |
+| `NCG-EQV-010` | `Equivalence.finiteNativeOperator_eq_zero_iff_complexCoordinates_eq_zero` | Native Finite Resultant Coordinate Zero-Locus Identity |
+| `NCG-EQV-011` | `Equivalence.nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero` | Native Boundary/Analytic Readout Zero-Locus Identity |
+| `NCG-EQV-012` | `Equivalence.isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero` | Legacy Coordinate-Labelled Native Operator Zero-Locus Identity |
 | `NCG-EQV-013` | `Equivalence.normSq_complexCoordinates_radialDeformationState` | Radial Complex-Norm Identity |
 | `NCG-EQV-014` | `Equivalence.normSq_complexCoordinates_nativeRealCarryState` | Native Complex-Norm Identity |
 | `NCG-EQV-015` | `Equivalence.radialComplexNormRepresentsNativeMass_iff` | Complex Radial-Chart Mass Rigidity |
 | `NCG-EQV-016` | `Equivalence.normSq_powerMonomial_canonicalParameter` | Power-Monomial Quadratic-Norm Identity |
-| `NCG-EQV-017` | `Equivalence.isNativeCarryOperatorZero_iff_analyticReadout_eq_zero` | One Native Operator Zero Analytic Identity |
+| `NCG-EQV-017` | `Equivalence.isNativeCarryOperatorZero_iff_analyticReadout_eq_zero` | Native Operator/Analytic Readout Zero-Locus Identity |
 | `NCG-EQV-018` | `Equivalence.analyticChartRepresentsNativeZero_iff` | Analytic-Chart Native Representation Factorization |
 | `NCG-EQV-019` | `Equivalence.analyticChartRepresentsNativeZero_re_eq_half` | Analytic-Chart Native Representation Uniqueness |
 
@@ -187,7 +187,7 @@ compositions:
   representation relations;
 - `NCG-EQV-013/014/015/016` make quadratic norm preservation explicit in
   real, complex, and power-monomial coordinates;
-- `NCG-EQV-017` is the principal one-native-zero analytic identity;
+- `NCG-EQV-017` is the principal native operator/analytic-readout zero-locus identity;
 - `NCG-EQV-018/019` factor and confine analytic chart representations.
 
 These relationships are machine-readable in the `dependencies` column of
