@@ -2,7 +2,7 @@
 
 ## 1. Citation model
 
-Release `v0.2.0` designates 64 citeable mathematical results. Each receives a
+Release `v0.3.0` designates 75 citeable mathematical results. Each receives a
 stable semantic identifier:
 
 ```text
@@ -15,6 +15,21 @@ reader-facing index.
 
 Supporting public definitions and helper lemmas remain addressable by their
 fully qualified Lean names but do not receive synthetic theorem identifiers.
+
+
+## 1.1. Canonical semantic surface
+
+The principal public ontology for `v0.3.0` is:
+
+- `IsNativeCarryOperatorZero`: the one operator-zero predicate;
+- `RadialChartCancelsAt`: ambient comparison-chart cancellation;
+- `RadialChartRepresentsNativeZero`: a representation relation;
+- `AnalyticChartRepresentsNativeZero`: the same relation in analytic
+  coordinates.
+
+Rows whose declarations retain older zero-like names remain registered for
+signature continuity. Their labels explicitly identify them as legacy or
+radial-presentation results; they do not define the release ontology.
 
 ## 2. Positional arithmetic
 
@@ -72,13 +87,17 @@ fully qualified Lean names but do not receive synthetic theorem identifiers.
 | `NCG-REA-001` | `Operator.quadraticEnergy_rotationDirection` | Real Rotation Unit-Energy Theorem |
 | `NCG-REA-002` | `Operator.quadraticEnergy_realCarryState` | Radial-Deformation Energy Invariance |
 | `NCG-REA-003` | `Operator.realCarryEnergyCompatible_iff` | Radial-Deformation Mass Rigidity |
-| `NCG-REA-004` | `Operator.quadraticEnergy_nativeRealCarryState` | Native State Inverse-Mass Energy |
+| `NCG-REA-004` | `Operator.quadraticEnergy_nativeRealCarryState` | Native State Carry-Mass Energy |
+| `NCG-REA-005` | `Operator.quadraticEnergy_radialDeformationState` | Canonical Radial-Deformation Quadratic-Norm Identity |
+| `NCG-REA-006` | `Operator.radialDeformationRepresentsNativeMass_iff` | Canonical Radial-Deformation Mass Rigidity |
 | `NCG-OPR-001` | `Operator.map_finiteSaturatedBracketOperator` | Additive Naturality of the Finite Operator |
 | `NCG-OPR-002` | `Operator.quadraticEnergy_eq_zero_iff` | Faithfulness of Visible Energy |
 | `NCG-OPR-003` | `Operator.isFiniteRealCarryOperatorZero_iff` | Finite Radial-Presentation Factorization |
 | `NCG-OPR-004` | `Operator.isRealCarryOperatorZero_iff` | Radial Presentation Factorization |
 | `NCG-OPR-005` | `Operator.realCarryOperatorZero_sigma_eq_half` | Radial-Presentation Uniqueness Corollary |
-| `NCG-OPR-006` | `Operator.not_realCarryOperatorZero_of_sigma_ne_half` | Off-Shell Nonrepresentation Corollary |
+| `NCG-OPR-006` | `Operator.not_realCarryOperatorZero_of_sigma_ne_half` | Legacy Off-Shell Nonrepresentation Corollary |
+| `NCG-OPR-007` | `Operator.radialChartRepresentsNativeZero_iff` | Canonical Radial-Chart Native Representation Factorization |
+| `NCG-OPR-008` | `Operator.radialChartRepresentsFiniteNativeZero_iff` | Canonical Finite Radial-Chart Native Representation Factorization |
 
 ## 6. Canonical analytic presentation
 
@@ -91,7 +110,7 @@ fully qualified Lean names but do not receive synthetic theorem identifiers.
 | `NCG-ANL-005` | `Analytic.normalizedBracketChart_camera_independent` | Camera Compatibility |
 | `NCG-ANL-006` | `Analytic.bracketSeries_eq_factor_mul_canonicalCarryContinuation` | Canonical Bracket Factorization |
 | `NCG-ANL-007` | `Analytic.analyticOnNhd_canonicalCarryContinuation` | Holomorphy of the Canonical Continuation |
-| `NCG-ANL-008` | `Analytic.bracketSeries_zero_iff_canonicalCarryContinuation_zero` | Canonical Zero Representation by Any Odd Prime Camera |
+| `NCG-ANL-008` | `Analytic.bracketSeries_zero_iff_canonicalCarryContinuation_zero` | Canonical Chart-Cancellation Representation by Any Odd Prime Camera |
 
 ## 7. Presentation equivalence
 
@@ -108,7 +127,14 @@ fully qualified Lean names but do not receive synthetic theorem identifiers.
 | `NCG-EQV-009` | `Equivalence.canonicalCarryOperatorZero_re_eq_half` | Canonical Analytic Radial-Presentation Uniqueness |
 | `NCG-EQV-010` | `Equivalence.finiteNativeOperator_eq_zero_iff_complexCoordinates_eq_zero` | Native Finite Zero Coordinate Identity |
 | `NCG-EQV-011` | `Equivalence.nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero` | Native Boundary/Analytic Readout Zero Identity |
-| `NCG-EQV-012` | `Equivalence.isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero` | Native Real/Analytic Operator Zero Identity |
+| `NCG-EQV-012` | `Equivalence.isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero` | Legacy Coordinate-Labelled Native Zero Identity |
+| `NCG-EQV-013` | `Equivalence.normSq_complexCoordinates_radialDeformationState` | Radial Complex-Norm Identity |
+| `NCG-EQV-014` | `Equivalence.normSq_complexCoordinates_nativeRealCarryState` | Native Complex-Norm Identity |
+| `NCG-EQV-015` | `Equivalence.radialComplexNormRepresentsNativeMass_iff` | Complex Radial-Chart Mass Rigidity |
+| `NCG-EQV-016` | `Equivalence.normSq_powerMonomial_canonicalParameter` | Power-Monomial Quadratic-Norm Identity |
+| `NCG-EQV-017` | `Equivalence.isNativeCarryOperatorZero_iff_analyticReadout_eq_zero` | One Native Operator Zero Analytic Identity |
+| `NCG-EQV-018` | `Equivalence.analyticChartRepresentsNativeZero_iff` | Analytic-Chart Native Representation Factorization |
+| `NCG-EQV-019` | `Equivalence.analyticChartRepresentsNativeZero_re_eq_half` | Analytic-Chart Native Representation Uniqueness |
 
 All declarations above are relative to the root namespace
 `NativeCarryGeometry`.
@@ -129,7 +155,7 @@ type-repr=<(repr info.type).pretty 1000000>
 Every field ends with LF, including the final field. The deterministic
 exporter loads each declaration under the pinned toolchain, reads its
 elaborated type from the environment, hashes the preimage, and then repeats
-the export in check mode. The 64 committed preimages are stored under
+the export in check mode. The 75 committed preimages are stored under
 `audit/preimages/`.
 
 A source-text hash, proof-body hash, line number, or hand-entered value is not
@@ -155,8 +181,14 @@ compositions:
 - `NCG-OPR-004` is deliberately reproved through `NCG-AMP-003` and
   `NCG-AMP-006`, making the carry-domain dependency visible;
 - `NCG-MAS-003` and `NCG-REA-004` expose the mass-built native tower and state;
-- `NCG-EQV-010/011/012` register the finite, boundary, and operator-level
-  real/analytic zero identities of that same native object.
+- `NCG-REA-005/006` give the canonical sigma/norm and mass-representation
+  statements;
+- `NCG-OPR-007/008` replace zero-like chart nouns with explicit
+  representation relations;
+- `NCG-EQV-013/014/015/016` make quadratic norm preservation explicit in
+  real, complex, and power-monomial coordinates;
+- `NCG-EQV-017` is the principal one-native-zero analytic identity;
+- `NCG-EQV-018/019` factor and confine analytic chart representations.
 
 These relationships are machine-readable in the `dependencies` column of
 `audit/theorems.tsv`.
