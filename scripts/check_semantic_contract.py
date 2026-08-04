@@ -250,7 +250,7 @@ def main() -> int:
             )
 
     for relative, text in by_relative.items():
-        if "�" in text or "â" in text:
+        if "\uFFFD" in text or "\u00e2\u0084" in text:
             errors.append(f"{relative}: broken Unicode encoding marker")
         allowed_controls = "\n"
         if relative == "audit/theorems.tsv":
