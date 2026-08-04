@@ -5,9 +5,9 @@
 The map
 
 [
-J:mathbb R^2longrightarrowmathbb C,
-qquad
-J(x,y)=x+iy
+J : R² → C,
+
+J(x,y) = x + iy
 ]
 
 is implemented as an additive equivalence:
@@ -22,7 +22,7 @@ operator, or an external analytic identification.
 Lean proves:
 
 - injectivity of (J) (`NCG-EQV-001`);
-- (operatorname{normSq}(J(u))=E(u)) (`NCG-EQV-002`);
+- `normSq(J(u)) = E(u)` (`NCG-EQV-002`);
 - naturality through the complete finite bracket (`NCG-EQV-003`);
 - preservation of finite resultant zeros in both directions
   (`NCG-EQV-004` and `NCG-EQV-010`).
@@ -68,7 +68,7 @@ Complex.normSq
   (n : ℝ) ^ (-2 * sigma)
 ```
 
-Thus varying (sigma=operatorname{Re}(s)) in the complex plane is exactly
+Thus varying `sigma = Re(s)` in the complex plane is exactly
 varying the amplitude (n^{-sigma}) and its quadratic norm
 (n^{-2sigma}). It is a change of radial chart, not a change of operator.
 
@@ -83,7 +83,7 @@ E(u_t(n))=n^{-1}.
 By `NCG-EQV-014`:
 
 [
-operatorname{normSq}(J(u_t(n)))=n^{-1}.
+normSq(J(u_t(n))) = n^{-1}.
 ]
 
 The ambient complex radial chart preserves this native mass for all
@@ -209,7 +209,7 @@ curvature, Green, or external-function argument.
 | Concept | Canonical name | Meaning |
 |---|---|---|
 | Native operator zero | `IsNativeCarryOperatorZero` | boundary zero of the mass-built tower |
-| Real coordinate encoding | `complexCoordinates` | additive equivalence (mathbb R^2simeqmathbb C) |
+| Real coordinate encoding | `complexCoordinates` | additive equivalence R² ≃ C |
 | Ambient radial cancellation | `RadialChartCancelsAt` | cancellation of a comparison chart |
 | Analytic ambient cancellation | `canonicalCarryContinuation s = 0` | same chart cancellation in complex coordinates |
 | Native representation relation | `RadialChartRepresentsNativeZero` / `AnalyticChartRepresentsNativeZero` | mass preservation plus chart cancellation |
