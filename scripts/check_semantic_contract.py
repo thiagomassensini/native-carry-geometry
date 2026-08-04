@@ -252,8 +252,12 @@ def main() -> int:
     for relative, text in by_relative.items():
         if "�" in text or "â" in text:
             errors.append(f"{relative}: broken Unicode encoding marker")
+        allowed_controls = "\n"
+        if relative == "audit/theorems.tsv":
+            allowed_controls += "\t"
         controls = sorted(
-            {ord(char) for char in text if ord(char) < 32 and char not in "\n\t"}
+            {ord(char) for char in text
+             if ord(char) < 32 and char not in allowed_controls}
         )
         if controls:
             errors.append(
@@ -261,14 +265,17 @@ def main() -> int:
                 + ", ".join(str(code) for code in controls)
             )
         if relative.endswith(".md"):
-            for token in (
-                "operatorname{",
-                "mathbb ",
-                "qquad",
-                "longrightarrow",
-                "simeq",
-            ):
-                if token in text and f"\\{token}" not in text:
+            lost_tex_patterns = (
+                (r"(?<!\\)operatorname\{", "operatorname{"),
+                (r"(?<!\\)mathbb\{", "mathbb{"),
+                (r"(?<!\\)frac\{", "frac{"),
+                (
+                    r"(?<!\\)(?:qquad|longrightarrow|simeq)(?![A-Za-z])",
+                    "standalone TeX command",
+                ),
+            )
+            for pattern, token in lost_tex_patterns:
+                if re.search(pattern, text):
                     errors.append(
                         f"{relative}: possible lost TeX escape before {token!r}"
                     )
