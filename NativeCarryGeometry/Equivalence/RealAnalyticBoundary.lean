@@ -472,8 +472,8 @@ theorem isNativeCarryOperatorZero_iff_analyticReadout_eq_zero
 
 /--
 Legacy coordinate-labelled name for the zero read through the analytic
-coordinates of the already weighted native tower. It defines the same zero
-locus, not a different zero predicate.
+coordinates of the already weighted native tower. It defines the same native
+operator-zero locus and introduces no additional operator-zero predicate.
 -/
 abbrev IsNativeCanonicalCarryOperatorZero (time : ℝ) : Prop :=
   nativeCarryAnalyticReadout time = 0
