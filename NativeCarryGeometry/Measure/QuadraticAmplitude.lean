@@ -69,7 +69,7 @@ theorem branchNormSq_eq_closed
   rw [hexponent, Real.rpow_neg_one]
 
 /--
-Lema algebrico: com `p-1` pernas, a massa geometrica normalizada vale um
+Lema algébrico: com `p-1` pernas, a energia quadrática radial normalizada vale um
 exatamente quando sua razao vale `1/p`.
 -/
 theorem normalizedGeometricMass_eq_one_iff
@@ -316,7 +316,7 @@ theorem branchNormSq_eq_closed_of_one_lt
   ring
 
 /--
-Com `b-1` pernas, a massa geometrica normalizada vale um exatamente quando
+Com `b-1` pernas, a energia quadrática radial normalizada vale um exatamente quando
 sua razao vale `1/b`; nenhuma fatoracao de `b` e usada.
 -/
 theorem normalizedGeometricMass_eq_one_iff_of_one_lt
@@ -399,7 +399,7 @@ namespace NativeCarryGeometry.Measure
 
 noncomputable section
 
-/-- NCG-AMP-001: Deformed Amplitude Energy Identity. -/
+/-- NCG-AMP-001: Radial-Deformation Quadratic-Energy Identity (Legacy Declaration Name). -/
 @[simp] theorem deformedAmplitude_sq_eq_massWeight
     (b : ℕ) (sigma : ℝ) (k : ℕ) :
     (deformedAmplitude b sigma k) ^ 2 =
