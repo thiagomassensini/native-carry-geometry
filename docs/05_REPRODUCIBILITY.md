@@ -55,7 +55,7 @@ The minimum release audit consists of:
 8. checking every versioned text file against the semantic contract;
 9. failing if generated registry files differ from committed release data.
 
-For the principal one-zero theorem, an auditor should inspect:
+For the principal native zero-locus identity theorem, an auditor should inspect:
 
 ```lean
 #check NativeCarryGeometry.Equivalence.isNativeCarryOperatorZero_iff_analyticReadout_eq_zero
@@ -73,7 +73,7 @@ The intended layer boundaries are:
 |---|---|---|
 | Arithmetic | finite arithmetic, divisibility, valuations | complex analysis, infinite operator limits |
 | Measure | real powers, finite probability, geometric sums | analytic presentation |
-| Bracket | additive or ring algebra | boundary or analytic zero predicates |
+| Bracket | additive or ring algebra | native boundary predicate or analytic chart-cancellation equation |
 | Real operator | real topology and limits | analytic continuation modules |
 | Analytic presentation | complex analysis and bracket modules | excluded historical operator routes |
 | Equivalence | real and analytic public APIs | misclassified ambient chart cancellations |
