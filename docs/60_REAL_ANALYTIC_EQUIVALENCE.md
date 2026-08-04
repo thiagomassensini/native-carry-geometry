@@ -117,7 +117,7 @@ For odd prime cameras, the right-hand side is also the finite analytic bracket
 chart evaluated at the same samples. This is an equality of complete
 resultants, not merely equality of norms or zero sets.
 
-## 5. The native operator-zero predicate
+## 5. The native operator-zero predicate and its zero locus
 
 The native analytic readout is:
 
@@ -126,7 +126,7 @@ nativeCarryAnalyticReadout time :=
   canonicalCarryContinuation ⟨1 / 2, time⟩
 ```
 
-The canonical zero predicate is:
+The canonical native operator-zero predicate is:
 
 ```lean
 Operator.IsNativeCarryOperatorZero camera time
@@ -141,7 +141,8 @@ Operator.IsNativeCarryOperatorZero 3 time ↔
 ```
 
 Both sides already use the mass-built native tower. No additional mass premise
-is attached to the zero, and no second zero object is introduced.
+is attached to the predicate, and no additional operator-zero predicate is
+introduced.
 
 The older theorem `NCG-EQV-012` uses the coordinate-labelled aliases
 `IsNativeRealCarryOperatorZero` and
