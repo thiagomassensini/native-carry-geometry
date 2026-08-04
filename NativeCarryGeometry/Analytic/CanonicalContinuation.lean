@@ -422,7 +422,7 @@ theorem analyticOnNhd_canonicalCarryContinuation :
     AnalyticOnNhd ℂ canonicalCarryContinuation canonicalStrip :=
   Internal.Analytic.Cp.analyticOnNhd_genuineContinuation_genuineCriticalStrip
 
-/-- NCG-ANL-008: Canonical Zero Representation by Any Odd Prime Camera. -/
+/-- NCG-ANL-008: Canonical Chart-Cancellation Representation by Any Odd Prime Camera. -/
 theorem bracketSeries_zero_iff_canonicalCarryContinuation_zero
     (camera : ℕ) (hprime : Nat.Prime camera) (hodd : Odd camera)
     {s : ℂ} (hs : s ∈ canonicalStrip) :
