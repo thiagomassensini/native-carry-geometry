@@ -195,7 +195,7 @@ AnalyticChartRepresentsNativeZero s ↔
 ```
 
 The first coordinate is therefore representation data. Once the chart
-represents the native tower, it is definitionally on the native shell and its
+represents the native tower, it is provably on the native shell and its
 cancellation is the one native zero.
 
 Historical names such as `IsRealCarryOperatorZero`,
