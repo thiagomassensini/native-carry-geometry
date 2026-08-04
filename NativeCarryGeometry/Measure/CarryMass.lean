@@ -21,7 +21,11 @@ def branchAmplitude (p : ℕ) (sigma : ℝ) (k : ℕ) : ℝ :=
 def branchRatio (p : ℕ) (sigma : ℝ) : ℝ :=
   (p : ℝ) ^ (-2 * sigma)
 
-/-- Massa quadratica de uma perna na profundidade `k`. -/
+/--
+Peso de energia quadratica da deformacao radial em `sigma`.  Nao e a massa
+nativa de carry; coincide com `criticalMass p k` na apresentacao
+`sigma = 1/2`.
+-/
 def branchMassWeight (p : ℕ) (sigma : ℝ) (k : ℕ) : ℝ :=
   (branchRatio p sigma) ^ k
 
@@ -96,14 +100,27 @@ abbrev carryMass (b k : ℕ) : ℝ :=
 abbrev criticalAmplitude (b k : ℕ) : ℝ :=
   Internal.Carry.Cp.criticalAmplitude b k
 
+/-- Preferred name for the nonnegative quadratic root of carry mass. -/
+abbrev carryAmplitude (b k : ℕ) : ℝ :=
+  criticalAmplitude b k
+
 abbrev deformedAmplitude (b : ℕ) (sigma : ℝ) (k : ℕ) : ℝ :=
   Internal.Carry.Cp.branchAmplitude b sigma k
 
 abbrev radialRatio (b : ℕ) (sigma : ℝ) : ℝ :=
   Internal.Carry.Cp.branchRatio b sigma
 
+/--
+Legacy name for the sigma-dependent radial energy weight.  This object is not
+`carryMass` away from `sigma = 1/2`.
+-/
 abbrev massWeight (b : ℕ) (sigma : ℝ) (k : ℕ) : ℝ :=
   Internal.Carry.Cp.branchMassWeight b sigma k
+
+/-- Preferred semantic name for the quadratic energy of a radial deformation. -/
+abbrev radialEnergyWeight
+    (b : ℕ) (sigma : ℝ) (k : ℕ) : ℝ :=
+  massWeight b sigma k
 
 /-!
 ## Native integer tower
