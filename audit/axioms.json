@@ -401,6 +401,33 @@
         "Quot.sound",
         "propext"
       ],
+      "declaration": "NativeCarryGeometry.Equivalence.finiteNativeOperator_eq_zero_iff_complexCoordinates_eq_zero",
+      "id": "NCG-EQV-010"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero",
+      "id": "NCG-EQV-011"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero",
+      "id": "NCG-EQV-012"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
       "declaration": "NativeCarryGeometry.Measure.criticalAmplitude_sq_eq_carryMass",
       "id": "NCG-MAS-001"
     },
@@ -412,6 +439,15 @@
       ],
       "declaration": "NativeCarryGeometry.Measure.carryMass_effectiveDepth_eq_centerDepth",
       "id": "NCG-MAS-002"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.nativeTowerAmplitude_sq_eq_mass",
+      "id": "NCG-MAS-003"
     },
     {
       "axioms": [
@@ -534,6 +570,15 @@
       ],
       "declaration": "NativeCarryGeometry.Operator.realCarryEnergyCompatible_iff",
       "id": "NCG-REA-003"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.quadraticEnergy_nativeRealCarryState",
+      "id": "NCG-REA-004"
     }
   ]
 }

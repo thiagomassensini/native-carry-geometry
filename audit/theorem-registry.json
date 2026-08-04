@@ -822,6 +822,63 @@
         "Quot.sound",
         "propext"
       ],
+      "declaration": "NativeCarryGeometry.Equivalence.finiteNativeOperator_eq_zero_iff_complexCoordinates_eq_zero",
+      "dependencies": "NCG-EQV-001",
+      "id": "NCG-EQV-010",
+      "kind": "theorem",
+      "label": "Native Finite Zero Coordinate Identity",
+      "migration_kind": "composed_new",
+      "module": "NativeCarryGeometry.Equivalence.ComplexCoordinates",
+      "notes": "The finite native real operator and its complex-coordinate image have exactly the same zeros.",
+      "source_commit": "-",
+      "source_declaration": "-",
+      "type_repr": "Lean.Expr.forallE `camera (Lean.Expr.const `Nat []) (Lean.Expr.forallE `cutoff (Lean.Expr.const `Nat []) (Lean.Expr.forallE `time (Lean.Expr.const `Real []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Iff []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Eq [Lean.Level.succ (Lean.Level.zero)]) (Lean.Expr.const `NativeCarryGeometry.Operator.RealCarryPlane [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Operator.finiteNativeRealCarryOperator []) (Lean.Expr.bvar 2)) (Lean.Expr.bvar 1)) (Lean.Expr.bvar 0))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `OfNat.ofNat [Lean.Level.zero]) (Lean.Expr.const `NativeCarryGeometry.Operator.RealCarryPlane [])) (Lean.Expr.lit (Lean.Literal.natVal 0))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Zero.toOfNat0 [Lean.Level.zero]) (Lean.Expr.const `NativeCarryGeometry.Operator.RealCarryPlane [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Prod.instZero [Lean.Level.zero, Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real.instZero [])) (Lean.Expr.const `Real.instZero [])))))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Eq [Lean.Level.succ (Lean.Level.zero)]) (Lean.Expr.const `Complex [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `DFunLike.coe [Lean.Level.succ (Lean.Level.zero), Lean.Level.succ (Lean.Level.zero), Lean.Level.succ (Lean.Level.zero)]) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `AddEquiv [Lean.Level.zero, Lean.Level.zero]) (Lean.Expr.const `NativeCarryGeometry.Operator.RealCarryPlane [])) (Lean.Expr.const `Complex [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Prod.instAdd [Lean.Level.zero, Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real.instAdd [])) (Lean.Expr.const `Real.instAdd []))) (Lean.Expr.const `Complex.instAdd []))) (Lean.Expr.const `NativeCarryGeometry.Operator.RealCarryPlane [])) (Lean.Expr.lam (Lean.Name.mkNum (Lean.Name.mkStr (Lean.Name.mkStr (Lean.Name.mkNum `x.«_@».Mathlib.Data.FunLike.Basic 2582841819) \"_hygCtx\") \"_hyg\") 11) (Lean.Expr.const `NativeCarryGeometry.Operator.RealCarryPlane []) (Lean.Expr.const `Complex []) (Lean.BinderInfo.default))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `EquivLike.toFunLike [Lean.Level.succ (Lean.Level.zero), Lean.Level.succ (Lean.Level.zero), Lean.Level.succ (Lean.Level.zero)]) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `AddEquiv [Lean.Level.zero, Lean.Level.zero]) (Lean.Expr.const `NativeCarryGeometry.Operator.RealCarryPlane [])) (Lean.Expr.const `Complex [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Prod.instAdd [Lean.Level.zero, Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real.instAdd [])) (Lean.Expr.const `Real.instAdd []))) (Lean.Expr.const `Complex.instAdd []))) (Lean.Expr.const `NativeCarryGeometry.Operator.RealCarryPlane [])) (Lean.Expr.const `Complex [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `AddEquiv.instEquivLike [Lean.Level.zero, Lean.Level.zero]) (Lean.Expr.const `NativeCarryGeometry.Operator.RealCarryPlane [])) (Lean.Expr.const `Complex [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Prod.instAdd [Lean.Level.zero, Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real.instAdd [])) (Lean.Expr.const `Real.instAdd []))) (Lean.Expr.const `Complex.instAdd [])))) (Lean.Expr.const `NativeCarryGeometry.Equivalence.complexCoordinates [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Operator.finiteNativeRealCarryOperator []) (Lean.Expr.bvar 2)) (Lean.Expr.bvar 1)) (Lean.Expr.bvar 0)))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `OfNat.ofNat [Lean.Level.zero]) (Lean.Expr.const `Complex [])) (Lean.Expr.lit (Lean.Literal.natVal 0))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Zero.toOfNat0 [Lean.Level.zero]) (Lean.Expr.const `Complex [])) (Lean.Expr.const `Complex.instZero []))))) (Lean.BinderInfo.default)) (Lean.BinderInfo.default)) (Lean.BinderInfo.default)",
+      "type_sha256": "bea55af94337e27715dd1858d128effc3fc1f8da17ea4cef51263bef15acf64c"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero",
+      "dependencies": "NCG-EQV-007,api:NativeCarryGeometry.Operator.radialDeformationBoundary_half_iff_native",
+      "id": "NCG-EQV-011",
+      "kind": "theorem",
+      "label": "Native Boundary/Analytic Readout Zero Identity",
+      "migration_kind": "composed_new",
+      "module": "NativeCarryGeometry.Equivalence.RealAnalyticBoundary",
+      "notes": "The camera-three native boundary and the analytic readout of the same weighted tower have identical zero predicates.",
+      "source_commit": "-",
+      "source_declaration": "-",
+      "type_repr": "Lean.Expr.forallE `time (Lean.Expr.const `Real []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Iff []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Operator.NativeBoundaryConvergesToZero []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `OfNat.ofNat [Lean.Level.zero]) (Lean.Expr.const `Nat [])) (Lean.Expr.lit (Lean.Literal.natVal 3))) (Lean.Expr.app (Lean.Expr.const `instOfNatNat []) (Lean.Expr.lit (Lean.Literal.natVal 3))))) (Lean.Expr.bvar 0))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Eq [Lean.Level.succ (Lean.Level.zero)]) (Lean.Expr.const `Complex [])) (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Equivalence.nativeCarryAnalyticReadout []) (Lean.Expr.bvar 0))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `OfNat.ofNat [Lean.Level.zero]) (Lean.Expr.const `Complex [])) (Lean.Expr.lit (Lean.Literal.natVal 0))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Zero.toOfNat0 [Lean.Level.zero]) (Lean.Expr.const `Complex [])) (Lean.Expr.const `Complex.instZero []))))) (Lean.BinderInfo.default)",
+      "type_sha256": "cde4614e99b39a3d4b758459aa4a9cfd67a654ca13e2a8f716ac1ab800a2e4e4"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero",
+      "dependencies": "NCG-EQV-011",
+      "id": "NCG-EQV-012",
+      "kind": "theorem",
+      "label": "Native Real/Analytic Operator Zero Identity",
+      "migration_kind": "composed_new",
+      "module": "NativeCarryGeometry.Equivalence.RealAnalyticBoundary",
+      "notes": "The native real operator zero and its analytic coordinate presentation are the same proposition.",
+      "source_commit": "-",
+      "source_declaration": "-",
+      "type_repr": "Lean.Expr.forallE `time (Lean.Expr.const `Real []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Iff []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Operator.IsNativeRealCarryOperatorZero []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `OfNat.ofNat [Lean.Level.zero]) (Lean.Expr.const `Nat [])) (Lean.Expr.lit (Lean.Literal.natVal 3))) (Lean.Expr.app (Lean.Expr.const `instOfNatNat []) (Lean.Expr.lit (Lean.Literal.natVal 3))))) (Lean.Expr.bvar 0))) (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Equivalence.IsNativeCanonicalCarryOperatorZero []) (Lean.Expr.bvar 0))) (Lean.BinderInfo.default)",
+      "type_sha256": "943994cf93fc062f717145e4cb5cb64b095bc259e2af120aa8cc214714c89ec1"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
       "declaration": "NativeCarryGeometry.Measure.criticalAmplitude_sq_eq_carryMass",
       "dependencies": "-",
       "id": "NCG-MAS-001",
@@ -853,6 +910,25 @@
       "source_declaration": "CPFormal.Carry.Cp.criticalMass_effectiveDepth_eq_centerDepth",
       "type_repr": "Lean.Expr.forallE `b (Lean.Expr.const `Nat []) (Lean.Expr.forallE `hb (Lean.Expr.app (Lean.Expr.const `Nat.Prime []) (Lean.Expr.bvar 0)) (Lean.Expr.forallE `hbodd (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Odd [Lean.Level.zero]) (Lean.Expr.const `Nat [])) (Lean.Expr.const `Nat.instSemiring [])) (Lean.Expr.bvar 1)) (Lean.Expr.forallE `n (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Arithmetic.Balanced.Nonmultiple []) (Lean.Expr.bvar 2)) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Eq [Lean.Level.succ (Lean.Level.zero)]) (Lean.Expr.const `Real [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Measure.carryMass []) (Lean.Expr.bvar 3)) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Arithmetic.Balanced.effectiveDepth []) (Lean.Expr.bvar 3)) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Subtype.val [Lean.Level.succ (Lean.Level.zero)]) (Lean.Expr.const `Int [])) (Lean.Expr.lam `n (Lean.Expr.const `Int []) (Lean.Expr.app (Lean.Expr.const `Not []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Dvd.dvd [Lean.Level.zero]) (Lean.Expr.const `Int [])) (Lean.Expr.const `Int.instDvd [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Nat.cast [Lean.Level.zero]) (Lean.Expr.const `Int [])) (Lean.Expr.const `instNatCastInt [])) (Lean.Expr.bvar 4))) (Lean.Expr.bvar 0))) (Lean.BinderInfo.default))) (Lean.Expr.bvar 0))))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Measure.carryMass []) (Lean.Expr.bvar 3)) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Arithmetic.Balanced.centerDepth []) (Lean.Expr.bvar 3)) (Lean.Expr.bvar 2)) (Lean.Expr.bvar 1)) (Lean.Expr.bvar 0)))) (Lean.BinderInfo.default)) (Lean.BinderInfo.default)) (Lean.BinderInfo.default)) (Lean.BinderInfo.default)",
       "type_sha256": "202242401c9234399375a68b0f4802b168855ff8fbb6cec6d61c713e49468336"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Measure.nativeTowerAmplitude_sq_eq_mass",
+      "dependencies": "NCG-MAS-001",
+      "id": "NCG-MAS-003",
+      "kind": "theorem",
+      "label": "Native Tower Amplitude-Mass Identity",
+      "migration_kind": "composed_new",
+      "module": "NativeCarryGeometry.Measure.CarryMass",
+      "notes": "The positive-integer native tower is constructed with quadratic amplitude whose square is its carry mass.",
+      "source_commit": "-",
+      "source_declaration": "-",
+      "type_repr": "Lean.Expr.forallE `n (Lean.Expr.const `Int []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Eq [Lean.Level.succ (Lean.Level.zero)]) (Lean.Expr.const `Real [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `HPow.hPow [Lean.Level.zero, Lean.Level.zero, Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Nat [])) (Lean.Expr.const `Real [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `instHPow [Lean.Level.zero, Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Nat [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `NPow.toPow [Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Monoid.toNPow [Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real.instMonoid []))))) (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Measure.nativeTowerAmplitude []) (Lean.Expr.bvar 0))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `OfNat.ofNat [Lean.Level.zero]) (Lean.Expr.const `Nat [])) (Lean.Expr.lit (Lean.Literal.natVal 2))) (Lean.Expr.app (Lean.Expr.const `instOfNatNat []) (Lean.Expr.lit (Lean.Literal.natVal 2)))))) (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Measure.nativeTowerMass []) (Lean.Expr.bvar 0))) (Lean.BinderInfo.default)",
+      "type_sha256": "eabb17e8817e9115096e293bda486cceb23479ad2c896fefc26b8fc347176749"
     },
     {
       "axioms": [
@@ -1115,6 +1191,25 @@
       "source_declaration": "CPFormal.Analytic.Cp.nativeCarryRealPlaneMassCompatible_iff",
       "type_repr": "Lean.Expr.forallE `sigma (Lean.Expr.const `Real []) (Lean.Expr.forallE `time (Lean.Expr.const `Real []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Iff []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Operator.RealCarryEnergyCompatible []) (Lean.Expr.bvar 1)) (Lean.Expr.bvar 0))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Eq [Lean.Level.succ (Lean.Level.zero)]) (Lean.Expr.const `Real [])) (Lean.Expr.bvar 1)) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `HDiv.hDiv [Lean.Level.zero, Lean.Level.zero, Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `instHDiv [Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `DivInvMonoid.toDiv [Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real.instDivInvMonoid [])))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `OfNat.ofNat [Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.lit (Lean.Literal.natVal 1))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `One.toOfNat1 [Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real.instOne [])))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `OfNat.ofNat [Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.lit (Lean.Literal.natVal 2))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `instOfNatAtLeastTwo [Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.lit (Lean.Literal.natVal 2))) (Lean.Expr.const `Real.instNatCast [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Nat.instAtLeastTwoHAddOfNat []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `OfNat.ofNat [Lean.Level.zero]) (Lean.Expr.const `Nat [])) (Lean.Expr.lit (Lean.Literal.natVal 1))) (Lean.Expr.app (Lean.Expr.const `instOfNatNat []) (Lean.Expr.lit (Lean.Literal.natVal 1))))) (Lean.Expr.app (Lean.Expr.const `Nat.instNeZeroSucc []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `OfNat.ofNat [Lean.Level.zero]) (Lean.Expr.const `Nat [])) (Lean.Expr.lit (Lean.Literal.natVal 0))) (Lean.Expr.app (Lean.Expr.const `instOfNatNat []) (Lean.Expr.lit (Lean.Literal.natVal 0))))))))))) (Lean.BinderInfo.default)) (Lean.BinderInfo.default)",
       "type_sha256": "cc7ba8e6346b6dbbda5139beeaec29db65a2b5e942bd0bdab4930cd531e97f7d"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.quadraticEnergy_nativeRealCarryState",
+      "dependencies": "NCG-MAS-003",
+      "id": "NCG-REA-004",
+      "kind": "theorem",
+      "label": "Native State Inverse-Mass Energy",
+      "migration_kind": "composed_new",
+      "module": "NativeCarryGeometry.Operator.RealState",
+      "notes": "The carry-built rotating state has inverse-integer quadratic energy, independently of phase time.",
+      "source_commit": "-",
+      "source_declaration": "-",
+      "type_repr": "Lean.Expr.forallE `time (Lean.Expr.const `Real []) (Lean.Expr.forallE `n (Lean.Expr.const `Int []) (Lean.Expr.forallE `hn (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `LT.lt [Lean.Level.zero]) (Lean.Expr.const `Int [])) (Lean.Expr.const `Int.instLTInt [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `OfNat.ofNat [Lean.Level.zero]) (Lean.Expr.const `Int [])) (Lean.Expr.lit (Lean.Literal.natVal 0))) (Lean.Expr.app (Lean.Expr.const `instOfNat []) (Lean.Expr.lit (Lean.Literal.natVal 0))))) (Lean.Expr.bvar 0)) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Eq [Lean.Level.succ (Lean.Level.zero)]) (Lean.Expr.const `Real [])) (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Operator.quadraticEnergy []) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `NativeCarryGeometry.Operator.nativeRealCarryState []) (Lean.Expr.bvar 2)) (Lean.Expr.bvar 1)))) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Inv.inv [Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real.instInv [])) (Lean.Expr.app (Lean.Expr.app (Lean.Expr.app (Lean.Expr.const `Int.cast [Lean.Level.zero]) (Lean.Expr.const `Real [])) (Lean.Expr.const `Real.instIntCast [])) (Lean.Expr.bvar 1)))) (Lean.BinderInfo.default)) (Lean.BinderInfo.implicit)) (Lean.BinderInfo.default)",
+      "type_sha256": "20d7d3e4b403102c49953146646ba1a7d1dbc958d5b26f9d0ffa9f14684ae626"
     }
   ]
 }
