@@ -125,7 +125,8 @@ The principal theorems are:
 It is not an `OperatorZero` theorem. The native operator readout is obtained
 by restricting the same coordinate formula to `s.re = 1/2`, already fixed by
 the carry-built tower. `NCG-EQV-017` then proves the exact identity between
-the native operator-zero predicate and its analytic readout.
+the native operator-zero predicate and the analytic readout with the same zero
+locus.
 
 
 ## 7. Sigma in the analytic coordinate
