@@ -115,7 +115,7 @@ theorem normSq_packaged_nativeCarryFiniteSaturatedChart
 
 /--
 For an odd prime camera, the packaged real resultant is literally the generic
-finite Genuine chart evaluated on the packaged real samples.
+legacy finite balanced-bracket chart evaluated on the packaged real samples.
 -/
 theorem nativeCarryRealPlaneComplexPackaging_eq_finiteChart
     (p M : ℕ) (hp : Nat.Prime p) (hpodd : Odd p)
@@ -143,7 +143,7 @@ theorem nativeCarryRealPlaneComplexPackaging_eq_finiteChart
         p M hp hpodd _
 
 /--
-The real camera and its packaged finite Genuine chart have exactly the same
+The real camera and its packaged finite balanced-bracket chart have exactly the same
 zero predicate.
 -/
 theorem nativeCarryRealPlaneFiniteChartAt_zero_iff_packaged_zero
