@@ -328,6 +328,24 @@ theorem complexCoordinates_realCarryState_eq_powerMonomial
     Internal.Analytic.Cp.nativeCarryRealPlaneComplexPackaging_sampleAt_eq_dirichletTerm
       sigma time hn
 
+/--
+NCG-EQV-016: Complex Power-Monomial Quadratic-Norm Identity.
+
+Writing the radial deformation as `n^(-s)` changes no mathematics: the real
+coordinate `s.re = sigma` is exactly the exponent in the already proved
+quadratic norm `n^(-2*sigma)`.
+-/
+@[simp] theorem normSq_powerMonomial_canonicalParameter
+    (sigma time : ℝ) {n : ℤ} (hn : 0 < n) :
+    Complex.normSq
+        (Analytic.powerMonomial
+          (canonicalParameter sigma time) n) =
+      (n : ℝ) ^ (-2 * sigma) := by
+  rw [← complexCoordinates_realCarryState_eq_powerMonomial
+    sigma time hn]
+  exact normSq_complexCoordinates_radialDeformationState
+    sigma time hn
+
 /-- The native real state and its complex form are exactly coordinate images. -/
 theorem complexCoordinates_nativeRealCarryState_eq_powerMonomial
     (time : ℝ) {n : ℤ} (hn : 0 < n) :
@@ -428,6 +446,18 @@ theorem nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero
   simpa [nativeCarryAnalyticReadout, nativeCanonicalParameter,
     canonicalParameter] using hradial
 
+/--
+NCG-EQV-017: One Native Operator Zero, Analytic Coordinate Form.
+
+This is the principal zero theorem.  The left side is the unique zero predicate
+of the mass-built operator; the right side is its complex-coordinate readout.
+-/
+theorem isNativeCarryOperatorZero_iff_analyticReadout_eq_zero
+    (time : ℝ) :
+    Operator.IsNativeCarryOperatorZero 3 time ↔
+      nativeCarryAnalyticReadout time = 0 :=
+  nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero time
+
 /-- Native analytic zero: zero of the readout of the already weighted tower. -/
 abbrev IsNativeCanonicalCarryOperatorZero (time : ℝ) : Prop :=
   nativeCarryAnalyticReadout time = 0
@@ -442,13 +472,33 @@ theorem isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero
   nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero time
 
 /--
-Compatibility predicate for the two-coordinate radial analytic presentation.
-It records when an ambient scalar parameter represents the already-built
-native tower; it is not the definition of the native operator zero.
+The ambient analytic chart represents a native zero when its radial coordinate
+preserves the upstream mass and its analytic resultant cancels.  This is a
+representation predicate, not a second kind of operator zero.
 -/
-def IsCanonicalCarryOperatorZero (s : ℂ) : Prop :=
+def AnalyticChartRepresentsNativeZero (s : ℂ) : Prop :=
   Operator.RealCarryEnergyCompatible s.re s.im ∧
     Analytic.canonicalCarryContinuation s = 0
+
+/--
+Legacy compatibility alias for `AnalyticChartRepresentsNativeZero`.
+-/
+abbrev IsCanonicalCarryOperatorZero (s : ℂ) : Prop :=
+  AnalyticChartRepresentsNativeZero s
+
+/--
+NCG-EQV-018: Analytic-Chart Representation Factorization.
+
+The complex radial coordinate represents the native mass exactly at one half;
+the remaining conjunct is cancellation of the ambient analytic chart.
+-/
+theorem analyticChartRepresentsNativeZero_iff
+    (s : ℂ) :
+    AnalyticChartRepresentsNativeZero s ↔
+      s.re = (1 : ℝ) / 2 ∧
+        Analytic.canonicalCarryContinuation s = 0 := by
+  unfold AnalyticChartRepresentsNativeZero
+  rw [Operator.realCarryEnergyCompatible_iff]
 
 /--
 NCG-EQV-008: Real/Analytic Radial-Presentation Identity.
@@ -479,6 +529,29 @@ theorem canonicalCarryOperatorZero_re_eq_half
       Operator.IsRealCarryOperatorZero 3 s.re s.im :=
     (isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero hs).2 hzero
   exact Operator.realCarryOperatorZero_sigma_eq_half hreal
+
+/--
+NCG-EQV-019: Analytic-Chart Native Representation Uniqueness.
+
+No strip hypothesis is needed for this representation statement: preserving
+the carry-built quadratic norm itself forces the radial coordinate to one half.
+-/
+theorem analyticChartRepresentsNativeZero_re_eq_half
+    {s : ℂ} (hrep : AnalyticChartRepresentsNativeZero s) :
+    s.re = (1 : ℝ) / 2 :=
+  ((analyticChartRepresentsNativeZero_iff s).1 hrep).1
+
+/--
+Canonical-name form of the real/analytic representation crosswalk.  It says
+that two coordinate charts represent the same native zero.
+-/
+theorem radialChartRepresentsNativeZero_iff_analyticChartRepresentsNativeZero
+    {s : ℂ} (hs : s ∈ Analytic.canonicalStrip) :
+    Operator.RadialChartRepresentsNativeZero 3 s.re s.im ↔
+      AnalyticChartRepresentsNativeZero s := by
+  simpa [Operator.IsRealCarryOperatorZero,
+    IsCanonicalCarryOperatorZero] using
+    (isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero hs)
 
 end
 end NativeCarryGeometry.Equivalence
