@@ -5,6 +5,10 @@ import Mathlib.Tactic
 /-!
 # Bijeção local de carry C2
 
+Este arquivo contem apenas aritmetica finita: cada perna impar determina um
+centro multiplo de quatro e uma incidencia perna--centro. Nenhum operador ou
+predicado de zero e definido aqui.
+
 Todo impar `n >= 3` possui exatamente um vizinho multiplo de quatro. Esse
 vizinho e o centro C2 cuja perna e `n`. Esta e a camada combinatoria que liga o
 canal direto, indexado por impares, ao canal bracketado, indexado por centros.
@@ -38,7 +42,7 @@ theorem four_dvd_adjacentCenter {n : ℕ} (hn : Odd n) :
   · rw [adjacentCenter_of_mod_three h]
     omega
 
-/-- Para as pernas do Genuine, o centro escolhido comeca em `4`. -/
+/-- Para as pernas binarias C2, o centro escolhido comeca em `4`. -/
 theorem four_le_adjacentCenter {n : ℕ} (hn3 : 3 ≤ n) (hn : Odd n) :
     4 ≤ adjacentCenter n := by
   rcases odd_mod_four hn with h | h
@@ -133,7 +137,7 @@ Este arquivo liga a definicao do documento
 
 `k_eff(n) = max (v_2(n-1)) (v_2(n+1))`
 
-ao centro combinatorio escolhido em `C2Adjacent`. Para um impar `n >= 3`, um
+ao centro combinatorio definido por `adjacentCenter` (publicamente `binaryCenter`). Para um impar `n >= 3`, um
 dos vizinhos e congruente a `2 mod 4` e tem profundidade exatamente `1`; o
 outro e o centro multiplo de quatro e tem profundidade pelo menos `2`.
 -/
@@ -174,7 +178,7 @@ theorem two_le_centerDepth {n : ℕ} (hn3 : 3 ≤ n) (hn : Odd n) :
   exact four_dvd_adjacentCenter hn
 
 /--
-Ponte peso--carry C2: a profundidade efetiva da perna e exatamente a
+Identificacao aritmetica carry--profundidade C2: a profundidade efetiva da perna e exatamente a
 profundidade 2-adica do seu centro unico.
 -/
 theorem effectiveDepth_eq_centerDepth {n : ℕ} (hn3 : 3 ≤ n) (hn : Odd n) :
