@@ -10,7 +10,7 @@
   },
   "registry": {
     "path": "audit/theorems.tsv",
-    "id_count": 59,
+    "id_count": 75,
     "module_format": "Lean module name without .lean",
     "type_hash_algorithm": "sha256",
     "type_hash_status": "GENERATED_AND_VERIFIED"
