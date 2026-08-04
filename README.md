@@ -68,7 +68,7 @@ RadialDeformationRepresentsNativeMass sigma time ↔
   sigma = (1 : ℝ) / 2
 ```
 
-Thus changing (operatorname{Re}(s)=sigma) in complex notation is exactly
+Thus changing the real coordinate `sigma = Re(s)` in complex notation is exactly
 changing amplitude and hence quadratic norm. It does not create another
 operator.
 
