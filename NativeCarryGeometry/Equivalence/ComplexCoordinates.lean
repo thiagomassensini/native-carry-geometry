@@ -282,8 +282,8 @@ theorem radialComplexNormRepresentsNativeMass_iff
   · intro hnorm
     apply (Operator.realCarryEnergyCompatible_iff sigma time).1
     intro n hn
-    rw [← normSq_complexCoordinates]
-    exact hnorm n hn
+    have hnormAt := hnorm n hn
+    simpa only [normSq_complexCoordinates] using hnormAt
   · intro hsigma
     have henergy :
         Operator.RealCarryEnergyCompatible sigma time :=
