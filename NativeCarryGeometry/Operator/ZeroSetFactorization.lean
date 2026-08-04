@@ -10,7 +10,7 @@ predicate is therefore just boundary closure of that already weighted state.
 
 The two-coordinate `(sigma,time)` family below is a secondary radial
 presentation.  Its factorization theorem says when that deformation represents
-the native tower; it does not inject mass into the operator after construction.
+the native tower; the presentation never supplies mass to the operator later.
 -/
 
 namespace NativeCarryGeometry.Operator
@@ -18,7 +18,7 @@ namespace NativeCarryGeometry.Operator
 noncomputable section
 
 /--
-The unique zero predicate of the native carry operator.  The tower is already
+The one native operator-zero predicate.  The tower is already
 weighted by the carry mass before this predicate is formed.
 -/
 abbrev IsNativeCarryOperatorZero
@@ -48,7 +48,7 @@ abbrev IsRadialDeformationPresentationZero
     (camera : ℕ) (sigma time : ℝ) : Prop :=
   RadialChartRepresentsNativeZero camera sigma time
 
-/-- Legacy compatibility alias; this does not define a second operator zero. -/
+/-- Legacy compatibility alias; this does not introduce an additional operator-zero predicate. -/
 abbrev IsRealCarryOperatorZero
     (camera : ℕ) (sigma time : ℝ) : Prop :=
   RadialChartRepresentsNativeZero camera sigma time
