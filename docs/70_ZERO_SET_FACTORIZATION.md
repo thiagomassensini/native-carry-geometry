@@ -141,7 +141,7 @@ nativeCarryAnalyticReadout(t) = 0.
 The complex number stores the same two real coordinates. It does not add a
 zero.
 
-## 7. Historical aliases
+## 7. Historical aliases (legacy compatibility)
 
 The following names remain only to avoid breaking downstream source:
 
