@@ -89,6 +89,21 @@ REQUIRED_TEXT = {
         "One Native Zero and Radial-Chart Representation",
         "Historical aliases",
     ],
+    "docs/80_THEOREM_REGISTRY.md": [
+        "Release `v0.3.0` designates 75",
+        "NCG-EQV-017",
+    ],
+    "audit/README.md": [
+        "Release `v0.3.0` contains 75",
+        "One operator zero",
+    ],
+    "lakefile.toml": ['version = "0.3.0"'],
+    "CITATION.cff": ["version: 0.3.0"],
+    ".zenodo.json": ['"version": "0.3.0"'],
+    ".github/workflows/publish-v0.3.0.yml": [
+        "RELEASE_TAG: v0.3.0",
+        "publish-v0.3.0",
+    ],
 }
 
 
@@ -199,6 +214,11 @@ def main() -> int:
             )
     except (KeyError, TypeError, json.JSONDecodeError) as error:
         errors.append(f"invalid audit/source-lock.json: {error}")
+
+    if by_relative.get(".release/v0.3.0.md") != (
+        "publish-v0.3.0\nrequest=1\n"
+    ):
+        errors.append("invalid immutable release sentinel .release/v0.3.0.md")
 
     for relative, required in REQUIRED_TEXT.items():
         text = by_relative.get(relative)
