@@ -176,7 +176,7 @@ abbrev IsNativeCarryOperatorZero
 
 The ambient deformation has only a cancellation predicate,
 `RadialChartCancelsAt camera sigma time`. At `sigma = 1/2`, Lean proves
-that chart cancellation equivalent to the native boundary. Away from the
+that chart cancellation is equivalent to the native boundary. Away from the
 mass-preserving shell it is not classified as an operator zero.
 
 ## 7. Camera cases
@@ -190,7 +190,7 @@ The finite operator is total for all natural cameras.
 - odd prime cameras additionally admit the balanced-residue and finite-prefix
   identities used by the analytic layer.
 
-The universal radial-presentation theorem includes the degenerate cases because
+The universal radial-chart representation theorem includes the degenerate cases because
 its camera parameter is unrestricted. This totality must not be read as a claim
 that every natural width supplies a nondegenerate physical observation rule.
 
