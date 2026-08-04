@@ -129,14 +129,20 @@ theorem nativeCarryRealPlaneFiniteChart_energy_eq_zero_iff
   nativeCarryRealPlaneEnergy_eq_zero_iff _
 
 /--
-A finite radial-presentation zero records both that the deformation represents
-the native mass and that its bracket resultant vanishes.
+An ambient radial chart represents a finite native zero when it preserves the
+upstream carry mass and its bracket resultant vanishes.  This is a chart
+representation predicate, not a separate finite-zero species.
 -/
-def NativeCarryRealPlaneAdmissibleFiniteZero
+def RadialChartRepresentsFiniteNativeZero
     (p M : ℕ) (sigma t : ℝ) : Prop :=
   NativeCarryRealPlaneMassCompatible sigma t ∧
     nativeCarryRealPlaneEnergy
       (nativeCarryRealPlaneFiniteChartAt p M sigma t) = 0
+
+/-- Legacy compatibility alias for the radial-chart representation predicate. -/
+abbrev NativeCarryRealPlaneAdmissibleFiniteZero
+    (p M : ℕ) (sigma t : ℝ) : Prop :=
+  RadialChartRepresentsFiniteNativeZero p M sigma t
 
 /--
 Exact radial-chart factorization: a finite deformation presents a native zero
@@ -217,16 +223,36 @@ theorem quadraticEnergy_eq_zero_iff
     quadraticEnergy u = 0 ↔ u = 0 :=
   Internal.Analytic.Cp.nativeCarryRealPlaneEnergy_eq_zero_iff u
 
-abbrev IsFiniteRealCarryOperatorZero
-    (camera cutoff : ℕ) (sigma time : ℝ) : Prop :=
-  Internal.Analytic.Cp.NativeCarryRealPlaneAdmissibleFiniteZero
-    camera cutoff sigma time
-
-/-- A finite zero of the native operator needs no added mass predicate. -/
-abbrev IsFiniteNativeRealCarryOperatorZero
+/--
+Canonical finite zero of the already weighted native operator.
+-/
+abbrev IsFiniteNativeCarryOperatorZero
     (camera cutoff : ℕ) (time : ℝ) : Prop :=
   quadraticEnergy
       (finiteNativeRealCarryOperator camera cutoff time) = 0
+
+/--
+Legacy coordinate-labelled alias; this is the same finite native zero.
+-/
+abbrev IsFiniteNativeRealCarryOperatorZero
+    (camera cutoff : ℕ) (time : ℝ) : Prop :=
+  IsFiniteNativeCarryOperatorZero camera cutoff time
+
+/--
+The ambient radial chart represents a finite native zero.
+-/
+abbrev RadialChartRepresentsFiniteNativeZero
+    (camera cutoff : ℕ) (sigma time : ℝ) : Prop :=
+  Internal.Analytic.Cp.RadialChartRepresentsFiniteNativeZero
+    camera cutoff sigma time
+
+/--
+Legacy compatibility alias; this is a representation predicate, not another
+operator-zero definition.
+-/
+abbrev IsFiniteRealCarryOperatorZero
+    (camera cutoff : ℕ) (sigma time : ℝ) : Prop :=
+  RadialChartRepresentsFiniteNativeZero camera cutoff sigma time
 
 /-- NCG-OPR-003: Finite Zero-Set Factorization. -/
 theorem isFiniteRealCarryOperatorZero_iff
@@ -237,6 +263,20 @@ theorem isFiniteRealCarryOperatorZero_iff
           (criticalFiniteRealCarryOperator camera cutoff time) = 0 :=
   Internal.Analytic.Cp.nativeCarryRealPlaneAdmissibleFiniteZero_iff
     camera cutoff sigma time
+
+/--
+NCG-OPR-008: Canonical Finite Radial-Chart Representation Factorization.
+-/
+theorem radialChartRepresentsFiniteNativeZero_iff
+    (camera cutoff : ℕ) (sigma time : ℝ) :
+    RadialChartRepresentsFiniteNativeZero camera cutoff sigma time ↔
+      sigma = (1 : ℝ) / 2 ∧
+        IsFiniteNativeCarryOperatorZero camera cutoff time := by
+  simpa [RadialChartRepresentsFiniteNativeZero,
+    IsFiniteNativeCarryOperatorZero,
+    criticalFiniteRealCarryOperator] using
+    (isFiniteRealCarryOperatorZero_iff
+      camera cutoff sigma time)
 
 end
 end NativeCarryGeometry.Operator
