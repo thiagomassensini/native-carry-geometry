@@ -4,11 +4,10 @@
 
 The map
 
-[
-J : R² → C,
-
-J(x,y) = x + iy
-]
+$
+J:\mathbb{R}^{2}\simeq\mathbb{C},
+\qquad J(x,y)=x+iy.
+$
 
 is implemented as an additive equivalence:
 
@@ -21,37 +20,37 @@ operator, or an external analytic identification.
 
 Lean proves:
 
-- injectivity of (J) (`NCG-EQV-001`);
-- `normSq(J(u)) = E(u)` (`NCG-EQV-002`);
+- injectivity of $J$ (`NCG-EQV-001`);
+- $\operatorname{normSq}(J(u))=E(u)$ (`NCG-EQV-002`);
 - naturality through the complete finite bracket (`NCG-EQV-003`);
 - preservation of finite resultant zeros in both directions
   (`NCG-EQV-004` and `NCG-EQV-010`).
 
 Hence:
 
-[
-R=0iff J(R)=0.
-]
+$
+R=0\iff J(R)=0.
+$
 
-There is no “real zero” and “complex zero” to compare. There is one resultant
-and two faithful coordinate records.
+There is no “real zero” and “complex zero” to compare. There is one resultant,
+one zero locus, and two faithful coordinate records.
 
 ## 2. Sigma is the quadratic-norm coordinate
 
 For positive `n`, the ambient radial sample is:
 
-[
-u_{sigma,t}(n)
+$
+u_{\sigma,t}(n)
 =
-n^{-sigma}
-(cos(-tlog n),sin(-tlog n)).
-]
+n^{-\sigma}
+\bigl(\cos(-t\log n),\sin(-t\log n)\bigr).
+$
 
 Its complex coordinate is exactly:
 
-[
-J(u_{sigma,t}(n))=n^{-(sigma+it)}.
-]
+$
+J\bigl(u_{\sigma,t}(n)\bigr)=n^{-(\sigma+it)}.
+$
 
 This is `NCG-EQV-005`. The norm identities are now named directly:
 
@@ -69,22 +68,22 @@ Complex.normSq
 ```
 
 Thus varying `sigma = Re(s)` in the complex plane is exactly
-varying the amplitude (n^{-sigma}) and its quadratic norm
-(n^{-2sigma}). It is a change of radial chart, not a change of operator.
+varying the amplitude $n^{-\sigma}$ and its quadratic norm
+$n^{-2\sigma}$. It is a change of radial chart, not a change of operator.
 
 ## 3. Native mass in both coordinates
 
 The mass-built state has:
 
-[
-E(u_t(n))=n^{-1}.
-]
+$
+E\bigl(u_t(n)\bigr)=n^{-1}.
+$
 
 By `NCG-EQV-014`:
 
-[
-normSq(J(u_t(n))) = n^{-1}.
-]
+$
+\operatorname{normSq}\bigl(J(u_t(n))\bigr)=n^{-1}.
+$
 
 The ambient complex radial chart preserves this native mass for all
 nondegenerate positive inputs exactly at one half:
@@ -118,7 +117,7 @@ For odd prime cameras, the right-hand side is also the finite analytic bracket
 chart evaluated at the same samples. This is an equality of complete
 resultants, not merely equality of norms or zero sets.
 
-## 5. The one native zero
+## 5. The native operator-zero predicate
 
 The native analytic readout is:
 
@@ -151,7 +150,7 @@ same identity.
 
 ## 6. Ambient chart cancellation
 
-For an arbitrary point (s=sigma+it) of the canonical strip, the wider chart
+For an arbitrary point $s=\sigma+it$ of the canonical strip, the wider chart
 crosswalk is:
 
 ```lean
@@ -208,8 +207,8 @@ curvature, Green, or external-function argument.
 
 | Concept | Canonical name | Meaning |
 |---|---|---|
-| Native operator zero | `IsNativeCarryOperatorZero` | boundary zero of the mass-built tower |
-| Real coordinate encoding | `complexCoordinates` | additive equivalence R² ≃ C |
+| Native operator-zero predicate | `IsNativeCarryOperatorZero` | boundary-zero locus of the mass-built tower |
+| Real coordinate encoding | `complexCoordinates` | additive equivalence $\mathbb{R}^{2}\simeq\mathbb{C}$ |
 | Ambient radial cancellation | `RadialChartCancelsAt` | cancellation of a comparison chart |
 | Analytic ambient cancellation | `canonicalCarryContinuation s = 0` | same chart cancellation in complex coordinates |
 | Native representation relation | `RadialChartRepresentsNativeZero` / `AnalyticChartRepresentsNativeZero` | mass preservation plus chart cancellation |
