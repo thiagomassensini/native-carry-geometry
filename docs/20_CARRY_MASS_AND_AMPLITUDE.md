@@ -29,22 +29,23 @@ interpretation of zero residue as the depth-`k` carry event is supplied by:
 residueAtDepth b k n = 0 ↔ b ^ k ∣ n
 ```
 
-## 2. Mass and critical amplitude
+## 2. Mass and carry amplitude
 
 The public quantities are:
 
 $$
 \begin{aligned}
 \operatorname{carryMass}(b,k)&=b^{-k},\\
-\operatorname{criticalAmplitude}(b,k)&=b^{-k/2},\\
+\operatorname{carryAmplitude}(b,k)&=b^{-k/2},\\
 \operatorname{deformedAmplitude}(b,\sigma,k)&=b^{-k\sigma}.
 \end{aligned}
 $$
 
-`NCG-MAS-001` proves the local amplitude–mass identity:
+`carryAmplitude` is the canonical name; `criticalAmplitude` is its legacy
+compatibility alias. `NCG-MAS-001` proves the local amplitude–mass identity:
 
 ```lean
-(criticalAmplitude b k) ^ 2 = carryMass b k
+(carryAmplitude b k) ^ 2 = carryMass b k
 ```
 
 `NCG-MAS-002` transports carry mass across the equality between effective
@@ -61,7 +62,7 @@ def nativeTowerMass (n : ℤ) : ℝ :=
   if 0 < n then carryMass n.toNat 1 else 0
 
 def nativeTowerAmplitude (n : ℤ) : ℝ :=
-  if 0 < n then criticalAmplitude n.toNat 1 else 0
+  if 0 < n then carryAmplitude n.toNat 1 else 0
 ```
 
 and proves
@@ -135,7 +136,7 @@ $$
 \operatorname{radialBranchEnergy}(b,\sigma)
 =
 (b-1)\sum_{k\ge0}
-\operatorname{massWeight}(b,\sigma,k+1).
+\operatorname{radialEnergyWeight}(b,\sigma,k+1).
 $$
 
 Within its positive-`sigma` convergence regime:
@@ -154,7 +155,7 @@ operator nor add mass to its zero predicate.
 ## 6. Radial-presentation crosswalk
 
 The positional description uses depth weights `b⁻ᵏ`. The real state indexed by
-an integer uses energy `n^(-2 sigma)` and compares it with `n⁻¹`. These weights
+an integer uses energy $n^{-2\sigma}$ and compares it with $n^{-1}$. These weights
 are not identified sample by sample.
 
 The downstream formal bridge is:
@@ -178,22 +179,21 @@ evaluation.
 For every positive integer, the same exponent law is proved in all coordinate
 forms:
 
-[
-E(u_{sigma,t}(n))
+$
+E\bigl(u_{\sigma,t}(n)\bigr)
 =
-E(u_{sigma,t}(n))
+\operatorname{normSq}\!\bigl(J(u_{\sigma,t}(n))\bigr)
 =
-normSq(J(u_{sigma,t}(n)))
+\operatorname{normSq}\!\bigl(n^{-(\sigma+it)}\bigr)
 =
-normSq(n^{-(sigma+it)})
-=
-n^{-2sigma}.
+n^{-2\sigma}.
+$
 The registered theorems are `NCG-REA-005`, `NCG-EQV-013`, and
 `NCG-EQV-016`. `NCG-EQV-015` then proves that the complex-coordinate
-family preserves (n^{-1}) for every nondegenerate positive input exactly at
-(sigma=1/2).
+family preserves $n^{-1}$ for every nondegenerate positive input exactly at
+$\sigma=1/2$.
 
-This is the formal content of “sigma is a change of quadratic norm.” It is not
+This is the formal content of “$\sigma$ is a change of quadratic norm.” It is not
 a change of operator or a new zero predicate.
 
 ## 8. Dependency direction
