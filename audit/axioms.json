@@ -428,6 +428,69 @@
         "Quot.sound",
         "propext"
       ],
+      "declaration": "NativeCarryGeometry.Equivalence.normSq_complexCoordinates_radialDeformationState",
+      "id": "NCG-EQV-013"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.normSq_complexCoordinates_nativeRealCarryState",
+      "id": "NCG-EQV-014"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.radialComplexNormRepresentsNativeMass_iff",
+      "id": "NCG-EQV-015"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.normSq_powerMonomial_canonicalParameter",
+      "id": "NCG-EQV-016"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.isNativeCarryOperatorZero_iff_analyticReadout_eq_zero",
+      "id": "NCG-EQV-017"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.analyticChartRepresentsNativeZero_iff",
+      "id": "NCG-EQV-018"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Equivalence.analyticChartRepresentsNativeZero_re_eq_half",
+      "id": "NCG-EQV-019"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
       "declaration": "NativeCarryGeometry.Measure.criticalAmplitude_sq_eq_carryMass",
       "id": "NCG-MAS-001"
     },
@@ -505,6 +568,24 @@
     },
     {
       "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.radialChartRepresentsNativeZero_iff",
+      "id": "NCG-OPR-007"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.radialChartRepresentsFiniteNativeZero_iff",
+      "id": "NCG-OPR-008"
+    },
+    {
+      "axioms": [
         "propext"
       ],
       "declaration": "NativeCarryGeometry.Arithmetic.positionalDecompositionAtDepth_existsUnique",
@@ -579,6 +660,24 @@
       ],
       "declaration": "NativeCarryGeometry.Operator.quadraticEnergy_nativeRealCarryState",
       "id": "NCG-REA-004"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.quadraticEnergy_radialDeformationState",
+      "id": "NCG-REA-005"
+    },
+    {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "declaration": "NativeCarryGeometry.Operator.radialDeformationRepresentsNativeMass_iff",
+      "id": "NCG-REA-006"
     }
   ]
 }
