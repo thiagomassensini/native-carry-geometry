@@ -22,5 +22,16 @@ theorem positionalMassCompatible_iff_realEnergyCompatible
   rw [positionalMassCompatible_iff b hb sigma,
     Operator.realCarryEnergyCompatible_iff sigma time]
 
+/--
+Canonical-name form: the positional mass domain and the radial deformation
+represent the same already-constructed native mass shell.
+-/
+theorem positionalMassCompatible_iff_radialDeformationRepresentsNativeMass
+    (b : ℕ) (hb : 1 < b) (sigma time : ℝ) :
+    PositionalMassCompatible b sigma ↔
+      Operator.RadialDeformationRepresentsNativeMass sigma time :=
+  positionalMassCompatible_iff_realEnergyCompatible
+    b hb sigma time
+
 end
 end NativeCarryGeometry.Measure
