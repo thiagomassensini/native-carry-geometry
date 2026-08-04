@@ -30,11 +30,12 @@ No theorem silently identifies base and camera.
 
 For `b > 1` and depth `k`:
 
-[
-carryMass(b,k) = b^{-k},
-
-carryAmplitude(b,k) = b^{-k/2}.
-]
+$
+\begin{aligned}
+\operatorname{carryMass}(b,k)&=b^{-k},\\
+\operatorname{carryAmplitude}(b,k)&=b^{-k/2}.
+\end{aligned}
+$
 
 The native integer tower is assembled in the measure layer:
 
@@ -50,18 +51,18 @@ with:
 (nativeTowerAmplitude n) ^ 2 = nativeTowerMass n
 ```
 
-For positive `n`, this is the inverse-integer mass (n^{-1}) and its
-quadratic root (n^{-1/2}). The native state reads this amplitude; the
+For positive `n`, this is the inverse-integer mass $n^{-1}$ and its
+quadratic root $n^{-1/2}$. The native state reads this amplitude; the
 operator never receives a later mass condition.
 
 ## 4. Native state and radial comparison chart
 
 The native state has phase time as its free parameter:
 
-[
+$
 u_t(n)=n^{-1/2}
-(cos(-tlog n),sin(-tlog n)).
-]
+\bigl(\cos(-t\log n),\sin(-t\log n)\bigr).
+$
 
 Lean names it:
 
@@ -71,10 +72,10 @@ nativeRealCarryState time n
 
 The ambient radial comparison chart replaces only the amplitude:
 
-[
-u_{sigma,t}(n)=n^{-sigma}
-(cos(-tlog n),sin(-tlog n)).
-]
+$
+u_{\sigma,t}(n)=n^{-\sigma}
+\bigl(\cos(-t\log n),\sin(-t\log n)\bigr).
+$
 
 Lean names it:
 
@@ -84,9 +85,9 @@ radialDeformationState sigma time n
 
 Its quadratic energy is:
 
-[
-|u_{sigma,t}(n)|^2=n^{-2sigma}.
-]
+$
+\lVert u_{\sigma,t}(n)\rVert^2=n^{-2\sigma}.
+$
 
 The exact public results are:
 
@@ -103,7 +104,7 @@ RadialDeformationRepresentsNativeMass sigma time ↔
 Thus `sigma` is not an additional native-operator input. It is the coordinate
 that varies amplitude and quadratic norm in the ambient chart.
 
-## 5. One operator and one zero
+## 5. One native operator-zero predicate
 
 The unique native zero predicate is:
 
@@ -127,15 +128,16 @@ Operator.IsNativeCarryOperatorZero 3 time ↔
   nativeCarryAnalyticReadout time = 0
 ```
 
-This is one operator zero in real and analytic coordinates.
+This is the same native operator-zero locus in real and analytic coordinates.
 
 ## 6. Complex coordinates preserve the construction
 
 The additive equivalence
 
-[
-J : R² ≃ C,    J(x,y) = x + iy
-]
+$
+J:\mathbb{R}^{2}\simeq\mathbb{C},
+\qquad J(x,y)=x+iy.
+$
 
 is `complexCoordinates`. Lean proves that it is injective, preserves norm
 square, commutes with the finite bracket, and preserves finite zeros.
@@ -156,9 +158,9 @@ Complex.normSq
   (n : ℝ)⁻¹
 ```
 
-The power monomial at (s=sigma+it) is the same real rotating sample stored
-in complex coordinates. Complex notation contributes no new mass, algebra, or
-zero.
+The power monomial at $s=\sigma+it$ is the same real rotating sample stored
+in complex coordinates. Complex notation contributes no new mass or algebra
+and cannot change the resultant's zero locus.
 
 ## 7. Ambient chart cancellation and native representation
 
@@ -196,7 +198,7 @@ AnalyticChartRepresentsNativeZero s ↔
 
 The first coordinate is therefore representation data. Once the chart
 represents the native tower, it is provably on the native shell and its
-cancellation is the one native zero.
+cancellation belongs to the same native zero locus.
 
 Historical names such as `IsRealCarryOperatorZero`,
 `IsFiniteRealCarryOperatorZero`, and
@@ -220,7 +222,7 @@ This repository proves:
 9. faithful R² ≃ C coordinate encoding;
 10. exact finite native real/complex identity;
 11. exact native boundary/analytic-readout identity for camera `3`;
-12. explicit complex norm law (n^{-2sigma});
+12. explicit complex norm law $n^{-2\sigma}$;
 13. uniqueness of the mass-preserving radial representation.
 
 ## 9. Exact restrictions
@@ -269,6 +271,6 @@ This release does not claim:
   identification, or any hypothesis about such an external function is a
   premise of the native result.
 
-These restrictions do not weaken the native statement. They keep the one
-operator, one mass-built state, and one zero distinct from a larger ambient
-comparison chart.
+These restrictions do not weaken the native statement. They keep one native
+operator, one mass-built state, and one operator-zero predicate distinct from
+the larger ambient comparison chart.
