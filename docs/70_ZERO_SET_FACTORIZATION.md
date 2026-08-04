@@ -71,7 +71,7 @@ For each camera, the graph of native representations is therefore:
 This is not a classification of multiple zeros. It says exactly when a member
 of the larger radial chart is a presentation of the one native zero.
 
-## 4. Why the factorization is tautological after mass rigidity
+## 4. Why the factorization is structurally forced after mass rigidity
 
 The proof chain is:
 
