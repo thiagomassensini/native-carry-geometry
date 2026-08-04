@@ -1,6 +1,6 @@
-# One Native Zero and Radial-Chart Representation
+# One Native Operator-Zero Predicate and Radial-Chart Representation
 
-## 1. Canonical zero predicate
+## 1. Canonical native operator-zero predicate
 
 The native boundary is:
 
@@ -13,7 +13,7 @@ def NativeBoundaryConvergesToZero
     atTop (nhds 0)
 ```
 
-The one operator-zero predicate is definitionally that boundary:
+The one native operator-zero predicate is definitionally that boundary:
 
 ```lean
 abbrev IsNativeCarryOperatorZero
@@ -22,13 +22,13 @@ abbrev IsNativeCarryOperatorZero
 ```
 
 `IsBoundaryResonance` and `IsNativeRealCarryOperatorZero` are historical
-aliases for the same proposition. Their names do not create additional zero
-objects.
+aliases for the same proposition. Their names do not introduce additional
+operator-zero predicates.
 
 ## 2. The ambient radial chart
 
-The comparison family changes the amplitude from (n^{-1/2}) to
-(n^{-sigma}). Its boundary cancellation is:
+The comparison family changes the amplitude from $n^{-1/2}$ to
+$n^{-\sigma}$. Its boundary cancellation is:
 
 ```lean
 RadialChartCancelsAt camera sigma time
@@ -37,7 +37,8 @@ RadialChartCancelsAt camera sigma time
 This proposition alone describes an ambient chart cancellation. It is not an
 operator-zero predicate.
 
-The relation saying that the chart actually presents the native zero is:
+The relation saying that the chart represents a point of the native
+operator-zero locus is:
 
 ```lean
 def RadialChartRepresentsNativeZero
@@ -63,32 +64,36 @@ theorem radialChartRepresentsNativeZero_iff
 
 For each camera, the graph of native representations is therefore:
 
-[
-{1/2} ×
-{ t | IsNativeCarryOperatorZero(camera,t) }.
-]
+$
+\left\{\frac12\right\}
+\times
+\left\{t\mid
+  \operatorname{IsNativeCarryOperatorZero}(\mathit{camera},t)
+\right\}.
+$
 
-This is not a classification of multiple zeros. It says exactly when a member
-of the larger radial chart is a presentation of the one native zero.
+This is not a classification of multiple zero predicates. It says exactly
+when a point of the larger radial chart represents a point of the native
+operator-zero locus.
 
 ## 4. Why the factorization is structurally forced after mass rigidity
 
 The proof chain is:
 
 1. the chart represents native mass;
-2. quadratic rigidity gives (sigma=1/2);
+2. quadratic rigidity gives $\sigma=1/2$;
 3. at one half, the radial state is extensionally the native state;
 4. the finite resultants and boundary limits are therefore the same;
-5. chart cancellation is the native zero.
+5. chart cancellation lies in the native operator-zero locus.
 
 Conversely:
 
-1. start with (sigma=1/2) and the native zero;
+1. start with $\sigma=1/2$ and the native operator-zero predicate;
 2. the half-exponent chart preserves native mass;
 3. the half-chart identity transports the boundary;
-4. the radial chart represents that native zero.
+4. the radial chart represents the same zero-locus point.
 
-Nothing arbitrary is selected at the zero stage. The half exponent was already
+Nothing arbitrary is selected when the operator-zero predicate is evaluated. The half exponent was already
 forced by amplitude squared equalling carry mass.
 
 ## 5. Finite form
@@ -110,8 +115,8 @@ RadialChartRepresentsFiniteNativeZero
       camera cutoff time
 ```
 
-Again there is one finite native zero and a relation describing which ambient
-chart point presents it.
+Again there is one finite native operator-zero predicate and a relation
+describing which ambient chart points represent its zero locus.
 
 ## 6. Analytic-coordinate form
 
@@ -129,17 +134,18 @@ AnalyticChartRepresentsNativeZero s ↔
     canonicalCarryContinuation s = 0
 ```
 
-The one native operator zero is then identified with its analytic readout by
+The native operator-zero predicate and its analytic readout define the same
+zero locus by
 `NCG-EQV-017`:
 
-[
-IsNativeCarryOperatorZero(3,t)
-iff
-nativeCarryAnalyticReadout(t) = 0.
-]
+$
+\operatorname{IsNativeCarryOperatorZero}(3,t)
+\iff
+\operatorname{nativeCarryAnalyticReadout}(t)=0.
+$
 
-The complex number stores the same two real coordinates. It does not add a
-zero.
+The complex number stores the same two real coordinates. It cannot change the
+zero locus.
 
 ## 7. Historical aliases (legacy compatibility)
 
@@ -156,7 +162,7 @@ BoundaryConvergesToZero
 ```
 
 Their canonical replacements are, respectively, finite/native representation
-relations, the one native zero, or ambient chart cancellation. They are not
+relations, the native operator-zero predicate, or ambient chart cancellation. They are not
 used to define the public ontology.
 
 ## 8. Camera scope
@@ -177,7 +183,7 @@ premise.
 
 ## 9. Independence from later routes
 
-The factorization and one-zero identity do not depend on:
+The factorization and native zero-locus identity do not depend on:
 
 - Green or flux identities;
 - a completed operator;
@@ -188,4 +194,4 @@ The factorization and one-zero identity do not depend on:
 - an equation or hypothesis about such an external function.
 
 Curvature and tilt in this repository are auxiliary detectors of radial
-deformation. Their null loci are not separate operator zeros.
+deformation. Their null loci do not define additional operator-zero predicates.
