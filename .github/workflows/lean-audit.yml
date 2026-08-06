@@ -39,6 +39,12 @@ jobs:
       - name: Build public root with warnings as errors
         run: lake build --wfail NativeCarryGeometry
 
+      - name: Build transported vertical reconstruction
+        run: lake build --wfail NativeCarryGeometry.External.CanonicalVerticalReconstruction
+
+      - name: Probe radial-deviation connection
+        run: lake build --wfail NativeCarryGeometry.External.RadialDeviationConnection
+
       - name: Run static trust and registry audits
         env:
           AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-audit
