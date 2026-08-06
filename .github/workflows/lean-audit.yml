@@ -42,7 +42,7 @@ jobs:
       - name: Build transported vertical reconstruction
         run: lake build --wfail NativeCarryGeometry.External.CanonicalVerticalReconstruction
 
-      - name: Probe radial-deviation connection
+      - name: Build lossless radial-deviation transport
         run: lake build --wfail NativeCarryGeometry.External.RadialDeviationConnection
 
       - name: Run static trust and registry audits
