@@ -19,10 +19,14 @@ import NativeCarryGeometry.Analytic.BracketHolomorphy
 import NativeCarryGeometry.Analytic.CanonicalContinuation
 import NativeCarryGeometry.Equivalence.ComplexCoordinates
 import NativeCarryGeometry.Equivalence.RealAnalyticBoundary
+import GreenFrame
 
 /-!
 # Native Carry Geometry
 
 Audit root for the native theory.  The external classical identification is
 deliberately absent.
+
+The final import is a temporary compile harness for the standalone All-Bases
+Green Frame formalization. It is confined to the unmerged audit branch.
 -/
