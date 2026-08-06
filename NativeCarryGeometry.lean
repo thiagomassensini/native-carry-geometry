@@ -12,6 +12,7 @@ import NativeCarryGeometry.Bracket.BalancedCamera
 import NativeCarryGeometry.Bracket.RadialCurvature
 import NativeCarryGeometry.Operator.FiniteRealOperator
 import NativeCarryGeometry.Operator.BoundaryOperator
+import NativeCarryGeometry.Operator.ResultantConfinement
 import NativeCarryGeometry.Operator.ZeroSetFactorization
 import NativeCarryGeometry.Analytic.FiniteBracketChart
 import NativeCarryGeometry.Analytic.BracketSeries
