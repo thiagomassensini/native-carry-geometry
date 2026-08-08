@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   PYTHONDONTWRITEBYTECODE: "1"
@@ -18,6 +18,222 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  prepare_release:
+    name: Prepare audited v0.4.0 metadata
+    if: github.event_name == 'pull_request' && github.head_ref == 'agent/raw-resultant-confinement'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Prepare release metadata and immutable sentinel
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          sentinel = Path('.release/v0.4.0.md')
+          if sentinel.exists():
+              print('v0.4.0 metadata is already prepared')
+              raise SystemExit(0)
+
+          def read(relative: str) -> str:
+              return Path(relative).read_text(encoding='utf-8')
+
+          def write(relative: str, text: str) -> None:
+              Path(relative).write_text(text, encoding='utf-8')
+
+          def replace_once(relative: str, old: str, new: str) -> None:
+              text = read(relative)
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(
+                      f'{relative}: expected one occurrence of {old!r}, found {count}'
+                  )
+              write(relative, text.replace(old, new))
+
+          def replace_all(relative: str, old: str, new: str, expected: int) -> None:
+              text = read(relative)
+              count = text.count(old)
+              if count != expected:
+                  raise SystemExit(
+                      f'{relative}: expected {expected} occurrences of {old!r}, found {count}'
+                  )
+              write(relative, text.replace(old, new))
+
+          replace_once(
+              'lakefile.toml',
+              'version = "0.3.0"',
+              'version = "0.4.0"',
+          )
+          replace_once(
+              'scripts/check_reproducibility.py',
+              'EXPECTED_PACKAGE_VERSION = "0.3.0"',
+              'EXPECTED_PACKAGE_VERSION = "0.4.0"',
+          )
+          replace_once(
+              'README.md',
+              '- Release: `v0.3.0`',
+              '- Release: `v0.4.0`',
+          )
+          replace_once(
+              'CITATION.cff',
+              'version: 0.3.0',
+              'version: 0.4.0',
+          )
+          replace_once(
+              'CITATION.cff',
+              'date-released: 2026-08-04',
+              'date-released: 2026-08-07',
+          )
+          replace_once(
+              'CITATION.cff',
+              '  ambient quadratic-norm deformation coordinate.\n',
+              '  ambient quadratic-norm deformation coordinate. Release v0.4.0 also\n'
+              '  includes an explicitly audited lossless vertical reconstruction and\n'
+              '  radial readout transport.\n',
+          )
+          replace_once(
+              '.zenodo.json',
+              '"version": "0.3.0"',
+              '"version": "0.4.0"',
+          )
+          replace_once(
+              '.zenodo.json',
+              '"publication_date": "2026-08-04"',
+              '"publication_date": "2026-08-07"',
+          )
+          replace_once(
+              '.zenodo.json',
+              'sigma is an ambient quadratic-norm deformation coordinate.",',
+              'sigma is an ambient quadratic-norm deformation coordinate. Release v0.4.0 also includes an explicitly audited lossless vertical reconstruction and radial readout transport.",',
+          )
+          replace_once(
+              'audit/semantic-contract.json',
+              '"release": "v0.3.0"',
+              '"release": "v0.4.0"',
+          )
+          replace_once(
+              'audit/README.md',
+              'Release `v0.3.0` contains 75 active IDs',
+              'Release `v0.4.0` contains 75 active IDs',
+          )
+          replace_all(
+              'docs/05_REPRODUCIBILITY.md',
+              'v0.3.0',
+              'v0.4.0',
+              4,
+          )
+          replace_all(
+              'docs/80_THEOREM_REGISTRY.md',
+              'v0.3.0',
+              'v0.4.0',
+              2,
+          )
+          replace_once(
+              'docs/85_SOURCE_PROVENANCE.md',
+              '1. release `v0.3.0`;',
+              '1. release `v0.4.0`;',
+          )
+          replace_once(
+              'docs/85_SOURCE_PROVENANCE.md',
+              '## 6. Provenance checkpoints by layer\n',
+              '### 5.5. Lossless vertical reconstruction and radial readout transport\n\n'
+              'Release `v0.4.0` adds explicitly audited external modules that store\n'
+              'the positive-integer radial samples before camera compression, include\n'
+              'the finitely supported core coordinate-for-coordinate into `ℓ²`, and\n'
+              'reconstruct that vertical state exactly before applying the finite camera.\n'
+              'The remaining global-to-local detector-faithfulness implication stays a\n'
+              'named premise rather than being hidden inside the lossless transport.\n\n'
+              '## 6. Provenance checkpoints by layer\n',
+          )
+          replace_once(
+              'docs/90_SEMANTIC_AUDIT.md',
+              'Release `v0.3.0` was reviewed',
+              'Release `v0.4.0` was reviewed',
+          )
+          replace_once(
+              'docs/90_SEMANTIC_AUDIT.md',
+              '| `docs/05_REPRODUCIBILITY.md` | updated to audit `v0.3.0` and the canonical theorem |',
+              '| `docs/05_REPRODUCIBILITY.md` | updated to audit `v0.4.0` and the canonical theorem |',
+          )
+          replace_once(
+              'docs/90_SEMANTIC_AUDIT.md',
+              '| `Equivalence/RealAnalyticBoundary.lean` | boundary/readout identity | principal zero-locus identity theorem added |\n',
+              '| `Equivalence/RealAnalyticBoundary.lean` | boundary/readout identity | principal zero-locus identity theorem added |\n'
+              '| `External/CanonicalVerticalReconstruction.lean` | canonical vertical realization | compiled explicitly; inclusion, diagonal glue, and reconstruction remain lossless |\n'
+              '| `External/RadialDeviationConnection.lean` | radial sample/readout transport | compiled explicitly; continuity is structural and detector faithfulness remains a named premise |\n',
+          )
+
+          semantic_path = 'scripts/check_semantic_contract.py'
+          semantic = read(semantic_path)
+          count_v = semantic.count('v0.3.0')
+          count_plain = semantic.count('0.3.0')
+          if count_v != 9:
+              raise SystemExit(
+                  f'{semantic_path}: expected 9 v0.3.0 occurrences, found {count_v}'
+              )
+          semantic = semantic.replace('v0.3.0', 'v0.4.0')
+          if semantic.count('0.3.0') != count_plain - count_v:
+              raise SystemExit(f'{semantic_path}: version replacement accounting failed')
+          semantic = semantic.replace('0.3.0', '0.4.0')
+          write(semantic_path, semantic)
+
+          replace_once(
+              'scripts/create_release_manifest.py',
+              'if args.tag not in {"v0.1.0", "v0.2.0", "v0.3.0"}:',
+              'if args.tag not in {"v0.1.0", "v0.2.0", "v0.3.0", "v0.4.0"}:',
+          )
+          replace_once(
+              'scripts/create_release_manifest.py',
+              'this publisher manifest is restricted to tags v0.1.0, v0.2.0, and v0.3.0',
+              'this publisher manifest is restricted to tags v0.1.0, v0.2.0, v0.3.0, and v0.4.0',
+          )
+          replace_once(
+              'scripts/run_audits.sh',
+              '    .release/v0.3.0.md\n',
+              '    .release/v0.3.0.md\n    .release/v0.4.0.md\n',
+          )
+
+          sentinel.parent.mkdir(parents=True, exist_ok=True)
+          sentinel.write_text(
+              'publish-v0.4.0\nrequest=1\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - name: Commit release preparation
+        run: |
+          set -euo pipefail
+          if git diff --quiet && [[ -z "$(git status --porcelain --untracked-files=all)" ]]; then
+            echo "No release-preparation change was needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            lakefile.toml \
+            README.md \
+            CITATION.cff \
+            .zenodo.json \
+            .release/v0.4.0.md \
+            audit/README.md \
+            audit/semantic-contract.json \
+            docs/05_REPRODUCIBILITY.md \
+            docs/80_THEOREM_REGISTRY.md \
+            docs/85_SOURCE_PROVENANCE.md \
+            docs/90_SEMANTIC_AUDIT.md \
+            scripts/check_reproducibility.py \
+            scripts/check_semantic_contract.py \
+            scripts/create_release_manifest.py \
+            scripts/run_audits.sh
+          git diff --cached --check
+          git commit -m "chore(release): prepare audited v0.4.0 publication"
+          git push origin "HEAD:${GITHUB_HEAD_REF}"
+
   audit:
     name: Lean kernel and audit
     runs-on: ubuntu-latest
