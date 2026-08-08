@@ -1,0 +1,72 @@
+name: Apply radial continuity fix
+
+on:
+  push:
+    branches:
+      - agent/raw-resultant-confinement
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    name: Apply minimal Lean source fix
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: agent/raw-resultant-confinement
+          fetch-depth: 0
+
+      - name: Replace opaque continuity automation by the canonical homeomorphism
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("NativeCarryGeometry/External/RadialDeviationConnection.lean")
+          text = path.read_text(encoding="utf-8")
+
+          old_continuity = """  have hcontinuous :
+      Continuous
+        (fun u : NativeCarryGeometry.Operator.RealCarryPlane =>
+          NativeCarryGeometry.Equivalence.complexCoordinates u) := by
+    fun_prop
+"""
+          new_continuity = """  have hcontinuous :
+      Continuous
+        (fun u : NativeCarryGeometry.Operator.RealCarryPlane =>
+          NativeCarryGeometry.Equivalence.complexCoordinates u) := by
+    change Continuous (fun u : ℝ × ℝ =>
+      Complex.equivRealProdCLM.symm u)
+    exact Complex.equivRealProdCLM.symm.continuous
+"""
+
+          old_transport = """    have hmap := hcontinuous.continuousAt.tendsto.comp hzero
+    simpa using hmap
+"""
+          new_transport = """    have hmap := hcontinuous.continuousAt.tendsto.comp hzero
+    simpa only [Function.comp_def, map_zero] using hmap
+"""
+
+          if text.count(old_continuity) != 1:
+              raise SystemExit("expected exactly one opaque continuity block")
+          if text.count(old_transport) != 1:
+              raise SystemExit("expected exactly one composition transport block")
+
+          text = text.replace(old_continuity, new_continuity)
+          text = text.replace(old_transport, new_transport)
+          path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Commit the Lean fix
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add NativeCarryGeometry/External/RadialDeviationConnection.lean
+          git diff --cached --check
+          git commit -m "Fix continuity transport in radial bridge"
+          git push origin HEAD:agent/raw-resultant-confinement
