@@ -328,7 +328,9 @@ theorem radialChartCancelsAt_tendsto_reconstructed_readout_zero
       Continuous
         (fun u : NativeCarryGeometry.Operator.RealCarryPlane =>
           NativeCarryGeometry.Equivalence.complexCoordinates u) := by
-    fun_prop
+    change Continuous (fun u : ℝ × ℝ =>
+      Complex.equivRealProdCLM.symm u)
+    exact Complex.equivRealProdCLM.symm.continuous
   have hpacked :
       Tendsto
         (fun cutoff : ℕ =>
@@ -337,7 +339,7 @@ theorem radialChartCancelsAt_tendsto_reconstructed_readout_zero
               camera cutoff sigma time))
         atTop (nhds 0) := by
     have hmap := hcontinuous.continuousAt.tendsto.comp hzero
-    simpa using hmap
+    simpa only [Function.comp_def, map_zero] using hmap
   have heq :
       (fun cutoff : ℕ =>
         verticalFiniteRadialCameraReadout camera cutoff
