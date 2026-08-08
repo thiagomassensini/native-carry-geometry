@@ -71,7 +71,7 @@ jobs:
               {"q": "thiagomassensini/native-carry-geometry", "size": 100},
           ]
           urls = [
-              "https://zenodo.org/api/records?" + urllib.parse.urlencode(parameters)
+              "https://zenodo.org/api/records/?" + urllib.parse.urlencode(parameters)
               for parameters in parameter_sets
           ]
           result = {
@@ -87,7 +87,7 @@ jobs:
                   encoding="utf-8",
               )
 
-          for attempt in range(1, 37):
+          for attempt in range(1, 19):
               result["attempts"] = attempt
               observations = []
               for url in urls:
