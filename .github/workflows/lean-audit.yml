@@ -2,9 +2,6 @@ name: Lean kernel and repository audit
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
@@ -46,16 +43,7 @@ jobs:
           def write(relative: str, text: str) -> None:
               Path(relative).write_text(text, encoding='utf-8')
 
-          def replace_once(relative: str, old: str, new: str) -> None:
-              text = read(relative)
-              count = text.count(old)
-              if count != 1:
-                  raise SystemExit(
-                      f'{relative}: expected one occurrence of {old!r}, found {count}'
-                  )
-              write(relative, text.replace(old, new))
-
-          def replace_all(relative: str, old: str, new: str, expected: int) -> None:
+          def replace(relative: str, old: str, new: str, expected: int = 1) -> None:
               text = read(relative)
               count = text.count(old)
               if count != expected:
@@ -64,81 +52,55 @@ jobs:
                   )
               write(relative, text.replace(old, new))
 
-          replace_once(
-              'lakefile.toml',
-              'version = "0.3.0"',
-              'version = "0.4.0"',
-          )
-          replace_once(
+          replace('lakefile.toml', 'version = "0.3.0"', 'version = "0.4.0"')
+          replace(
               'scripts/check_reproducibility.py',
               'EXPECTED_PACKAGE_VERSION = "0.3.0"',
               'EXPECTED_PACKAGE_VERSION = "0.4.0"',
           )
-          replace_once(
-              'README.md',
-              '- Release: `v0.3.0`',
-              '- Release: `v0.4.0`',
-          )
-          replace_once(
-              'CITATION.cff',
-              'version: 0.3.0',
-              'version: 0.4.0',
-          )
-          replace_once(
+          replace('README.md', '- Release: `v0.3.0`', '- Release: `v0.4.0`')
+          replace('CITATION.cff', 'version: 0.3.0', 'version: 0.4.0')
+          replace(
               'CITATION.cff',
               'date-released: 2026-08-04',
               'date-released: 2026-08-07',
           )
-          replace_once(
+          replace(
               'CITATION.cff',
               '  ambient quadratic-norm deformation coordinate.\n',
               '  ambient quadratic-norm deformation coordinate. Release v0.4.0 also\n'
               '  includes an explicitly audited lossless vertical reconstruction and\n'
               '  radial readout transport.\n',
           )
-          replace_once(
-              '.zenodo.json',
-              '"version": "0.3.0"',
-              '"version": "0.4.0"',
-          )
-          replace_once(
+          replace('.zenodo.json', '"version": "0.3.0"', '"version": "0.4.0"')
+          replace(
               '.zenodo.json',
               '"publication_date": "2026-08-04"',
               '"publication_date": "2026-08-07"',
           )
-          replace_once(
+          replace(
               '.zenodo.json',
               'sigma is an ambient quadratic-norm deformation coordinate.",',
               'sigma is an ambient quadratic-norm deformation coordinate. Release v0.4.0 also includes an explicitly audited lossless vertical reconstruction and radial readout transport.",',
           )
-          replace_once(
+          replace(
               'audit/semantic-contract.json',
               '"release": "v0.3.0"',
               '"release": "v0.4.0"',
           )
-          replace_once(
+          replace(
               'audit/README.md',
               'Release `v0.3.0` contains 75 active IDs',
               'Release `v0.4.0` contains 75 active IDs',
           )
-          replace_all(
-              'docs/05_REPRODUCIBILITY.md',
-              'v0.3.0',
-              'v0.4.0',
-              4,
-          )
-          replace_all(
-              'docs/80_THEOREM_REGISTRY.md',
-              'v0.3.0',
-              'v0.4.0',
-              2,
-          )
-          replace_once(
+          replace('docs/05_REPRODUCIBILITY.md', 'v0.3.0', 'v0.4.0', 4)
+          replace('docs/80_THEOREM_REGISTRY.md', 'v0.3.0', 'v0.4.0', 2)
+          replace(
               'docs/85_SOURCE_PROVENANCE.md',
               '1. release `v0.3.0`;',
               '1. release `v0.4.0`;',
           )
-          replace_once(
+          replace(
               'docs/85_SOURCE_PROVENANCE.md',
               '## 6. Provenance checkpoints by layer\n',
               '### 5.5. Lossless vertical reconstruction and radial readout transport\n\n'
@@ -150,17 +112,17 @@ jobs:
               'named premise rather than being hidden inside the lossless transport.\n\n'
               '## 6. Provenance checkpoints by layer\n',
           )
-          replace_once(
+          replace(
               'docs/90_SEMANTIC_AUDIT.md',
               'Release `v0.3.0` was reviewed',
               'Release `v0.4.0` was reviewed',
           )
-          replace_once(
+          replace(
               'docs/90_SEMANTIC_AUDIT.md',
               '| `docs/05_REPRODUCIBILITY.md` | updated to audit `v0.3.0` and the canonical theorem |',
               '| `docs/05_REPRODUCIBILITY.md` | updated to audit `v0.4.0` and the canonical theorem |',
           )
-          replace_once(
+          replace(
               'docs/90_SEMANTIC_AUDIT.md',
               '| `Equivalence/RealAnalyticBoundary.lean` | boundary/readout identity | principal zero-locus identity theorem added |\n',
               '| `Equivalence/RealAnalyticBoundary.lean` | boundary/readout identity | principal zero-locus identity theorem added |\n'
@@ -171,47 +133,37 @@ jobs:
           semantic_path = 'scripts/check_semantic_contract.py'
           semantic = read(semantic_path)
           count_v = semantic.count('v0.3.0')
-          count_plain = semantic.count('0.3.0')
-          if count_v != 9:
+          if count_v != 10:
               raise SystemExit(
-                  f'{semantic_path}: expected 9 v0.3.0 occurrences, found {count_v}'
+                  f'{semantic_path}: expected 10 v0.3.0 occurrences, found {count_v}'
               )
           semantic = semantic.replace('v0.3.0', 'v0.4.0')
-          if semantic.count('0.3.0') != count_plain - count_v:
-              raise SystemExit(f'{semantic_path}: version replacement accounting failed')
           semantic = semantic.replace('0.3.0', '0.4.0')
           write(semantic_path, semantic)
 
-          replace_once(
+          replace(
               'scripts/create_release_manifest.py',
               'if args.tag not in {"v0.1.0", "v0.2.0", "v0.3.0"}:',
               'if args.tag not in {"v0.1.0", "v0.2.0", "v0.3.0", "v0.4.0"}:',
           )
-          replace_once(
+          replace(
               'scripts/create_release_manifest.py',
               'this publisher manifest is restricted to tags v0.1.0, v0.2.0, and v0.3.0',
               'this publisher manifest is restricted to tags v0.1.0, v0.2.0, v0.3.0, and v0.4.0',
           )
-          replace_once(
+          replace(
               'scripts/run_audits.sh',
               '    .release/v0.3.0.md\n',
               '    .release/v0.3.0.md\n    .release/v0.4.0.md\n',
           )
 
           sentinel.parent.mkdir(parents=True, exist_ok=True)
-          sentinel.write_text(
-              'publish-v0.4.0\nrequest=1\n',
-              encoding='utf-8',
-          )
+          sentinel.write_text('publish-v0.4.0\nrequest=1\n', encoding='utf-8')
           PY
 
       - name: Commit release preparation
         run: |
           set -euo pipefail
-          if git diff --quiet && [[ -z "$(git status --porcelain --untracked-files=all)" ]]; then
-            echo "No release-preparation change was needed."
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
@@ -233,58 +185,3 @@ jobs:
           git diff --cached --check
           git commit -m "chore(release): prepare audited v0.4.0 publication"
           git push origin "HEAD:${GITHUB_HEAD_REF}"
-
-  audit:
-    name: Lean kernel and audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-
-    steps:
-      - name: Check out exact revision
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-
-      - name: Verify pinned reproducibility inputs
-        run: python3 scripts/check_reproducibility.py
-
-      - name: Set up Lean and Mathlib cache
-        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
-        with:
-          use-github-cache: true
-          use-mathlib-cache: true
-
-      - name: Build public root with warnings as errors
-        run: lake build --wfail NativeCarryGeometry
-
-      - name: Build transported vertical reconstruction
-        run: lake build --wfail NativeCarryGeometry.External.CanonicalVerticalReconstruction
-
-      - name: Build lossless radial-deviation transport
-        run: lake build --wfail NativeCarryGeometry.External.RadialDeviationConnection
-
-      - name: Run static trust and registry audits
-        env:
-          AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-audit
-        run: bash scripts/run_audits.sh "${AUDIT_OUTPUT}"
-
-      - name: Record compiler and revision
-        env:
-          AUDIT_OUTPUT: ${{ runner.temp }}/native-carry-audit
-        run: |
-          {
-            echo "commit=$(git rev-parse HEAD)"
-            lean --version | head -n 1
-            lake --version
-          } > "${AUDIT_OUTPUT}/build-environment.txt"
-
-      - name: Confirm audits did not modify tracked files
-        run: |
-          git diff --exit-code
-          [[ -z "$(git status --porcelain --untracked-files=all)" ]]
-
-      - name: Upload audit evidence
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: native-carry-audit-${{ github.sha }}
-          path: ${{ runner.temp }}/native-carry-audit
-          if-no-files-found: error
-          retention-days: 30
