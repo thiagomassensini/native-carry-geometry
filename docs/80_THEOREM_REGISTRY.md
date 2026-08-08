@@ -2,7 +2,7 @@
 
 ## 1. Citation model
 
-Release `v0.3.0` designates 75 citeable mathematical results. Each receives a
+Release `v0.4.0` designates 75 citeable mathematical results. Each receives a
 stable semantic identifier:
 
 ```text
@@ -19,7 +19,7 @@ fully qualified Lean names but do not receive synthetic theorem identifiers.
 
 ## 1.1. Canonical semantic surface
 
-The principal public ontology for `v0.3.0` is:
+The principal public ontology for `v0.4.0` is:
 
 - `IsNativeCarryOperatorZero`: the one native operator-zero predicate;
 - `RadialChartCancelsAt`: ambient comparison-chart cancellation;

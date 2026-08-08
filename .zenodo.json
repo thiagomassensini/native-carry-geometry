@@ -1,11 +1,11 @@
 {
   "title": "Native Carry Geometry",
-  "description": "Lean 4 formalization from positional quotient-residue geometry and carry mass to quadratic amplitude rigidity and one native centered-bracket operator. Real pairs and complex numbers are faithful coordinates of the same mass-built state and resultant, with the same zero locus; sigma is an ambient quadratic-norm deformation coordinate.",
+  "description": "Lean 4 formalization from positional quotient-residue geometry and carry mass to quadratic amplitude rigidity and one native centered-bracket operator. Real pairs and complex numbers are faithful coordinates of the same mass-built state and resultant, with the same zero locus; sigma is an ambient quadratic-norm deformation coordinate. Release v0.4.0 also includes an explicitly audited lossless vertical reconstruction and radial readout transport.",
   "upload_type": "software",
   "access_right": "open",
   "license": "Apache-2.0",
-  "version": "0.3.0",
-  "publication_date": "2026-08-04",
+  "version": "0.4.0",
+  "publication_date": "2026-08-07",
   "creators": [
     {
       "name": "Massensini, Thiago"

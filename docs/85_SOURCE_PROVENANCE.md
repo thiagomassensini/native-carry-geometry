@@ -107,6 +107,15 @@ one-operator wrappers added in `v0.3.0` are explicit public compositions in
 this repository. They are not misreported as exact
 historical declarations.
 
+### 5.5. Lossless vertical reconstruction and radial readout transport
+
+Release `v0.4.0` adds explicitly audited external modules that store
+the positive-integer radial samples before camera compression, include
+the finitely supported core coordinate-for-coordinate into `ℓ²`, and
+reconstruct that vertical state exactly before applying the finite camera.
+The remaining global-to-local detector-faithfulness implication stays a
+named premise rather than being hidden inside the lossless transport.
+
 ## 6. Provenance checkpoints by layer
 
 The theorem registry gives a row-level source commit. The main integration
@@ -129,7 +138,7 @@ For exact source declaration and commit values, use
 
 A valid audit citation must bind:
 
-1. release `v0.3.0`;
+1. release `v0.4.0`;
 2. the final proof commit of this repository;
 3. the NCG identifier;
 4. the elaborated type digest;
