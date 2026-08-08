@@ -108,19 +108,19 @@ REQUIRED_TEXT = {
         "Historical aliases",
     ],
     "docs/80_THEOREM_REGISTRY.md": [
-        "Release `v0.3.0` designates 75",
+        "Release `v0.4.0` designates 75",
         "NCG-EQV-017",
     ],
     "audit/README.md": [
-        "Release `v0.3.0` contains 75",
+        "Release `v0.4.0` contains 75",
         "One native operator-zero predicate",
     ],
-    "lakefile.toml": ['version = "0.3.0"'],
-    "CITATION.cff": ["version: 0.3.0"],
-    ".zenodo.json": ['"version": "0.3.0"'],
-    ".github/workflows/publish-v0.3.0.yml": [
-        "RELEASE_TAG: v0.3.0",
-        "publish-v0.3.0",
+    "lakefile.toml": ['version = "0.4.0"'],
+    "CITATION.cff": ["version: 0.4.0"],
+    ".zenodo.json": ['"version": "0.4.0"'],
+    ".github/workflows/publish-v0.4.0.yml": [
+        "RELEASE_TAG: v0.4.0",
+        "publish-v0.4.0",
         "one native operator-zero predicate",
     ],
 }
@@ -231,8 +231,8 @@ def main() -> int:
         semantic_contract = json.loads(
             by_relative["audit/semantic-contract.json"]
         )
-        if semantic_contract.get("release") != "v0.3.0":
-            errors.append("audit/semantic-contract.json release must be v0.3.0")
+        if semantic_contract.get("release") != "v0.4.0":
+            errors.append("audit/semantic-contract.json release must be v0.4.0")
     except (KeyError, json.JSONDecodeError) as error:
         errors.append(f"invalid audit/semantic-contract.json: {error}")
         semantic_contract = {"contracts": []}
@@ -353,10 +353,10 @@ def main() -> int:
     except (KeyError, TypeError, json.JSONDecodeError) as error:
         errors.append(f"invalid audit/source-lock.json: {error}")
 
-    if by_relative.get(".release/v0.3.0.md") != (
-        "publish-v0.3.0\nrequest=1\n"
+    if by_relative.get(".release/v0.4.0.md") != (
+        "publish-v0.4.0\nrequest=1\n"
     ):
-        errors.append("invalid immutable release sentinel .release/v0.3.0.md")
+        errors.append("invalid immutable release sentinel .release/v0.4.0.md")
 
     for relative, required in REQUIRED_TEXT.items():
         text = by_relative.get(relative)

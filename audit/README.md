@@ -1,7 +1,7 @@
 # Theorem and Semantic Audit Registry
 
 `theorems.tsv` is the machine-readable registry of citeable NCG results.
-Release `v0.3.0` contains 75 active IDs and therefore exactly 75 elaborated
+Release `v0.4.0` contains 75 active IDs and therefore exactly 75 elaborated
 signature preimages.
 
 The first three columns are stable:

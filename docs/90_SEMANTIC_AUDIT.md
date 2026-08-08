@@ -2,7 +2,7 @@
 
 ## 1. Audit objective
 
-Release `v0.3.0` was reviewed against one repository-wide contract:
+Release `v0.4.0` was reviewed against one repository-wide contract:
 
 1. quotient–residue and carry depth precede measure;
 2. carry mass belongs to the integers/tower before the operator;
@@ -43,6 +43,8 @@ checksums, registry generation, dependency checks, and
 | `Analytic/CanonicalContinuation.lean` | ambient analytic chart | cancellation label corrected |
 | `Equivalence/ComplexCoordinates.lean` | R² ≃ C | explicit complex norm identities added |
 | `Equivalence/RealAnalyticBoundary.lean` | boundary/readout identity | principal zero-locus identity theorem added |
+| `External/CanonicalVerticalReconstruction.lean` | canonical vertical realization | compiled explicitly; inclusion, diagonal glue, and reconstruction remain lossless |
+| `External/RadialDeviationConnection.lean` | radial sample/readout transport | compiled explicitly; continuity is structural and detector faithfulness remains a named premise |
 | `Audit/TheoremId.lean` | kernel registry command | verified unchanged |
 | `Audit/ExportTheoremTypes.lean` | generated theorem driver | regenerated from the 75-row registry |
 
@@ -52,7 +54,7 @@ checksums, registry generation, dependency checks, and
 |---|---|
 | `README.md` | rewritten around the semantic contract and principal theorem |
 | `docs/00_SCOPE.md` | rewritten as the authoritative semantic scope |
-| `docs/05_REPRODUCIBILITY.md` | updated to audit `v0.3.0` and the canonical theorem |
+| `docs/05_REPRODUCIBILITY.md` | updated to audit `v0.4.0` and the canonical theorem |
 | `docs/10_POSITIONAL_GEOMETRY.md` | verified: arithmetic layer remains pre-operator |
 | `docs/20_CARRY_MASS_AND_AMPLITUDE.md` | clarified integer weights and sigma/norm law |
 | `docs/30_BRACKET_AND_CURVATURE.md` | detector loci separated from operator zeros |
