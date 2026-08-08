@@ -1,0 +1,181 @@
+name: Verify v0.4.0 publication
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/verify-v0.4.0-publication.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: verify-native-carry-v0.4.0-publication
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify GitHub release and Zenodo deposit
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: v0.4.0
+      EXPECTED_COMMIT: 01a536beaa9a045fdf91b511315ab309008ff602
+
+    steps:
+      - name: Check out verification revision
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Verify public GitHub release, annotated tag, and assets
+        run: |
+          set -euo pipefail
+          gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}" > /tmp/github-release.json
+          [[ "$(jq -r '.draft' /tmp/github-release.json)" == "false" ]]
+          [[ "$(jq -r '.prerelease' /tmp/github-release.json)" == "false" ]]
+          [[ "$(jq -r '.tag_name' /tmp/github-release.json)" == "${RELEASE_TAG}" ]]
+
+          gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${RELEASE_TAG}" > /tmp/tag-ref.json
+          [[ "$(jq -r '.object.type' /tmp/tag-ref.json)" == "tag" ]]
+          tag_object="$(jq -r '.object.sha' /tmp/tag-ref.json)"
+          gh api "repos/${GITHUB_REPOSITORY}/git/tags/${tag_object}" > /tmp/tag-object.json
+          [[ "$(jq -r '.object.type' /tmp/tag-object.json)" == "commit" ]]
+          [[ "$(jq -r '.object.sha' /tmp/tag-object.json)" == "${EXPECTED_COMMIT}" ]]
+
+          mapfile -t assets < <(jq -r '.assets[].name' /tmp/github-release.json)
+          required=(
+            "release-manifest-${RELEASE_TAG}.json"
+            "audit-evidence-${RELEASE_TAG}.tar.gz"
+            "release-assets-${RELEASE_TAG}.sha256"
+          )
+          for required_asset in "${required[@]}"; do
+            printf '%s\n' "${assets[@]}" | grep -Fx -- "${required_asset}" >/dev/null
+          done
+
+      - name: Wait for and verify the Zenodo version deposit
+        run: |
+          python3 - <<'PY'
+          import json
+          import time
+          import urllib.parse
+          import urllib.request
+          from pathlib import Path
+
+          query = 'metadata.title:"Native Carry Geometry"'
+          url = "https://zenodo.org/api/records?" + urllib.parse.urlencode(
+              {"q": query, "sort": "mostrecent", "size": 50}
+          )
+          result = {
+              "status": "pending",
+              "searched_url": url,
+              "attempts": 0,
+              "last_error": None,
+          }
+
+          for attempt in range(1, 37):
+              result["attempts"] = attempt
+              try:
+                  request = urllib.request.Request(
+                      url,
+                      headers={
+                          "Accept": "application/json",
+                          "User-Agent": "native-carry-geometry-publication-audit/0.4.0",
+                      },
+                  )
+                  with urllib.request.urlopen(request, timeout=30) as response:
+                      payload = json.load(response)
+                  hits = payload.get("hits", {}).get("hits", [])
+                  for hit in hits:
+                      metadata = hit.get("metadata", {})
+                      title = str(metadata.get("title", "")).strip()
+                      version = str(metadata.get("version", "")).strip()
+                      if title == "Native Carry Geometry" and version == "0.4.0":
+                          links = hit.get("links", {})
+                          result = {
+                              "status": "published",
+                              "attempts": attempt,
+                              "record_id": hit.get("id"),
+                              "doi": metadata.get("doi") or hit.get("doi"),
+                              "conceptdoi": metadata.get("conceptdoi") or hit.get("conceptdoi"),
+                              "published": hit.get("created") or hit.get("updated"),
+                              "html_url": links.get("html") or links.get("self_html"),
+                              "api_url": links.get("self"),
+                          }
+                          Path("/tmp/zenodo-publication.json").write_text(
+                              json.dumps(result, indent=2, sort_keys=True) + "\n",
+                              encoding="utf-8",
+                          )
+                          raise SystemExit(0)
+                  result["last_error"] = "version 0.4.0 not present in matching records yet"
+              except SystemExit:
+                  raise
+              except Exception as error:
+                  result["last_error"] = f"{type(error).__name__}: {error}"
+              time.sleep(10)
+
+          Path("/tmp/zenodo-publication.json").write_text(
+              json.dumps(result, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Record independent verification on merged PR
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          release_path = Path("/tmp/github-release.json")
+          zenodo_path = Path("/tmp/zenodo-publication.json")
+          release = json.loads(release_path.read_text(encoding="utf-8")) if release_path.exists() else {}
+          zenodo = json.loads(zenodo_path.read_text(encoding="utf-8")) if zenodo_path.exists() else {
+              "status": "unavailable",
+              "last_error": "verification step did not produce a report",
+          }
+          assets = [asset.get("name") for asset in release.get("assets", [])]
+          public_release = bool(release) and not release.get("draft") and not release.get("prerelease")
+
+          lines = [
+              "## Independent publication verification — v0.4.0",
+              "",
+              f"- Verification workflow run: `{os.environ['GITHUB_RUN_ID']}`",
+              f"- GitHub release public: **{'yes' if public_release else 'no'}**",
+              f"- Release URL: {release.get('html_url', 'unavailable')}",
+              f"- Tag: `{release.get('tag_name', 'unavailable')}`; annotated tag resolves to `{os.environ['EXPECTED_COMMIT']}`",
+              f"- Assets: {', '.join(assets) if assets else 'unavailable'}",
+              f"- Zenodo status: **{zenodo.get('status', 'unavailable')}**",
+          ]
+          if zenodo.get("status") == "published":
+              lines.extend([
+                  f"- Zenodo record: {zenodo.get('html_url') or zenodo.get('api_url')}",
+                  f"- Version DOI: `{zenodo.get('doi')}`",
+                  f"- Concept DOI: `{zenodo.get('conceptdoi')}`",
+                  f"- Zenodo record ID: `{zenodo.get('record_id')}`",
+              ])
+          else:
+              lines.extend([
+                  f"- Attempts: `{zenodo.get('attempts', 0)}`",
+                  f"- Last result: `{zenodo.get('last_error', 'unknown')}`",
+              ])
+          lines.extend([
+              "",
+              "This check is independent of the publisher: it reads the public GitHub release/tag APIs and the public Zenodo records API after publication.",
+          ])
+          Path("/tmp/publication-comment.json").write_text(
+              json.dumps({"body": "\n".join(lines)}, ensure_ascii=False),
+              encoding="utf-8",
+          )
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/issues/6/comments" \
+            --method POST \
+            --input /tmp/publication-comment.json
+
+      - name: Require the Zenodo deposit to be public
+        run: |
+          [[ "$(jq -r '.status' /tmp/zenodo-publication.json)" == "published" ]]
