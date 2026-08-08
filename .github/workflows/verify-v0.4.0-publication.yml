@@ -66,9 +66,9 @@ jobs:
           from pathlib import Path
 
           parameter_sets = [
-              {"q": '"Native Carry Geometry"', "size": 100},
-              {"q": "Native Carry Geometry", "size": 100},
-              {"q": "thiagomassensini/native-carry-geometry", "size": 100},
+              {"q": '"Native Carry Geometry"', "sort": "mostrecent", "size": 25},
+              {"q": 'metadata.title:"Native Carry Geometry"', "sort": "mostrecent", "size": 25},
+              {"q": "Massensini", "sort": "mostrecent", "size": 25},
           ]
           urls = [
               "https://zenodo.org/api/records/?" + urllib.parse.urlencode(parameters)
