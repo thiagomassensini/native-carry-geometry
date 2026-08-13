@@ -392,7 +392,7 @@
         "Quot.sound",
         "propext"
       ],
-      "declaration": "NativeCarryGeometry.Equivalence.canonicalCarryOperatorZero_re_eq_half",
+      "declaration": "NativeCarryGeometry.Equivalence.analyticChartRepresentsNativeZero_iff_massCompatible_and_zero",
       "id": "NCG-EQV-009"
     },
     {
@@ -554,7 +554,7 @@
         "Quot.sound",
         "propext"
       ],
-      "declaration": "NativeCarryGeometry.Operator.realCarryOperatorZero_sigma_eq_half",
+      "declaration": "NativeCarryGeometry.Operator.realCarryOperatorZero_half_iff_native",
       "id": "NCG-OPR-005"
     },
     {
@@ -563,7 +563,7 @@
         "Quot.sound",
         "propext"
       ],
-      "declaration": "NativeCarryGeometry.Operator.not_realCarryOperatorZero_of_sigma_ne_half",
+      "declaration": "NativeCarryGeometry.Operator.radialChartRepresentsNativeZero_iff_massCompatible_and_zero",
       "id": "NCG-OPR-006"
     },
     {

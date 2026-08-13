@@ -3,13 +3,14 @@
 Native Carry Geometry is a Lean 4 formalization of a positional-carry
 construction, the mass and quadratic amplitude carried by its integer tower,
 the native real operator built from that tower, and faithful complex
-coordinates for the same operator.
+coordinates for the same operator family.
 
 This repository is audit-oriented. Its public semantics are fixed by the
 contract below; theorem types, generated signature digests, and dependency
 checks enforce the implementation.
 
-- Release: `v0.4.0`
+- Latest tagged release: `v0.4.0`
+- Current main contract: post-release correction separating raw zeros from native-mass representation
 - Lean and Mathlib line: `v4.32.0`
 - Historical source lock:
   [`thiagomassensini/primos@7d8d0b345b329935674edc24e5ac08ad9f7b5804`](https://github.com/thiagomassensini/primos/tree/7d8d0b345b329935674edc24e5ac08ad9f7b5804)
@@ -48,7 +49,7 @@ The native state reads amplitude from the tower:
 nativeRealCarryState time n
 ```
 
-The larger comparison chart replaces only the native amplitude
+The larger comparison family replaces only the native amplitude
 $n^{-1/2}$ by $n^{-\sigma}$:
 
 ```lean
@@ -69,8 +70,9 @@ RadialDeformationRepresentsNativeMass sigma time ↔
 ```
 
 Thus changing the real coordinate `sigma = Re(s)` in complex notation is exactly
-changing amplitude and hence quadratic norm. It does not create another
-operator.
+changing amplitude and hence quadratic norm. It selects another member of the
+same radial operator family; it does not manufacture a different geometric
+mechanism.
 
 ### 3. Real pairs and complex numbers are coordinates
 
@@ -108,51 +110,65 @@ Complex.normSq
 
 Complex coordinates cannot change the underlying resultant's zero locus.
 
-### 4. There is one native operator-zero predicate
+### 4. Fixed native zero and raw radial-family zero are separate predicates
 
-The canonical name is:
+The fixed carry-built operator has the zero predicate
 
 ```lean
 IsNativeCarryOperatorZero camera time
 ```
 
-It abbreviates boundary convergence of the already weighted native operator.
-The principal analytic-coordinate theorem is:
+The sigma-parameter family has a raw zero predicate at every supplied
+coordinate:
 
 ```lean
--- NCG-EQV-017
-theorem isNativeCarryOperatorZero_iff_analyticReadout_eq_zero
-    (time : ℝ) :
-    Operator.IsNativeCarryOperatorZero 3 time ↔
-      nativeCarryAnalyticReadout time = 0
+IsRealCarryOperatorZero camera sigma time
+IsFiniteRealCarryOperatorZero camera cutoff sigma time
 ```
 
-The two sides define the same native operator-zero locus in time. The legacy
-names
-`IsNativeRealCarryOperatorZero` and
-`IsNativeCanonicalCarryOperatorZero` remain compatibility aliases; they do
-not introduce additional operator-zero predicates.
-
-### 5. Ambient chart cancellation is not an additional native operator-zero predicate
-
-The radial family is useful for proving rigidity, so its raw boundary
-cancellation remains available as:
+They mean exactly that the corresponding real resultant vanishes. In analytic
+coordinates the same raw equation is named
 
 ```lean
-RadialChartCancelsAt camera sigma time
+IsCanonicalCarryOperatorZero s
 ```
 
-The analytic chart has the corresponding cancellation equation
-`canonicalCarryContinuation s = 0`. These are statements about an ambient
-comparison chart. They become a representation of the native operator only
-when the chart preserves the upstream mass:
+and abbreviates `canonicalCarryContinuation s = 0`.
+
+No one-half condition and no native-mass compatibility premise occurs inside
+any of these raw zero predicates. In particular, a cancellation at
+`sigma ≠ 1/2` remains a zero of the radial operator family.
+
+At the native half exponent Lean proves the specialization identity
+
+```lean
+-- NCG-OPR-005
+IsRealCarryOperatorZero camera (1 / 2) time ↔
+  IsNativeCarryOperatorZero camera time
+```
+
+The real/analytic crosswalk preserves the full radial zero locus in the
+canonical strip:
+
+```lean
+-- NCG-EQV-008
+IsRealCarryOperatorZero 3 s.re s.im ↔
+  IsCanonicalCarryOperatorZero s
+```
+
+### 5. Native representation is a different question
+
+Mass compatibility asks whether a radial-family point represents the already
+weighted native operator. It is recorded only in the representation
+relations:
 
 ```lean
 RadialChartRepresentsNativeZero camera sigma time
+RadialChartRepresentsFiniteNativeZero camera cutoff sigma time
 AnalyticChartRepresentsNativeZero s
 ```
 
-The factorization theorems make this exact:
+Their factorizations remain:
 
 ```lean
 -- NCG-OPR-007
@@ -166,9 +182,11 @@ AnalyticChartRepresentsNativeZero s ↔
     canonicalCarryContinuation s = 0
 ```
 
-Consequently, an off-half radial chart does not satisfy the native
-operator-zero representation relation.
-The repository does not reclassify a raw chart cancellation as a second zero.
+These theorems classify **native representations**. They do not prove that all
+raw radial or analytic zeros lie on the half line. The previous aliases that
+folded mass compatibility into the word `Zero` were removed or corrected; the
+corollaries that obtained `sigma = 1/2` merely by unpacking those definitions
+were replaced by explicit specialization and predicate-separation theorems.
 
 ## Dependency chain
 
@@ -186,8 +204,9 @@ quotient–residue decomposition
 → analytic readout with the same zero locus
 ```
 
-The $\sigma$-radial family branches off only as a comparison chart for
-amplitude and norm; it is not an extra input to the native operator.
+The $\sigma$-radial family branches off only as a comparison family for
+amplitude and norm; it is not an extra premise inserted into the fixed native
+member.
 
 ## Exact scope
 
@@ -232,11 +251,21 @@ width `2`.
 
 ### Explicit nonclaim
 
-This repository does not prove that arbitrary ambient chart cancellation
-forces $\sigma=1/2$. It proves that the chart represents the native
-mass-built operator exactly at $\sigma=1/2$. This is the typed distinction
-between `RadialChartCancelsAt` and
-`RadialChartRepresentsNativeZero`.
+This repository does not prove
+
+```lean
+IsRealCarryOperatorZero camera sigma time → sigma = 1 / 2
+```
+
+and it does not prove the analogous statement for
+`IsCanonicalCarryOperatorZero`. It proves only that a raw radial point
+**represents the fixed native operator** exactly when the mass coordinate is
+one half. Therefore an off-half raw zero, if exhibited, is not renamed away:
+it is a genuine zero of the radial family and a counterexample to any separate
+theorem claiming that the full raw zero locus is confined to one half.
+
+No claim about the classical Riemann zeta function follows in this repository
+without a separately audited transfer theorem.
 
 ## Build
 
@@ -262,10 +291,10 @@ procedure.
 | [Positional geometry](docs/10_POSITIONAL_GEOMETRY.md) | QR decomposition, centers, residues, and depth |
 | [Carry mass and amplitude](docs/20_CARRY_MASS_AND_AMPLITUDE.md) | Upstream mass, quadratic amplitude, and multibase rigidity |
 | [Bracket and curvature](docs/30_BRACKET_AND_CURVATURE.md) | Centered differences and auxiliary deformation detectors |
-| [Real operator](docs/40_REAL_OPERATOR.md) | Native state, finite resultants, and the native operator-zero predicate |
+| [Real operator](docs/40_REAL_OPERATOR.md) | Fixed native member, radial family, and their zero predicates |
 | [Canonical analytic presentation](docs/50_CANONICAL_ANALYTIC_PRESENTATION.md) | Complex chart construction and normalization |
-| [Real–analytic identity](docs/60_REAL_ANALYTIC_EQUIVALENCE.md) | Same operator, energy, resultant, and zero locus in two coordinates |
-| [Native zero and chart representation](docs/70_ZERO_SET_FACTORIZATION.md) | One native operator-zero predicate and radial-chart factorization |
+| [Real–analytic identity](docs/60_REAL_ANALYTIC_EQUIVALENCE.md) | Same family, energy, resultants, and zero loci in two coordinates |
+| [Native zero and chart representation](docs/70_ZERO_SET_FACTORIZATION.md) | Raw radial zeros, native specialization, and representation factorization |
 | [Theorem registry](docs/80_THEOREM_REGISTRY.md) | Stable NCG identifiers and type digests |
 | [Source provenance](docs/85_SOURCE_PROVENANCE.md) | Historical lock and selective-port policy |
 | [Excluded research routes](docs/88_EXCLUDED_RESEARCH_ROUTES.md) | Extensions outside this audit root |
@@ -278,9 +307,9 @@ name, elaborated type, SHA-256 signature digest, dependency list, source
 provenance, and transitive axiom report. Generated artifacts live under
 [`audit/`](audit/).
 
-The repository also runs a semantic-contract checker over every versioned
-text file. It prevents legacy aliases from becoming the public ontology and
-requires the canonical one-operator vocabulary in the public entry points.
+The semantic-contract checker now rejects any attempt to smuggle native-mass
+compatibility back into a raw zero predicate and requires the corrected
+native/radial separation in the public entry points.
 
 ## Citation and license
 

@@ -1,206 +1,108 @@
-# The Native Carry Operator in Real Coordinates
+# The Native and Radial Carry Operators in Real Coordinates
 
-## 1. Real state space
+## 1. State space and energy
 
-The state space is
+The real state space is `RealCarryPlane := ℝ × ℝ` with
 
-```lean
-abbrev RealCarryPlane := ℝ × ℝ
+```text
+quadraticEnergy(x,y) = x² + y².
 ```
 
-with quadratic energy
+`NCG-OPR-002` proves that this energy vanishes exactly when the resultant
+vector vanishes.
 
-$$
-E(x,y)=x^2+y^2.
-$$
+## 2. Fixed native state
 
-The unit rotation direction is
+The carry-built state is
 
-$$
-d(\theta)=(\cos\theta,\sin\theta).
-$$
-
-`NCG-REA-001` proves `E(d(theta)) = 1`.
-
-## 2. Native integer-indexed rotating state
-
-For a positive integer `n`,
-
-$$
-u_t(n)
-=
-n^{-1/2}
-\bigl(\cos(-t\log n),\sin(-t\log n)\bigr).
-$$
-
-The Lean definition is `nativeRealCarryState time n`. It reads its amplitude
-from `Measure.nativeTowerAmplitude`; it is total on `ℤ` and returns zero for
-nonpositive inputs.
-
-Its energy is inverse-integer mass by construction:
-
-```lean
-quadraticEnergy (nativeRealCarryState time n) = (n : ℝ)⁻¹
+```text
+u_t(n) = n^(-1/2) (cos(-t log n), sin(-t log n)).
 ```
 
-## 3. Secondary radial deformation
+It is named `nativeRealCarryState time n`.  Its amplitude is read from the
+native tower, and `NCG-REA-004` identifies its energy with inverse-integer
+carry mass.
 
-For norm and rigidity comparisons, the repository also exposes
-
-$$
-u_{\sigma,t}(n)
-=n^{-\sigma}
-\bigl(\cos(-t\log n),\sin(-t\log n)\bigr)
-$$
-
-as `radialDeformationState sigma time n`. The old public name
-`realCarryState` is retained as a compatibility alias for this deformation.
-
-`NCG-REA-005` states, under `0 < n`,
-
-$$
-E(u_{\sigma,t}(n))=n^{-2\sigma}.
-$$
-
-The time parameter rotates direction and does not alter energy.
-
-`RadialDeformationRepresentsNativeMass sigma time` asks whether the ambient
-deformation reproduces the mass already fixed by the native tower for all
-`n > 1`.
-
-The index `n=1` is excluded because its energy is one for every `sigma`.
-
-`NCG-REA-006` proves:
+The finite and boundary forms are
 
 ```lean
-RadialDeformationRepresentsNativeMass sigma time ↔
-  sigma = (1 : ℝ) / 2
+finiteNativeRealCarryOperator camera cutoff time
+NativeBoundaryConvergesToZero camera time
+IsNativeCarryOperatorZero camera time
 ```
 
-No hypothesis on `time` occurs in this presentation rigidity. This theorem
-does not select mass for the native state; the native state was already built
-from that mass.
+## 3. Radial family
 
-## 4. Native finite camera
+The sigma family is
 
-Let
+```text
+u_(sigma,t)(n) = n^(-sigma) (cos(-t log n), sin(-t log n)).
+```
 
-$$
-h_c=\left\lfloor\frac{c-1}{2}\right\rfloor,
-\qquad
-q_{c,j}=c(j+1).
-$$
-
-For a state function `f`, the generic finite operator is
-
-$$
-\begin{aligned}
-\operatorname{FiniteOp}_{c,M}(f)
-&=
-\sum_{n=1}^{h_c}f(n)\\
-&\quad+
-\sum_{j=0}^{M-1}\sum_{r=1}^{h_c}
-\left[
-f(q_{c,j}-r)-2f(q_{c,j})+f(q_{c,j}+r)
-\right].
-\end{aligned}
-$$
-
-`finiteNativeRealCarryOperator camera cutoff time` applies this construction
-to `nativeRealCarryState time`. It has no `sigma` argument.
-
-`finiteRadialDeformation camera cutoff sigma time` is the secondary family;
-`finiteRealCarryOperator` remains its compatibility alias.
-
-`NCG-OPR-001` proves that every additive map commutes with the finite operator.
-This is the formal naturality used by the coordinate equivalence.
-
-## 5. Visible energy and finite zeros
-
-Visible energy is the norm square of the final vector resultant:
-
-$$
-E_{\mathrm{vis}}(R)=R_1^2+R_2^2.
-$$
-
-`NCG-OPR-002` proves:
+with public operators
 
 ```lean
-quadraticEnergy u = 0 ↔ u = 0
+finiteRadialDeformation camera cutoff sigma time
+RadialDeformationBoundaryConvergesToZero camera sigma time
 ```
 
-The canonical finite native zero is:
+and raw zero predicates
 
 ```lean
-IsFiniteNativeCarryOperatorZero camera cutoff time
+IsFiniteRealCarryOperatorZero camera cutoff sigma time
+IsRealCarryOperatorZero camera sigma time
 ```
 
-The ambient relation is
-`RadialChartRepresentsFiniteNativeZero camera cutoff sigma time`.
-`NCG-OPR-008` factors that representation as:
+A raw zero is exactly vanishing of the supplied resultant.  The predicates do
+not test native mass and do not contain a one-half premise.
+
+## 4. Finite zero identity
+
+`NCG-OPR-003` states
 
 ```lean
-RadialChartRepresentsFiniteNativeZero camera cutoff sigma time ↔
-  sigma = 1 / 2 ∧
-    IsFiniteNativeCarryOperatorZero camera cutoff time
+IsFiniteRealCarryOperatorZero camera cutoff sigma time ↔
+  finiteRadialDeformation camera cutoff sigma time = 0
 ```
 
-Visible energy must not be confused with the sum of energies of the individual
-terms. A vector sum may vanish while its summands remain nonzero.
+This is the finite zero locus of the radial operator family for every supplied
+`sigma`.
 
-## 6. Native boundary closure
+## 5. Native specialization
 
-The infinite operator is represented by a convergence predicate:
+The radial state at one half is extensionally the fixed native state.  At the
+boundary, `NCG-OPR-005` gives
 
 ```lean
-def NativeBoundaryConvergesToZero
-    (camera : ℕ) (time : ℝ) : Prop :=
-  Tendsto
-    (fun cutoff =>
-      finiteNativeRealCarryOperator camera cutoff time)
-    atTop (nhds 0)
+IsRealCarryOperatorZero camera (1 / 2) time ↔
+  IsNativeCarryOperatorZero camera time
 ```
 
-No finite cutoff is required to be exactly zero.
+This identifies the native member of the radial family.  It says nothing about
+whether other members can also vanish.
 
-The canonical operator-zero predicate is literally this native boundary:
+## 6. Mass compatibility and representation
+
+`RadialDeformationRepresentsNativeMass sigma time` is an independent predicate
+and is equivalent to `sigma = 1/2`.  It appears only in
 
 ```lean
-abbrev IsNativeCarryOperatorZero
-    (camera : ℕ) (time : ℝ) : Prop :=
-  NativeBoundaryConvergesToZero camera time
+RadialChartRepresentsNativeZero camera sigma time
+RadialChartRepresentsFiniteNativeZero camera cutoff sigma time
 ```
 
-`IsBoundaryResonance` and the older coordinate-labelled
-`IsNativeRealCarryOperatorZero` are definitionally equal legacy-compatibility aliases.
+The representation factorization confines native representations to one half.
+It does not redefine or erase raw radial zeros elsewhere.
 
-The ambient deformation has only a cancellation predicate,
-`RadialChartCancelsAt camera sigma time`. At `sigma = 1/2`, Lean proves
-that chart cancellation is equivalent to the native boundary. Away from the
-mass-preserving shell it does not satisfy the native operator-zero
-representation relation.
+## 7. Boundary convergence
 
-## 7. Camera cases
+Boundary zero means convergence of finite resultants to the zero vector.  No
+finite cutoff is required to vanish exactly.  Visible energy is the energy of
+the final vector resultant, not the sum of the energies of its summands.
 
-The finite operator is total for all natural cameras.
+## 8. Camera scope
 
-- `camera = 0, 1, 2`: `halfRange = 0`, so the generic camera is degenerate.
-- odd `camera ≥ 3`: the window has exactly `camera` positions around each
-  aligned center when the center is included.
-- even `camera ≥ 4`: the bracket uses `camera - 1` positions.
-- odd prime cameras additionally admit the balanced-residue and finite-prefix
-  identities used by the analytic layer.
-
-The universal radial-chart representation theorem includes the degenerate cases because
-its camera parameter is unrestricted. This totality must not be read as a claim
-that every natural width supplies a nondegenerate physical observation rule.
-
-## 8. No hidden operator object
-
-The phrase “real carry operator” denotes real coordinates for the mass-built
-native state, its finite resultants, and its native operator-zero predicate.
-Complex
-coordinates describe the same object. The radial deformation is a tool for
-varying amplitude and quadratic norm, not an input of another operator. The release does not
-claim a separately constructed total linear map whose value is an
-already-evaluated infinite limit.
+The generic finite camera is total for every natural width.  Widths `0`, `1`,
+and `2` are degenerate in this generic family; the binary adjacent-center
+construction is separate.  Odd-prime hypotheses remain explicit where
+balanced-residue and analytic prefix identities require them.

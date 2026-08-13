@@ -88,24 +88,23 @@ RealCarryPlane ≃+ ℂ
 and reproves energy, finite-resultant, and zero-locus preservation for that
 coordinate representation.
 
-### 5.3. One native operator-zero predicate and ambient chart relations
+### 5.3. Raw radial zeros and fixed native specialization
 
-The historical camera-three theorem identifies real radial-chart cancellation
-with analytic-chart cancellation. Release `v0.3.0` gives the native
-operator-zero predicate the canonical name `IsNativeCarryOperatorZero` and registers its analytic
-coordinate identity as `NCG-EQV-017`.
+The historical camera-three theorem identifies raw real radial cancellation
+with raw analytic cancellation.  Current `main` names these predicates
+`IsRealCarryOperatorZero` and `IsCanonicalCarryOperatorZero` and keeps them
+free of mass compatibility.
 
-The wider propositions `RadialChartRepresentsNativeZero` and
-`AnalyticChartRepresentsNativeZero` are representation relations: they retain
-the upstream mass law while comparing ambient charts. Historical names that
-look like additional zero predicates remain aliases only.
+The fixed carry-built member retains `IsNativeCarryOperatorZero`; `NCG-OPR-005`
+identifies it with the radial zero predicate at `sigma = 1/2`.
 
-### 5.4. Registered corollaries
+### 5.4. Representation relations and semantic correction
 
-`NCG-AMP-007`, `NCG-AMP-008`, `NCG-EQV-009`, and the canonical
-one-operator wrappers added in `v0.3.0` are explicit public compositions in
-this repository. They are not misreported as exact
-historical declarations.
+`RadialChartRepresentsNativeZero` and `AnalyticChartRepresentsNativeZero` are
+representation relations: native-mass compatibility conjoined with raw zero.
+The old off-shell corollaries were removed because they obtained their result
+from compatibility embedded in a predicate named zero.  The registry class
+`semantic_correction` records the corrected theorem types honestly.
 
 ### 5.5. Lossless vertical reconstruction and radial readout transport
 

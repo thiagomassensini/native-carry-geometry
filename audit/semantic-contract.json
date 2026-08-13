@@ -1,95 +1,109 @@
 {
-  "schema": "native-carry-semantic-contract-v1",
-  "release": "v0.4.0",
+  "baseline_release": "v0.4.0",
   "contracts": [
     {
-      "id": "MASS_UPSTREAM",
-      "statement": "Carry mass and its quadratic-root amplitude are constructed before the native state and operator.",
       "canonical_api": [
         "NativeCarryGeometry.Measure.nativeTowerMass",
         "NativeCarryGeometry.Measure.nativeTowerAmplitude",
         "NativeCarryGeometry.Operator.nativeRealCarryState"
       ],
+      "id": "MASS_UPSTREAM",
+      "statement": "Carry mass and its quadratic-root amplitude are constructed before the native state and operator.",
       "witness_ids": [
         "NCG-MAS-003",
         "NCG-REA-004"
       ]
     },
     {
-      "id": "SIGMA_IS_NORM_DEFORMATION",
-      "statement": "Sigma changes radial amplitude and quadratic norm in an ambient chart; it is not a second operator input.",
       "canonical_api": [
-        "NativeCarryGeometry.Measure.radialEnergyWeight",
         "NativeCarryGeometry.Operator.radialDeformationState",
         "NativeCarryGeometry.Operator.RadialDeformationRepresentsNativeMass"
       ],
+      "id": "SIGMA_IS_NORM_DEFORMATION",
+      "statement": "Sigma changes radial amplitude and quadratic norm; native-mass compatibility is a separate representation predicate.",
       "witness_ids": [
         "NCG-REA-005",
         "NCG-REA-006",
-        "NCG-EQV-013",
-        "NCG-EQV-015",
         "NCG-EQV-016"
       ]
     },
     {
-      "id": "REAL_COMPLEX_SAME_OPERATOR",
-      "statement": "Real pairs and complex numbers are faithful additive coordinates of the same state and resultants and define the same zero locus.",
       "canonical_api": [
         "NativeCarryGeometry.Equivalence.complexCoordinates",
-        "NativeCarryGeometry.Equivalence.nativeCarryAnalyticReadout"
+        "NativeCarryGeometry.Operator.IsRealCarryOperatorZero",
+        "NativeCarryGeometry.Equivalence.IsCanonicalCarryOperatorZero"
       ],
+      "id": "REAL_COMPLEX_SAME_OPERATOR",
+      "statement": "Real pairs and complex numbers are faithful additive coordinates of the same resultants and preserve the full raw zero locus in the stated domain.",
       "witness_ids": [
-        "NCG-EQV-010",
-        "NCG-EQV-011",
-        "NCG-EQV-014",
+        "NCG-EQV-004",
+        "NCG-EQV-008",
+        "NCG-EQV-010"
+      ]
+    },
+    {
+      "canonical_api": [
+        "NativeCarryGeometry.Operator.IsFiniteRealCarryOperatorZero",
+        "NativeCarryGeometry.Operator.IsRealCarryOperatorZero",
+        "NativeCarryGeometry.Equivalence.IsCanonicalCarryOperatorZero"
+      ],
+      "id": "RAW_ZERO_IS_CANCELLATION",
+      "statement": "A raw finite, real-boundary, or analytic radial zero is exactly resultant cancellation at the supplied coordinates and contains no mass-compatibility premise.",
+      "witness_ids": [
+        "NCG-OPR-003",
+        "NCG-OPR-004",
+        "NCG-EQV-008"
+      ]
+    },
+    {
+      "canonical_api": [
+        "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero",
+        "NativeCarryGeometry.Operator.IsRealCarryOperatorZero"
+      ],
+      "id": "NATIVE_SPECIALIZATION",
+      "statement": "At sigma one half, the raw radial zero predicate agrees with the zero predicate of the fixed carry-built native operator.",
+      "witness_ids": [
+        "NCG-OPR-005",
         "NCG-EQV-017"
       ]
     },
     {
-      "id": "ONE_OPERATOR_ZERO",
-      "statement": "The native carry operator has one native operator-zero predicate, already built from the mass-weighted tower.",
       "canonical_api": [
-        "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero"
-      ],
-      "witness_ids": [
-        "NCG-EQV-017"
-      ]
-    },
-    {
-      "id": "AMBIENT_CANCELLATION_NOT_ZERO",
-      "statement": "Ambient chart cancellation is distinguished from the relation that a chart point represents a point of the native operator-zero locus.",
-      "canonical_api": [
-        "NativeCarryGeometry.Operator.RadialChartCancelsAt",
         "NativeCarryGeometry.Operator.RadialChartRepresentsNativeZero",
+        "NativeCarryGeometry.Operator.RadialChartRepresentsFiniteNativeZero",
         "NativeCarryGeometry.Equivalence.AnalyticChartRepresentsNativeZero"
       ],
+      "id": "NATIVE_REPRESENTATION_IS_SEPARATE",
+      "statement": "Native representation conjoins upstream mass compatibility with a raw zero; its half-shell factorization does not classify the full raw zero locus.",
       "witness_ids": [
+        "NCG-OPR-006",
         "NCG-OPR-007",
         "NCG-OPR-008",
+        "NCG-EQV-009",
         "NCG-EQV-018",
         "NCG-EQV-019"
       ]
     }
   ],
   "legacy_aliases": {
+    "NativeCarryGeometry.Equivalence.IsNativeCanonicalCarryOperatorZero": "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero",
+    "NativeCarryGeometry.Measure.criticalAmplitude": "NativeCarryGeometry.Measure.carryAmplitude",
     "NativeCarryGeometry.Measure.massWeight": "NativeCarryGeometry.Measure.radialEnergyWeight",
     "NativeCarryGeometry.Operator.BoundaryConvergesToZero": "NativeCarryGeometry.Operator.RadialChartCancelsAt",
-    "NativeCarryGeometry.Operator.IsFiniteRealCarryOperatorZero": "NativeCarryGeometry.Operator.RadialChartRepresentsFiniteNativeZero",
-    "NativeCarryGeometry.Operator.IsRealCarryOperatorZero": "NativeCarryGeometry.Operator.RadialChartRepresentsNativeZero",
     "NativeCarryGeometry.Operator.IsNativeRealCarryOperatorZero": "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero",
-    "NativeCarryGeometry.Equivalence.IsCanonicalCarryOperatorZero": "NativeCarryGeometry.Equivalence.AnalyticChartRepresentsNativeZero",
-    "NativeCarryGeometry.Measure.criticalAmplitude": "NativeCarryGeometry.Measure.carryAmplitude",
-    "NativeCarryGeometry.Operator.realCarryState": "NativeCarryGeometry.Operator.radialDeformationState",
     "NativeCarryGeometry.Operator.RealCarryEnergyCompatible": "NativeCarryGeometry.Operator.RadialDeformationRepresentsNativeMass",
     "NativeCarryGeometry.Operator.finiteRealCarryOperator": "NativeCarryGeometry.Operator.finiteRadialDeformation",
-    "NativeCarryGeometry.Operator.IsRadialDeformationPresentationZero": "NativeCarryGeometry.Operator.RadialChartRepresentsNativeZero",
-    "NativeCarryGeometry.Equivalence.IsNativeCanonicalCarryOperatorZero": "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero"
+    "NativeCarryGeometry.Operator.realCarryState": "NativeCarryGeometry.Operator.radialDeformationState"
   },
   "public_entrypoints": [
     "README.md",
     "docs/00_SCOPE.md",
+    "docs/40_REAL_OPERATOR.md",
+    "docs/50_CANONICAL_ANALYTIC_PRESENTATION.md",
     "docs/60_REAL_ANALYTIC_EQUIVALENCE.md",
     "docs/70_ZERO_SET_FACTORIZATION.md",
     "docs/90_SEMANTIC_AUDIT.md"
-  ]
+  ],
+  "schema": "native-carry-semantic-contract-v2",
+  "status": "post-release-semantic-correction"
 }

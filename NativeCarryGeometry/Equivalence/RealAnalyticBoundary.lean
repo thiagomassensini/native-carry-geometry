@@ -429,8 +429,8 @@ theorem boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero
     hs
 
 /--
-Canonical-name form of NCG-EQV-007.  Both sides describe cancellation of the
-ambient radial chart; neither side is a second native operator-zero predicate.
+Canonical-name form of NCG-EQV-007.  Both sides are raw zero predicates for
+the same radial operator family in faithful real and analytic coordinates.
 -/
 theorem radialChartCancelsAt_iff_canonicalChartCancelsAt
     {s : ℂ} (hs : s ∈ Analytic.canonicalStrip) :
@@ -488,25 +488,26 @@ theorem isNativeRealCarryOperatorZero_iff_isNativeCanonicalCarryOperatorZero
   nativeBoundaryConvergesToZero_iff_nativeCarryAnalyticReadout_eq_zero time
 
 /--
+Raw zero predicate of the canonical analytic radial family.  It is exactly the
+vanishing equation at the supplied complex coordinate and contains no
+mass-compatibility premise.
+-/
+abbrev IsCanonicalCarryOperatorZero (s : ℂ) : Prop :=
+  Analytic.canonicalCarryContinuation s = 0
+
+/--
 The ambient analytic chart represents a native zero when its radial coordinate
-preserves the upstream mass and its analytic resultant cancels.  This is a
-representation predicate, not a second kind of operator zero.
+preserves the upstream mass and the raw analytic resultant vanishes.
 -/
 def AnalyticChartRepresentsNativeZero (s : ℂ) : Prop :=
   Operator.RadialDeformationRepresentsNativeMass s.re s.im ∧
-    Analytic.canonicalCarryContinuation s = 0
-
-/--
-Legacy compatibility alias for `AnalyticChartRepresentsNativeZero`.
--/
-abbrev IsCanonicalCarryOperatorZero (s : ℂ) : Prop :=
-  AnalyticChartRepresentsNativeZero s
+    IsCanonicalCarryOperatorZero s
 
 /--
 NCG-EQV-018: Analytic-Chart Representation Factorization.
 
 The complex radial coordinate represents the native mass exactly at one half;
-the remaining conjunct is cancellation of the ambient analytic chart.
+the remaining conjunct is the raw analytic zero equation.
 -/
 theorem analyticChartRepresentsNativeZero_iff
     (s : ℂ) :
@@ -514,38 +515,37 @@ theorem analyticChartRepresentsNativeZero_iff
       s.re = (1 : ℝ) / 2 ∧
         Analytic.canonicalCarryContinuation s = 0 := by
   unfold AnalyticChartRepresentsNativeZero
+    IsCanonicalCarryOperatorZero
   rw [Operator.radialDeformationRepresentsNativeMass_iff]
 
 /--
-NCG-EQV-008: Legacy Real/Analytic Native-Representation Identity.
+NCG-EQV-008: Real/Analytic Radial Zero-Locus Identity.
 
-Inside the canonical strip, the real and analytic radial presentations are
-exactly the same proposition.
+Inside the canonical strip, the raw real radial operator and its analytic
+coordinate package have exactly the same zeros.
 -/
 theorem isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero
     {s : ℂ} (hs : s ∈ Analytic.canonicalStrip) :
     Operator.IsRealCarryOperatorZero 3 s.re s.im ↔
       IsCanonicalCarryOperatorZero s := by
-  unfold Operator.IsRealCarryOperatorZero
-    IsCanonicalCarryOperatorZero
-  exact and_congr Iff.rfl
-    (boundaryConvergesToZero_iff_canonicalCarryContinuation_eq_zero hs)
+  change
+    Operator.RadialChartCancelsAt 3 s.re s.im ↔
+      Analytic.canonicalCarryContinuation s = 0
+  exact radialChartCancelsAt_iff_canonicalChartCancelsAt hs
 
 /--
-NCG-EQV-009: Legacy Analytic Native-Representation Half-Shell Corollary.
+NCG-EQV-009: Analytic Native-Representation Predicate Separation.
 
-This is uniqueness of the ambient radial presentation, not a mass condition
-added to the native operator and not a statement about arbitrary ambient
-analytic-chart cancellations.
+Native representation is mass compatibility conjoined with a raw canonical
+analytic zero; the zero equation itself does not force the half coordinate by
+definition.
 -/
-theorem canonicalCarryOperatorZero_re_eq_half
-    {s : ℂ} (hs : s ∈ Analytic.canonicalStrip)
-    (hzero : IsCanonicalCarryOperatorZero s) :
-    s.re = (1 : ℝ) / 2 := by
-  have hreal :
-      Operator.IsRealCarryOperatorZero 3 s.re s.im :=
-    (isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero hs).2 hzero
-  exact Operator.realCarryOperatorZero_sigma_eq_half hreal
+theorem analyticChartRepresentsNativeZero_iff_massCompatible_and_zero
+    (s : ℂ) :
+    AnalyticChartRepresentsNativeZero s ↔
+      Operator.RadialDeformationRepresentsNativeMass s.re s.im ∧
+        IsCanonicalCarryOperatorZero s :=
+  Iff.rfl
 
 /--
 NCG-EQV-019: Analytic-Chart Native Representation Uniqueness.
@@ -559,15 +559,17 @@ theorem analyticChartRepresentsNativeZero_re_eq_half
   ((analyticChartRepresentsNativeZero_iff s).1 hrep).1
 
 /--
-Canonical-name form of the real/analytic representation crosswalk.  It says
-that two coordinate charts represent the same native zero.
+The real and analytic representation relations agree because they share the
+same mass predicate and their raw zero predicates agree in the canonical
+strip.
 -/
 theorem radialChartRepresentsNativeZero_iff_analyticChartRepresentsNativeZero
     {s : ℂ} (hs : s ∈ Analytic.canonicalStrip) :
     Operator.RadialChartRepresentsNativeZero 3 s.re s.im ↔
       AnalyticChartRepresentsNativeZero s := by
-  simpa [Operator.IsRealCarryOperatorZero,
-    IsCanonicalCarryOperatorZero] using
+  unfold Operator.RadialChartRepresentsNativeZero
+    AnalyticChartRepresentsNativeZero
+  exact and_congr Iff.rfl
     (isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero hs)
 
 end

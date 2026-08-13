@@ -1,197 +1,128 @@
-# One Native Operator-Zero Predicate and Radial-Chart Representation
+# Raw Zero Loci and Native-Representation Factorization
 
-## 1. Canonical native operator-zero predicate
+## 1. Why the distinction matters
 
-The native boundary is:
+A definition of zero must answer whether a supplied resultant vanishes.  A
+mass-compatibility condition answers a different question: whether that point
+represents the fixed carry-built native member.  Combining the two inside a
+predicate named `Zero` makes an off-half nonzero theorem true by definition and
+therefore gives no information about the actual off-half resultant.
+
+Lean verifies derivability from definitions.  It cannot decide that a chosen
+definition has silently answered the wrong mathematical question.
+
+## 2. Correct raw predicates
+
+Boundary level:
 
 ```lean
-def NativeBoundaryConvergesToZero
-    (camera : ℕ) (time : ℝ) : Prop :=
-  Tendsto
-    (fun cutoff =>
-      finiteNativeRealCarryOperator camera cutoff time)
-    atTop (nhds 0)
+IsRealCarryOperatorZero camera sigma time :=
+  RadialChartCancelsAt camera sigma time
 ```
 
-The one native operator-zero predicate is definitionally that boundary:
+Finite level:
 
 ```lean
-abbrev IsNativeCarryOperatorZero
-    (camera : ℕ) (time : ℝ) : Prop :=
+IsFiniteRealCarryOperatorZero camera cutoff sigma time :=
+  quadraticEnergy
+    (finiteRadialDeformation camera cutoff sigma time) = 0
+```
+
+Analytic coordinates:
+
+```lean
+IsCanonicalCarryOperatorZero s :=
+  canonicalCarryContinuation s = 0
+```
+
+Each predicate records raw vanishing at the supplied coordinate.  None
+contains `sigma = 1/2`.
+
+## 3. Fixed native predicate
+
+```lean
+IsNativeCarryOperatorZero camera time :=
   NativeBoundaryConvergesToZero camera time
 ```
 
-`IsBoundaryResonance` and `IsNativeRealCarryOperatorZero` are historical
-aliases for the same proposition. Their names do not introduce additional
-operator-zero predicates.
-
-## 2. The ambient radial chart
-
-The comparison family changes the amplitude from $n^{-1/2}$ to
-$n^{-\sigma}$. Its boundary cancellation is:
+The native state was already built from the quadratic-root carry amplitude.
+At one half, `NCG-OPR-005` proves
 
 ```lean
-RadialChartCancelsAt camera sigma time
+IsRealCarryOperatorZero camera (1 / 2) time ↔
+  IsNativeCarryOperatorZero camera time.
 ```
 
-This proposition alone describes an ambient chart cancellation. It is not an
-operator-zero predicate.
-
-The relation saying that the chart represents a point of the native
-operator-zero locus is:
+## 4. Representation predicates
 
 ```lean
-def RadialChartRepresentsNativeZero
-    (camera : ℕ) (sigma time : ℝ) : Prop :=
+RadialChartRepresentsNativeZero camera sigma time :=
   RadialDeformationRepresentsNativeMass sigma time ∧
-    RadialChartCancelsAt camera sigma time
+    IsRealCarryOperatorZero camera sigma time
 ```
 
-The first conjunct is not mass added after the operator. It checks whether the
-ambient chart retained the mass already constructed upstream.
+The analytic and finite relations have the same structure.  `NCG-OPR-006`
+and `NCG-EQV-009` expose this separation directly.
 
-## 3. Canonical factorization
-
-`NCG-OPR-007` is the public factorization:
+The factorization
 
 ```lean
-theorem radialChartRepresentsNativeZero_iff
-    (camera : ℕ) (sigma time : ℝ) :
-    RadialChartRepresentsNativeZero camera sigma time ↔
-      sigma = (1 : ℝ) / 2 ∧
-        IsNativeCarryOperatorZero camera time
+RadialChartRepresentsNativeZero camera sigma time ↔
+  sigma = 1 / 2 ∧ IsNativeCarryOperatorZero camera time
 ```
 
-For each camera, the graph of native representations is therefore:
+is valid because native-mass compatibility is equivalent to `sigma = 1/2`.
+It classifies representations, not raw zeros.
 
-$
-\left\{\frac12\right\}
-\times
-\left\{t\mid
-  \operatorname{IsNativeCarryOperatorZero}(\mathit{camera},t)
-\right\}.
-$
+## 5. Removed circular corollaries
 
-This is not a classification of multiple zero predicates. It says exactly
-when a point of the larger radial chart represents a point of the native
-operator-zero locus.
-
-## 4. Why the factorization is structurally forced after mass rigidity
-
-The proof chain is:
-
-1. the chart represents native mass;
-2. quadratic rigidity gives $\sigma=1/2$;
-3. at one half, the radial state is extensionally the native state;
-4. the finite resultants and boundary limits are therefore the same;
-5. chart cancellation lies in the native operator-zero locus.
-
-Conversely:
-
-1. start with $\sigma=1/2$ and the native operator-zero predicate;
-2. the half-exponent chart preserves native mass;
-3. the half-chart identity transports the boundary;
-4. the radial chart represents the same zero-locus point.
-
-Nothing arbitrary is selected when the operator-zero predicate is evaluated. The half exponent was already
-forced by amplitude squared equalling carry mass.
-
-## 5. Finite form
-
-The finite representation relation is:
-
-```lean
-RadialChartRepresentsFiniteNativeZero
-    camera cutoff sigma time
-```
-
-and `NCG-OPR-008` proves:
-
-```lean
-RadialChartRepresentsFiniteNativeZero
-    camera cutoff sigma time ↔
-  sigma = (1 : ℝ) / 2 ∧
-    IsFiniteNativeCarryOperatorZero
-      camera cutoff time
-```
-
-Again there is one finite native operator-zero predicate and a relation
-describing which ambient chart points represent its zero locus.
-
-## 6. Analytic-coordinate form
-
-The ambient analytic representation relation is:
-
-```lean
-AnalyticChartRepresentsNativeZero s
-```
-
-`NCG-EQV-018` proves, without a strip premise:
-
-```lean
-AnalyticChartRepresentsNativeZero s ↔
-  s.re = (1 : ℝ) / 2 ∧
-    canonicalCarryContinuation s = 0
-```
-
-The native operator-zero predicate and its analytic readout define the same
-zero locus by
-`NCG-EQV-017`:
-
-$
-\operatorname{IsNativeCarryOperatorZero}(3,t)
-\iff
-\operatorname{nativeCarryAnalyticReadout}(t)=0.
-$
-
-The complex number stores the same two real coordinates. It cannot change the
-zero locus.
-
-## 7. Historical aliases (legacy compatibility)
-
-The following names remain only to avoid breaking downstream source:
+The following declarations were removed:
 
 ```text
-IsFiniteRealCarryOperatorZero
-IsRadialDeformationPresentationZero
-IsRealCarryOperatorZero
-IsNativeRealCarryOperatorZero
-IsNativeCanonicalCarryOperatorZero
-IsCanonicalCarryOperatorZero
-BoundaryConvergesToZero
+realCarryOperatorZero_sigma_eq_half
+not_realCarryOperatorZero_of_sigma_ne_half
+canonicalCarryOperatorZero_re_eq_half
 ```
 
-Their canonical replacements are, respectively, finite/native representation
-relations, the native operator-zero predicate, or ambient chart cancellation. They are not
-used to define the public ontology.
+Under the old aliases, each conclusion followed by unpacking a predicate that
+had already conjoined mass compatibility with cancellation.  They did not
+prove that raw cancellation was impossible away from one half.
 
-## 8. Camera scope
+They were replaced by:
 
-`NCG-OPR-007` is quantified over every natural camera, including total
-degenerate instances. This means the mass-preserving radial coordinate is
-camera-independent.
+```text
+realCarryOperatorZero_half_iff_native
+radialChartRepresentsNativeZero_iff_massCompatible_and_zero
+analyticChartRepresentsNativeZero_iff_massCompatible_and_zero
+```
 
-It does not assert:
+These replacements state the actual relationships without deciding the
+unresolved off-half zero question by nomenclature.
 
-- that different cameras have identical temporal resonance sets;
-- that a resonance exists for every camera;
-- that every natural camera is nondegenerate;
-- that all raw finite sums are definitionally equal.
+## 6. Logical consequences
 
-The camera-three analytic crosswalk retains its explicit canonical-strip
-premise.
+The repository now supports the following valid implications:
 
-## 9. Independence from later routes
+```text
+native representation  ⇒ sigma = 1/2
+native representation  ⇒ raw radial zero
+raw radial zero at 1/2 ⇔ fixed native zero
+raw real zero          ⇔ raw analytic zero   (camera 3, canonical strip)
+```
 
-The factorization and native zero-locus identity do not depend on:
+It deliberately does **not** contain
 
-- Green or flux identities;
-- a completed operator;
-- spectral pencils;
-- a self-adjoint realization;
-- curvature-to-boundary promotion;
-- an external classical analytic function;
-- an equation or hypothesis about such an external function.
+```text
+raw radial zero ⇒ sigma = 1/2.
+```
 
-Curvature and tilt in this repository are auxiliary detectors of radial
-deformation. Their null loci do not define additional operator-zero predicates.
+Therefore, if a raw zero occurs at `sigma ≠ 1/2`, it remains a zero of the
+radial operator family.  Such a point would refute any separately stated
+critical-line classification theorem for that full family.
+
+## 7. External transfer
+
+This repository does not identify its canonical continuation with the
+classical Riemann zeta function.  Any conclusion about the Riemann hypothesis
+requires a separate transfer theorem whose hypotheses, domain, and two-way
+zero-locus preservation are independently audited.

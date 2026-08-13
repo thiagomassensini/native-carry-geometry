@@ -3,103 +3,74 @@ import NativeCarryGeometry.Operator.QuadraticDomain
 import NativeCarryGeometry.Operator.BoundaryOperator
 
 /-!
-# Native operator-zero predicate and radial-chart representation
+# Native and radial-family operator zeros
 
-The native operator is assembled upstream from the carry-mass tower.  Its zero
-predicate is therefore just boundary closure of that already weighted state.
+The native operator is assembled upstream from the carry-mass tower and has
+only phase time as a free coordinate.  The larger radial family varies the
+amplitude exponent `sigma` and has its own raw zero predicate at every supplied
+coordinate.
 
-The two-coordinate `(sigma,time)` family below is a secondary radial
-presentation.  Its factorization theorem says when that deformation represents
-the native tower; the presentation never supplies mass to the operator later.
+Mass compatibility is kept separate.  It says when a radial-family point
+represents the already weighted native operator; it never defines whether the
+radial resultant is zero.
 -/
 
 namespace NativeCarryGeometry.Operator
 
 noncomputable section
 
-/--
-The one native operator-zero predicate.  The tower is already
-weighted by the carry mass before this predicate is formed.
--/
+/-- Zero of the fixed, carry-built native operator. -/
 abbrev IsNativeCarryOperatorZero
     (camera : ℕ) (time : ℝ) : Prop :=
   NativeBoundaryConvergesToZero camera time
 
-/--
-Legacy coordinate-labelled alias.  It is definitionally the same native
-operator-zero predicate, not a separate “real zero”.
--/
+/-- Coordinate-labelled alias for the fixed native operator zero. -/
 abbrev IsNativeRealCarryOperatorZero
     (camera : ℕ) (time : ℝ) : Prop :=
   IsNativeCarryOperatorZero camera time
 
 /--
-The ambient radial chart represents the native zero locus exactly when it preserves
-the upstream carry mass and its deformed boundary cancels.  This is a
-representation predicate, not another kind of zero.
+Raw zero of the radial operator family at the supplied `(sigma,time)`
+coordinates.  No mass-compatibility premise is part of this predicate.
+-/
+abbrev IsRadialCarryOperatorZero
+    (camera : ℕ) (sigma time : ℝ) : Prop :=
+  RadialChartCancelsAt camera sigma time
+
+/-- Public coordinate-labelled spelling of the raw radial-family zero predicate. -/
+abbrev IsRealCarryOperatorZero
+    (camera : ℕ) (sigma time : ℝ) : Prop :=
+  IsRadialCarryOperatorZero camera sigma time
+
+/--
+A radial-family zero represents a zero of the fixed native operator precisely
+when the radial deformation also preserves the upstream native mass.
 -/
 def RadialChartRepresentsNativeZero
     (camera : ℕ) (sigma time : ℝ) : Prop :=
   RadialDeformationRepresentsNativeMass sigma time ∧
-    RadialChartCancelsAt camera sigma time
-
-/-- Legacy compatibility alias for `RadialChartRepresentsNativeZero`. -/
-abbrev IsRadialDeformationPresentationZero
-    (camera : ℕ) (sigma time : ℝ) : Prop :=
-  RadialChartRepresentsNativeZero camera sigma time
-
-/-- Legacy compatibility alias; this does not introduce an additional operator-zero predicate. -/
-abbrev IsRealCarryOperatorZero
-    (camera : ℕ) (sigma time : ℝ) : Prop :=
-  RadialChartRepresentsNativeZero camera sigma time
+    IsRadialCarryOperatorZero camera sigma time
 
 /--
-NCG-OPR-004: Legacy Boundary Radial-Chart Native-Representation Factorization.
+NCG-OPR-004: Radial Operator Zero/Boundary Cancellation Identity.
 
-For every natural camera width, a radial deformation represents the native
-zero locus exactly on the unique native shell and at a native boundary
-resonance.
+Calling the radial resultant a zero records exactly its boundary cancellation;
+no critical-shell condition is hidden in the predicate.
 -/
 theorem isRealCarryOperatorZero_iff
     (camera : ℕ) (sigma time : ℝ) :
     IsRealCarryOperatorZero camera sigma time ↔
-      sigma = (1 : ℝ) / 2 ∧
-        IsBoundaryResonance camera time := by
-  unfold IsRealCarryOperatorZero
-    RadialChartRepresentsNativeZero
-  constructor
-  · rintro ⟨henergy, hclose⟩
-    have hpositional :
-        Measure.PositionalMassCompatible 2 sigma :=
-      (Measure.positionalMassCompatible_iff_realEnergyCompatible
-        2 (by norm_num) sigma time).2 henergy
-    have hsigma : sigma = (1 : ℝ) / 2 :=
-      (Measure.positionalMassCompatible_iff
-        2 (by norm_num) sigma).1 hpositional
-    subst sigma
-    exact ⟨rfl,
-      (radialDeformationBoundary_half_iff_native camera time).1 hclose⟩
-  · rintro ⟨hsigma, hclose⟩
-    subst sigma
-    have hpositional :
-        Measure.PositionalMassCompatible 2 ((1 : ℝ) / 2) :=
-      (Measure.positionalMassCompatible_iff
-        2 (by norm_num) ((1 : ℝ) / 2)).2 rfl
-    have henergy :
-        RadialDeformationRepresentsNativeMass ((1 : ℝ) / 2) time :=
-      (Measure.positionalMassCompatible_iff_realEnergyCompatible
-        2 (by norm_num) ((1 : ℝ) / 2) time).1 hpositional
-    exact ⟨henergy,
-      (radialDeformationBoundary_half_iff_native camera time).2 hclose⟩
+      RadialChartCancelsAt camera sigma time :=
+  Iff.rfl
 
-/-- The native operator-zero predicate and boundary resonance are definitionally equal. -/
+/-- The fixed native operator-zero predicate is its boundary resonance. -/
 theorem isNativeCarryOperatorZero_iff
     (camera : ℕ) (time : ℝ) :
     IsNativeCarryOperatorZero camera time ↔
       IsBoundaryResonance camera time :=
   Iff.rfl
 
-/-- Legacy coordinate-labelled form of `isNativeCarryOperatorZero_iff`. -/
+/-- Coordinate-labelled form of `isNativeCarryOperatorZero_iff`. -/
 theorem isNativeRealCarryOperatorZero_iff
     (camera : ℕ) (time : ℝ) :
     IsNativeRealCarryOperatorZero camera time ↔
@@ -107,35 +78,58 @@ theorem isNativeRealCarryOperatorZero_iff
   isNativeCarryOperatorZero_iff camera time
 
 /--
-NCG-OPR-007: Canonical Radial-Chart Representation Factorization.
+NCG-OPR-005: Half-Shell Radial/Native Zero Identity.
 
-Varying `sigma` varies the quadratic norm of the ambient chart.  Such a chart
-represents the native operator-zero locus exactly at the mass-preserving exponent
-and at a native boundary resonance.
+At the carry-built half exponent, the raw radial family is extensionally the
+fixed native operator, so their zero predicates agree.
+-/
+theorem realCarryOperatorZero_half_iff_native
+    (camera : ℕ) (time : ℝ) :
+    IsRealCarryOperatorZero camera ((1 : ℝ) / 2) time ↔
+      IsNativeCarryOperatorZero camera time := by
+  change
+    RadialDeformationBoundaryConvergesToZero
+        camera ((1 : ℝ) / 2) time ↔
+      NativeBoundaryConvergesToZero camera time
+  exact radialDeformationBoundary_half_iff_native camera time
+
+/--
+NCG-OPR-006: Native Representation Predicate Separation.
+
+Representation is exactly the conjunction of an independent mass-compatibility
+statement and a raw radial-family zero.
+-/
+theorem radialChartRepresentsNativeZero_iff_massCompatible_and_zero
+    (camera : ℕ) (sigma time : ℝ) :
+    RadialChartRepresentsNativeZero camera sigma time ↔
+      RadialDeformationRepresentsNativeMass sigma time ∧
+        IsRealCarryOperatorZero camera sigma time :=
+  Iff.rfl
+
+/--
+NCG-OPR-007: Canonical Radial-Chart Native-Representation Factorization.
+
+This theorem classifies representations of the fixed native zero locus.  It
+does not classify the raw zero locus of the radial family.
 -/
 theorem radialChartRepresentsNativeZero_iff
     (camera : ℕ) (sigma time : ℝ) :
     RadialChartRepresentsNativeZero camera sigma time ↔
       sigma = (1 : ℝ) / 2 ∧
         IsNativeCarryOperatorZero camera time := by
-  simpa [RadialChartRepresentsNativeZero, IsNativeCarryOperatorZero,
-    IsBoundaryResonance] using
-    (isRealCarryOperatorZero_iff camera sigma time)
-
-/-- NCG-OPR-005: Legacy Radial-Chart Native-Representation Half-Shell Corollary. -/
-theorem realCarryOperatorZero_sigma_eq_half
-    {camera : ℕ} {sigma time : ℝ}
-    (hzero : IsRealCarryOperatorZero camera sigma time) :
-    sigma = (1 : ℝ) / 2 :=
-  ((isRealCarryOperatorZero_iff camera sigma time).1 hzero).1
-
-/-- NCG-OPR-006: Legacy Off-Shell Native-Nonrepresentation Corollary. -/
-theorem not_realCarryOperatorZero_of_sigma_ne_half
-    {camera : ℕ} {sigma time : ℝ}
-    (hoff : sigma ≠ (1 : ℝ) / 2) :
-    ¬ IsRealCarryOperatorZero camera sigma time := by
-  intro hzero
-  exact hoff (realCarryOperatorZero_sigma_eq_half hzero)
+  constructor
+  · rintro ⟨hmass, hzero⟩
+    have hsigma : sigma = (1 : ℝ) / 2 :=
+      (radialDeformationRepresentsNativeMass_iff sigma time).1 hmass
+    subst sigma
+    exact ⟨rfl,
+      (realCarryOperatorZero_half_iff_native camera time).1 hzero⟩
+  · rintro ⟨hsigma, hzero⟩
+    subst sigma
+    exact ⟨
+      (radialDeformationRepresentsNativeMass_iff
+        ((1 : ℝ) / 2) time).2 rfl,
+      (realCarryOperatorZero_half_iff_native camera time).2 hzero⟩
 
 end
 end NativeCarryGeometry.Operator

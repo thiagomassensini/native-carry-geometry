@@ -1,162 +1,81 @@
 # Canonical Analytic Presentation
 
-## 1. Purpose
+## 1. Coordinate purpose
 
-The analytic layer is constructed from the same finite centered-bracket
-algebra used by the real presentation. It stores the rotating `ℝ²` samples
-as complex coordinates and then continues the ambient radial chart. It does
-not construct another operator or another zero predicate.
-
-The complex parameter is written
-
-$$
-s=\sigma+it,
-$$
-
-so that the power monomial at a positive integer is
-
-$$
-n^{-s}
-=
-n^{-\sigma}
-\bigl(\cos(-t\log n)+i\sin(-t\log n)\bigr).
-$$
-
-## 2. Finite bracket chart
-
-For an odd prime camera `c`, cutoff `M`, and complex parameter `s`,
-`NCG-ANL-001` proves:
-
-$$
-\begin{aligned}
-\operatorname{FiniteBracketChart}_{c,M}(s)
-&=
-\operatorname{Prefix}_{cM+h_c}(s)\\
-&\quad-
-c^{1-s}\operatorname{Prefix}_M(s),
-\end{aligned}
-$$
-
-where
-
-$$
-h_c=\frac{c-1}{2}.
-$$
-
-The exact Lean statement retains both `Nat.Prime camera` and `Odd camera`.
-
-## 3. Bracket series
-
-The centered second difference gives two orders of local decay. The resulting
-bracket series converges in the half-plane
-
-$$
--1<\operatorname{Re}(s).
-$$
-
-`NCG-ANL-002` states convergence of finite bracket charts to
-`bracketSeries camera s` for an odd prime camera and `-1 < s.re`.
-
-`NCG-ANL-003` proves that the bracket series is analytic on this half-plane.
-Its public statement requires primality of the camera.
-
-## 4. Canonical strip
-
-The narrower domain used for camera normalization and the real–analytic
-boundary crosswalk is:
-
-```lean
-abbrev canonicalStrip : Set ℂ :=
-  {s : ℂ | 0 < s.re ∧ s.re < 1}
-```
-
-This is an open strip. It must not be replaced in citations by an unstated
-larger domain.
-
-## 5. Camera normalization
-
-The camera factor is
-
-$$
-F_c(s)=1-c^{\,1-s}.
-$$
-
-For a prime camera and `s` in the canonical strip, `NCG-ANL-004` proves
-
-$$
-F_c(s)\ne0.
-$$
-
-The normalized bracket chart is therefore well-defined. For any two odd prime
-cameras, `NCG-ANL-005` proves:
-
-$$
-\operatorname{NormalizedChart}_{c_1}(s)
-=
-\operatorname{NormalizedChart}_{c_2}(s)
-$$
-
-inside the canonical strip.
-
-This is the exact camera-independence theorem of the analytic atlas. It does
-not quantify over arbitrary composite or even cameras.
-
-## 6. Canonical representative
-
-After normalized odd-prime cameras have been proved equal, the implementation
-uses camera `3` to name their common representative:
-
-```lean
-abbrev canonicalCarryContinuation (s : ℂ) : ℂ := ...
-```
-
-Camera `3` is therefore a chosen representative after compatibility, not the
-source of the quadratic shell.
-
-The principal theorems are:
-
-| ID | Declaration | Content |
-|---|---|---|
-| `NCG-ANL-006` | `bracketSeries_eq_factor_mul_canonicalCarryContinuation` | camera bracket series equals the nonzero factor times the canonical representative |
-| `NCG-ANL-007` | `analyticOnNhd_canonicalCarryContinuation` | analyticity on the canonical strip |
-| `NCG-ANL-008` | `bracketSeries_zero_iff_canonicalCarryContinuation_zero` | any odd prime camera represents the same ambient chart-cancellation locus in the strip |
-
-`NCG-ANL-008` is a statement about cancellation of the ambient bracket chart.
-It is not an `OperatorZero` theorem. The native operator readout is obtained
-by restricting the same coordinate formula to `s.re = 1/2`, already fixed by
-the carry-built tower. `NCG-EQV-017` then proves the exact identity between
-the native operator-zero predicate and the analytic readout with the same zero
-locus.
-
-
-## 7. Sigma in the analytic coordinate
-
-For $s=\sigma+it$, the complex sample is exactly the coordinate image of the
-real radial sample. The named theorem `NCG-EQV-016` makes its norm law
-explicit:
-
-$
-\operatorname{normSq}(n^{-s})=n^{-2\sigma}.
-$
-
-Therefore moving the real coordinate `Re(s)` is precisely moving radial amplitude
-and quadratic norm. The complex plane does not add a degree of freedom beyond
-that already visible in the radial comparison chart.
-
-## 8. Dependency direction
-
-The logical order is:
+The analytic layer stores the same rotating real samples as complex numbers.
+For `s = sigma + i t`,
 
 ```text
-centered bracket
-→ finite power-sum identity
-→ bracket-series convergence
-→ holomorphy
-→ nonvanishing camera factor
-→ normalized camera compatibility
-→ canonical analytic representative
+n^(-s) = n^(-sigma) (cos(-t log n) + i sin(-t log n)).
 ```
 
-No theorem in this layer constructs the native mass or is a premise of
-`NCG-OPR-007`. The analytic layer provides faithful coordinates after the real
-operator has already been assembled.
+Thus the real coordinate of `s` is the radial amplitude exponent.  Complex
+notation does not supply mass or alter resultant vanishing.
+
+## 2. Bracket series and canonical strip
+
+The finite bracket chart, bracket-series convergence, holomorphy, camera
+factor, and odd-prime camera normalization are registered as `NCG-ANL-001`
+through `NCG-ANL-008`.  The real/analytic boundary crosswalk uses
+
+```lean
+canonicalStrip = {s : ℂ | 0 < s.re ∧ s.re < 1}
+```
+
+and camera `3` as the normalized representative.
+
+## 3. Raw analytic zero
+
+The canonical analytic radial operator zero is
+
+```lean
+IsCanonicalCarryOperatorZero s
+```
+
+and abbreviates exactly
+
+```lean
+canonicalCarryContinuation s = 0
+```
+
+No native-mass condition occurs in this predicate.  `NCG-ANL-008` and
+`NCG-EQV-008` transport this raw cancellation locus through camera
+normalization and faithful real/complex coordinates.
+
+## 4. Native analytic readout
+
+The fixed native member is obtained by restriction:
+
+```lean
+nativeCarryAnalyticReadout time :=
+  canonicalCarryContinuation ⟨1 / 2, time⟩
+```
+
+`NCG-EQV-017` identifies its zeros with
+`IsNativeCarryOperatorZero 3 time`.
+
+## 5. Analytic native representation
+
+The separate relation
+
+```lean
+AnalyticChartRepresentsNativeZero s
+```
+
+means native-mass compatibility together with
+`IsCanonicalCarryOperatorZero s`.  `NCG-EQV-009` exposes this conjunction,
+and `NCG-EQV-018` factors it as
+
+```lean
+s.re = 1 / 2 ∧ canonicalCarryContinuation s = 0.
+```
+
+This factorization classifies native representations.  It is not a theorem
+that every raw analytic zero has real part one half.
+
+## 6. Scope
+
+An off-half zero of `canonicalCarryContinuation`, if found, remains a zero of
+the canonical analytic radial family.  Whether a separately transferred
+classical function has the same full zero locus requires its own audited
+transfer theorem and is outside this repository.
