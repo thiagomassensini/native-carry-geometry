@@ -1,115 +1,57 @@
 # Repository-Wide Semantic Audit
 
-## 1. Audit objective
+## 1. Corrected contract
 
-Release `v0.4.0` was reviewed against one repository-wide contract:
+The post-`v0.4.0` audit enforces these distinctions:
 
-1. quotient–residue and carry depth precede measure;
-2. carry mass belongs to the integers/tower before the operator;
-3. amplitude is the proved quadratic root of that mass;
-4. `sigma` belongs to an ambient radial chart and varies amplitude/norm;
-5. `ℝ²` and `ℂ` are faithful coordinates of the same additive operator;
-6. `IsNativeCarryOperatorZero` is the one native operator-zero predicate;
-7. ambient chart cancellation is not renamed as an additional operator-zero predicate.
+1. carry mass and quadratic amplitude are constructed upstream;
+2. `sigma` varies the radial amplitude and norm;
+3. raw finite, boundary, and analytic zeros mean resultant vanishing;
+4. no raw zero predicate contains mass compatibility or `sigma = 1/2`;
+5. the fixed native zero is the one-half specialization of the radial family;
+6. native representation is mass compatibility conjoined with raw zero;
+7. real and analytic coordinates preserve the full raw zero locus in the
+   theorem's stated domain.
 
-The review covered every versioned text file. Semantic-bearing files received
-source review; generated and mechanical files are covered by deterministic
-checksums, registry generation, dependency checks, and
-`scripts/check_semantic_contract.py`.
+## 2. Source corrections
 
-## 2. Lean source coverage
-
-| File | Semantic role | Result |
-|---|---|---|
-| `NativeCarryGeometry.lean` | public import root | verified causal import order |
-| `Arithmetic/PositionalDecomposition.lean` | quotient–residue decomposition | verified; zero means residual event only |
-| `Arithmetic/BinaryCenter.lean` | binary incidence and depth | comments corrected; no operator vocabulary |
-| `Arithmetic/BalancedResidue.lean` | balanced modular incidence | legacy namespace documented as finite arithmetic |
-| `Arithmetic/CarryDepth.lean` | effective/center depth identity | separated from later mass transport |
-| `Measure/CarryProbability.lean` | zero-residue event probability | theorem wording restricted to its exact event |
-| `Measure/CarryMass.lean` | carry mass and integer tower | canonical `radialEnergyWeight` added |
-| `Measure/QuadraticAmplitude.lean` | amplitude/norm rigidity | detector null loci separated from operator zeros |
-| `Bracket/CenteredDifference.lean` | additive second difference | verified unchanged |
-| `Bracket/BalancedCamera.lean` | finite camera algebra | legacy `Genuine` namespace documented |
-| `Bracket/RadialCurvature.lean` | auxiliary radial detector | detector null locus explicitly non-operator |
-| `Operator/RealState.lean` | native state and radial chart | canonical sigma/norm theorems added |
-| `Operator/QuadraticDomain.lean` | mass-domain crosswalk | canonical representation name added |
-| `Operator/FiniteRealOperator.lean` | finite native resultants | one finite native operator-zero predicate plus chart-representation relation |
-| `Operator/BoundaryOperator.lean` | native boundary and ambient cancellation | `RadialChartCancelsAt` made canonical |
-| `Operator/ZeroSetFactorization.lean` | native operator-zero predicate and representation factorization | `IsNativeCarryOperatorZero` made canonical |
-| `Analytic/FiniteBracketChart.lean` | finite power chart | verified; no operator-zero definition |
-| `Analytic/BracketSeries.lean` | bracket convergence | verified; no operator-zero definition |
-| `Analytic/BracketHolomorphy.lean` | holomorphy | verified; no operator-zero definition |
-| `Analytic/CanonicalContinuation.lean` | ambient analytic chart | cancellation label corrected |
-| `Equivalence/ComplexCoordinates.lean` | R² ≃ C | explicit complex norm identities added |
-| `Equivalence/RealAnalyticBoundary.lean` | boundary/readout identity | principal zero-locus identity theorem added |
-| `External/CanonicalVerticalReconstruction.lean` | canonical vertical realization | compiled explicitly; inclusion, diagonal glue, and reconstruction remain lossless |
-| `External/RadialDeviationConnection.lean` | radial sample/readout transport | compiled explicitly; continuity is structural and detector faithfulness remains a named premise |
-| `Audit/TheoremId.lean` | kernel registry command | verified unchanged |
-| `Audit/ExportTheoremTypes.lean` | generated theorem driver | regenerated from the 75-row registry |
-
-## 3. Documentation coverage
-
-| File | Result |
+| File | Correction |
 |---|---|
-| `README.md` | rewritten around the semantic contract and principal theorem |
-| `docs/00_SCOPE.md` | rewritten as the authoritative semantic scope |
-| `docs/05_REPRODUCIBILITY.md` | updated to audit `v0.4.0` and the canonical theorem |
-| `docs/10_POSITIONAL_GEOMETRY.md` | verified: arithmetic layer remains pre-operator |
-| `docs/20_CARRY_MASS_AND_AMPLITUDE.md` | clarified integer weights and sigma/norm law |
-| `docs/30_BRACKET_AND_CURVATURE.md` | detector loci separated from operator zeros |
-| `docs/40_REAL_OPERATOR.md` | rewritten around the native operator-zero predicate |
-| `docs/50_CANONICAL_ANALYTIC_PRESENTATION.md` | ambient continuation described as a chart |
-| `docs/60_REAL_ANALYTIC_EQUIVALENCE.md` | rewritten as identity of the same operator |
-| `docs/70_ZERO_SET_FACTORIZATION.md` | rewritten as one native operator-zero predicate plus representation |
-| `docs/80_THEOREM_REGISTRY.md` | updated for 75 results and canonical labels |
-| `docs/85_SOURCE_PROVENANCE.md` | removed “complete analytic predicate” ontology |
-| `docs/88_EXCLUDED_RESEARCH_ROUTES.md` | aligned exclusions with the native proof DAG |
-| `audit/README.md` | updated registry count and canonical API inventory |
+| `Operator/FiniteRealOperator.lean` | `IsFiniteRealCarryOperatorZero` now denotes raw finite vanishing |
+| `Operator/ZeroSetFactorization.lean` | `IsRealCarryOperatorZero` now denotes raw boundary cancellation; circular off-half corollaries removed |
+| `Equivalence/RealAnalyticBoundary.lean` | `IsCanonicalCarryOperatorZero` now denotes the raw analytic equation; real/analytic theorem transports the raw zero locus |
+| `Operator/BoundaryOperator.lean` | cancellation documented as the radial-family zero predicate |
 
-## 4. Mechanical and generated coverage
+## 3. Replacement theorems
 
-| Paths | Audit treatment |
+| ID | Correct role |
 |---|---|
-| `audit/theorems.tsv` | human-maintained sorted crosswalk; kernel-generated hashes |
-| `audit/theorem-registry.json` | regenerated from elaborated Lean types |
-| `audit/axioms.json` | regenerated transitive axiom inventory |
-| `audit/preimages/NCG-*.txt` | one generated signature preimage per active ID |
-| `audit/source-lock.json` | source and current registry counts checked |
-| `scripts/*.py`, `scripts/*.sh` | reviewed; all invoked from the audit bundle |
-| `.github/workflows/*.yml` | SHA-pinned actions and immutable release workflows |
-| `.release/*.md` | immutable per-release publisher sentinels |
-| `lakefile.toml`, `lean-toolchain`, `lake-manifest.json` | exact package/toolchain/dependency locks |
-| `CITATION.cff`, `.zenodo.json` | release and semantic abstract aligned |
-| `LICENSE`, `.gitignore` | no mathematical semantics; checksum coverage |
+| `NCG-OPR-003` | finite raw zero iff finite resultant equals zero |
+| `NCG-OPR-004` | real radial zero iff boundary cancellation |
+| `NCG-OPR-005` | one-half radial zero iff fixed native zero |
+| `NCG-OPR-006` | real native representation separates mass compatibility and raw zero |
+| `NCG-EQV-008` | real/analytic raw zero-locus identity |
+| `NCG-EQV-009` | analytic native representation separates mass compatibility and raw zero |
 
-## 5. Canonical vocabulary
+The registry keeps 75 stable IDs, but the elaborated type digests for the
+corrected declarations were regenerated by the pinned Lean kernel.
 
-| Legacy compatibility name | Canonical meaning |
-|---|---|
-| `massWeight` | `radialEnergyWeight`, the sigma-dependent chart energy |
-| `BoundaryConvergesToZero` | `RadialChartCancelsAt` |
-| `IsFiniteRealCarryOperatorZero` | `RadialChartRepresentsFiniteNativeZero` |
-| `IsRealCarryOperatorZero` | `RadialChartRepresentsNativeZero` |
-| `IsCanonicalCarryOperatorZero` | `AnalyticChartRepresentsNativeZero` |
-| `IsNativeRealCarryOperatorZero` | `IsNativeCarryOperatorZero` |
-| `IsNativeCanonicalCarryOperatorZero` | analytic-coordinate spelling of the same native operator-zero locus |
+## 4. Continuous regression checks
 
-Legacy names remain reducible aliases so downstream Lean code continues to
-compile. They are excluded from the canonical ontology.
+`scripts/check_semantic_contract.py` now rejects:
 
-## 6. Continuous enforcement
+- the removed circular declaration names;
+- any contract that maps a raw zero name to a representation relation;
+- stale registry labels describing raw zeros as native representations;
+- missing separation language in the public documentation;
+- mismatched generated theorem, axiom, and preimage ID sets.
 
-`scripts/check_semantic_contract.py` reads every versioned UTF-8 file and:
+The ordinary audit also rebuilds the public root and external modules, checks
+all elaborated theorem signatures, verifies the explicit axiom allowlist, and
+ensures the audit process leaves the tracked tree unchanged.
 
-- requires the canonical declarations and principal documentation phrases;
-- rejects language that recreates a taxonomy of zero predicates;
-- requires an explicit legacy notice wherever a legacy API name appears in
-  public narrative;
-- rejects broken Unicode markers;
-- records the total files inspected in the audit report.
+## 5. Historical releases
 
-The ordinary GitHub Actions audit runs this checker together with Lean
-elaboration, theorem-registry regeneration checks, axiom inspection, import
-reachability, dependency boundaries, placeholder rejection, and release
-reproducibility.
+The `v0.4.0` tag and its release workflow remain historical evidence and are
+not rewritten.  Current `main` records the correction in ordinary Git history
+and requires a later release/tag to publish the corrected semantic contract.
