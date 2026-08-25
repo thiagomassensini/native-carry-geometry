@@ -29,9 +29,9 @@ def NativeBoundaryConvergesToZero
     atTop (nhds 0)
 
 /--
-Cancellation of the secondary radial deformation at the boundary.  This is a
-predicate on an ambient comparison chart, not a second zero predicate for the
-native operator.
+Cancellation of the radial deformation at the boundary.  This is the raw
+zero predicate of the radial operator family; whether that point represents
+the fixed native operator is a separate mass-compatibility statement.
 -/
 def RadialDeformationBoundaryConvergesToZero
     (camera : ℕ) (sigma time : ℝ) : Prop :=
@@ -46,9 +46,8 @@ abbrev RadialChartCancelsAt
   RadialDeformationBoundaryConvergesToZero camera sigma time
 
 /--
-Legacy compatibility alias for ambient radial-chart cancellation.  Despite the
-historical word `Boundary`, this abbreviation does not introduce an
-additional native operator-zero predicate.
+Compatibility alias for the raw radial-family zero boundary.  It contains no
+critical-shell or native-mass premise.
 -/
 abbrev BoundaryConvergesToZero
     (camera : ℕ) (sigma time : ℝ) : Prop :=

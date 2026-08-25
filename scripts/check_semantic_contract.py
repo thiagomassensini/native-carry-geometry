@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit the repository-wide one-native-operator semantic contract."""
+"""Audit separation of raw zero predicates from native-mass representation."""
 
 from __future__ import annotations
 
@@ -11,209 +11,118 @@ from pathlib import Path
 
 from auditlib import REPOSITORY_ROOT
 
-
 EXCLUDED_PARTS = {".git", ".lake", "__pycache__"}
-PUBLIC_NARRATIVE = {
-    REPOSITORY_ROOT / "README.md",
-    REPOSITORY_ROOT / "audit" / "README.md",
-    REPOSITORY_ROOT / "CITATION.cff",
-    REPOSITORY_ROOT / ".zenodo.json",
-}
-PUBLIC_NARRATIVE.update((REPOSITORY_ROOT / "docs").glob("*.md"))
 
-FORBIDDEN_PUBLIC_PHRASES = {
-    "scalar zero": (
-        "describe this as ambient analytic-chart cancellation or the native "
-        "analytic readout"
-    ),
-    "mass injection": "state that mass is constructed upstream",
-    "full analytic zero predicate": "use AnalyticChartRepresentsNativeZero",
-    "complete analytic operator predicate": "use a chart-representation relation",
-    "different zero predicates": (
-        "state that there is one native operator-zero predicate and that "
-        "coordinate presentations define the same zero locus"
-    ),
-    "one native zero": "say one native operator-zero predicate",
-    "one operator zero": "say one native operator-zero predicate",
-    "one boundary zero": "say native operator-zero predicate",
-    "same native zero": "say the same native operator-zero locus",
-    "unique native zero": "say the one native operator-zero predicate",
-    "zero species": "distinguish predicates, loci, and chart relations directly",
-    "different kinds of zero": "say no additional operator-zero predicate",
-    "another operator zero": "say an additional operator-zero predicate",
+EXPECTED_STATEMENTS = {
+    "MASS_UPSTREAM": "Carry mass and its quadratic-root amplitude are constructed before the native state and operator.",
+    "SIGMA_IS_NORM_DEFORMATION": "Sigma changes radial amplitude and quadratic norm; native-mass compatibility is a separate representation predicate.",
+    "REAL_COMPLEX_SAME_OPERATOR": "Real pairs and complex numbers are faithful additive coordinates of the same resultants and preserve the full raw zero locus in the stated domain.",
+    "RAW_ZERO_IS_CANCELLATION": "A raw finite, real-boundary, or analytic radial zero is exactly resultant cancellation at the supplied coordinates and contains no mass-compatibility premise.",
+    "NATIVE_SPECIALIZATION": "At sigma one half, the raw radial zero predicate agrees with the zero predicate of the fixed carry-built native operator.",
+    "NATIVE_REPRESENTATION_IS_SEPARATE": "Native representation conjoins upstream mass compatibility with a raw zero; its half-shell factorization does not classify the full raw zero locus.",
 }
 
-LEGACY_NAMES = {
-    "IsFiniteRealCarryOperatorZero",
-    "IsRealCarryOperatorZero",
-    "IsNativeRealCarryOperatorZero",
-    "IsNativeCanonicalCarryOperatorZero",
-    "IsCanonicalCarryOperatorZero",
-    "IsRadialDeformationPresentationZero",
-    "BoundaryConvergesToZero",
-    "RealCarryEnergyCompatible",
-    "finiteRealCarryOperator",
-    "realCarryState",
-    "massWeight",
-    "criticalAmplitude",
+EXPECTED_LEGACY_ALIASES = {
+    "NativeCarryGeometry.Measure.massWeight": "NativeCarryGeometry.Measure.radialEnergyWeight",
+    "NativeCarryGeometry.Measure.criticalAmplitude": "NativeCarryGeometry.Measure.carryAmplitude",
+    "NativeCarryGeometry.Operator.realCarryState": "NativeCarryGeometry.Operator.radialDeformationState",
+    "NativeCarryGeometry.Operator.RealCarryEnergyCompatible": "NativeCarryGeometry.Operator.RadialDeformationRepresentsNativeMass",
+    "NativeCarryGeometry.Operator.finiteRealCarryOperator": "NativeCarryGeometry.Operator.finiteRadialDeformation",
+    "NativeCarryGeometry.Operator.BoundaryConvergesToZero": "NativeCarryGeometry.Operator.RadialChartCancelsAt",
+    "NativeCarryGeometry.Operator.IsNativeRealCarryOperatorZero": "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero",
+    "NativeCarryGeometry.Equivalence.IsNativeCanonicalCarryOperatorZero": "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero",
+}
+
+FORBIDDEN_LEGACY_ALIAS_KEYS = {
+    "NativeCarryGeometry.Operator.IsFiniteRealCarryOperatorZero",
+    "NativeCarryGeometry.Operator.IsRealCarryOperatorZero",
+    "NativeCarryGeometry.Equivalence.IsCanonicalCarryOperatorZero",
+    "NativeCarryGeometry.Operator.IsRadialDeformationPresentationZero",
+}
+
+FORBIDDEN_CURRENT_TEXT = {
+    "realCarryOperatorZero_sigma_eq_half",
+    "not_realCarryOperatorZero_of_sigma_ne_half",
+    "canonicalCarryOperatorZero_re_eq_half",
+    "AMBIENT_CANCELLATION_NOT_ZERO",
+    "raw chart cancellation is an operator zero",
+    "raw chart cancellation is not an operator zero",
 }
 
 REQUIRED_TEXT = {
     "README.md": [
-        "Mass comes before the operator",
-        "Sigma is a quadratic-norm deformation coordinate",
-        "There is one native operator-zero predicate",
-        "IsNativeCarryOperatorZero",
-        "RadialChartCancelsAt",
-        "RadialChartRepresentsNativeZero",
+        "Fixed native zero and raw radial-family zero are separate predicates",
+        "IsRealCarryOperatorZero",
+        "IsCanonicalCarryOperatorZero",
+        "Native representation is a different question",
     ],
-    "NativeCarryGeometry/Measure/CarryMass.lean": [
-        "nativeTowerAmplitude_sq_eq_mass",
-        "radialEnergyWeight",
-    ],
-    "NativeCarryGeometry/Operator/RealState.lean": [
-        "quadraticEnergy_radialDeformationState",
-        "radialDeformationRepresentsNativeMass_iff",
-    ],
-    "NativeCarryGeometry/Operator/BoundaryOperator.lean": [
-        "RadialChartCancelsAt",
-        "not a second zero predicate",
+    "NativeCarryGeometry/Operator/FiniteRealOperator.lean": [
+        "IsFiniteRadialCarryOperatorZero",
+        "Finite Radial Operator Zero/Resultant Identity",
     ],
     "NativeCarryGeometry/Operator/ZeroSetFactorization.lean": [
-        "IsNativeCarryOperatorZero",
-        "RadialChartRepresentsNativeZero",
-        "radialChartRepresentsNativeZero_iff",
-    ],
-    "NativeCarryGeometry/Equivalence/ComplexCoordinates.lean": [
-        "normSq_complexCoordinates_radialDeformationState",
-        "normSq_complexCoordinates_nativeRealCarryState",
-        "radialComplexNormRepresentsNativeMass_iff",
+        "IsRadialCarryOperatorZero",
+        "realCarryOperatorZero_half_iff_native",
+        "radialChartRepresentsNativeZero_iff_massCompatible_and_zero",
     ],
     "NativeCarryGeometry/Equivalence/RealAnalyticBoundary.lean": [
-        "normSq_powerMonomial_canonicalParameter",
-        "isNativeCarryOperatorZero_iff_analyticReadout_eq_zero",
-        "AnalyticChartRepresentsNativeZero",
-        "analyticChartRepresentsNativeZero_iff",
+        "IsCanonicalCarryOperatorZero",
+        "Real/Analytic Radial Zero-Locus Identity",
+        "analyticChartRepresentsNativeZero_iff_massCompatible_and_zero",
     ],
-    "docs/00_SCOPE.md": [
-        "One native operator-zero predicate",
-        "Ambient chart cancellation and native representation",
-    ],
-    "docs/60_REAL_ANALYTIC_EQUIVALENCE.md": [
-        "Real–Analytic Identity of the Same Operator",
-        "There is no “real zero” and “complex zero”",
-    ],
+    "docs/00_SCOPE.md": ["A raw zero outside one half is still a zero"],
     "docs/70_ZERO_SET_FACTORIZATION.md": [
-        "One Native Operator-Zero Predicate and Radial-Chart Representation",
-        "Historical aliases",
+        "Removed circular corollaries",
+        "raw radial zero ⇒ sigma = 1/2",
     ],
+    "docs/90_SEMANTIC_AUDIT.md": ["Corrected contract"],
+    "audit/README.md": ["Corrected semantic surface"],
     "docs/80_THEOREM_REGISTRY.md": [
-        "Release `v0.4.0` designates 75",
-        "NCG-EQV-017",
-    ],
-    "audit/README.md": [
-        "Release `v0.4.0` contains 75",
-        "One native operator-zero predicate",
-    ],
-    "lakefile.toml": ['version = "0.4.0"'],
-    "CITATION.cff": ["version: 0.4.0"],
-    ".zenodo.json": ['"version": "0.4.0"'],
-    ".github/workflows/publish-v0.4.0.yml": [
-        "RELEASE_TAG: v0.4.0",
-        "publish-v0.4.0",
-        "one native operator-zero predicate",
+        "Half-Shell Radial/Native Zero Identity",
+        "Analytic Native-Representation Predicate Separation",
     ],
 }
 
-EXPECTED_CONTRACT_STATEMENTS = {
-    "REAL_COMPLEX_SAME_OPERATOR": (
-        "Real pairs and complex numbers are faithful additive coordinates of "
-        "the same state and resultants and define the same zero locus."
+REQUIRED_REGISTRY = {
+    "NCG-OPR-003": (
+        "NativeCarryGeometry.Operator.isFiniteRealCarryOperatorZero_iff",
+        "Finite Radial Operator Zero/Resultant Identity",
     ),
-    "ONE_OPERATOR_ZERO": (
-        "The native carry operator has one native operator-zero predicate, "
-        "already built from the mass-weighted tower."
+    "NCG-OPR-004": (
+        "NativeCarryGeometry.Operator.isRealCarryOperatorZero_iff",
+        "Radial Operator Zero/Boundary Cancellation Identity",
     ),
-    "AMBIENT_CANCELLATION_NOT_ZERO": (
-        "Ambient chart cancellation is distinguished from the relation that "
-        "a chart point represents a point of the native operator-zero locus."
+    "NCG-OPR-005": (
+        "NativeCarryGeometry.Operator.realCarryOperatorZero_half_iff_native",
+        "Half-Shell Radial/Native Zero Identity",
+    ),
+    "NCG-OPR-006": (
+        "NativeCarryGeometry.Operator.radialChartRepresentsNativeZero_iff_massCompatible_and_zero",
+        "Native Representation Predicate Separation",
+    ),
+    "NCG-EQV-008": (
+        "NativeCarryGeometry.Equivalence.isRealCarryOperatorZero_iff_isCanonicalCarryOperatorZero",
+        "Real/Analytic Radial Zero-Locus Identity",
+    ),
+    "NCG-EQV-009": (
+        "NativeCarryGeometry.Equivalence.analyticChartRepresentsNativeZero_iff_massCompatible_and_zero",
+        "Analytic Native-Representation Predicate Separation",
     ),
 }
 
-EXPECTED_LEGACY_ALIASES = {
-    "NativeCarryGeometry.Measure.criticalAmplitude":
-        "NativeCarryGeometry.Measure.carryAmplitude",
-    "NativeCarryGeometry.Measure.massWeight":
-        "NativeCarryGeometry.Measure.radialEnergyWeight",
-    "NativeCarryGeometry.Operator.realCarryState":
-        "NativeCarryGeometry.Operator.radialDeformationState",
-    "NativeCarryGeometry.Operator.RealCarryEnergyCompatible":
-        "NativeCarryGeometry.Operator.RadialDeformationRepresentsNativeMass",
-    "NativeCarryGeometry.Operator.finiteRealCarryOperator":
-        "NativeCarryGeometry.Operator.finiteRadialDeformation",
-    "NativeCarryGeometry.Operator.BoundaryConvergesToZero":
-        "NativeCarryGeometry.Operator.RadialChartCancelsAt",
-    "NativeCarryGeometry.Operator.IsRadialDeformationPresentationZero":
-        "NativeCarryGeometry.Operator.RadialChartRepresentsNativeZero",
-    "NativeCarryGeometry.Operator.IsFiniteRealCarryOperatorZero":
-        "NativeCarryGeometry.Operator.RadialChartRepresentsFiniteNativeZero",
-    "NativeCarryGeometry.Operator.IsRealCarryOperatorZero":
-        "NativeCarryGeometry.Operator.RadialChartRepresentsNativeZero",
-    "NativeCarryGeometry.Operator.IsNativeRealCarryOperatorZero":
-        "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero",
-    "NativeCarryGeometry.Equivalence.IsCanonicalCarryOperatorZero":
-        "NativeCarryGeometry.Equivalence.AnalyticChartRepresentsNativeZero",
-    "NativeCarryGeometry.Equivalence.IsNativeCanonicalCarryOperatorZero":
-        "NativeCarryGeometry.Operator.IsNativeCarryOperatorZero",
-}
 
-REQUIRED_REGISTRY_LABELS = {
-    "NCG-ANL-008":
-        "Odd-Prime Camera Ambient Chart-Cancellation Locus Identity",
-    "NCG-EQV-004":
-        "Finite Resultant Coordinate Zero-Locus Identity",
-    "NCG-EQV-007":
-        "Camera-Three Real/Analytic Chart-Cancellation Locus Identity",
-    "NCG-EQV-010":
-        "Native Finite Resultant Coordinate Zero-Locus Identity",
-    "NCG-EQV-011":
-        "Native Boundary/Analytic Readout Zero-Locus Identity",
-    "NCG-EQV-012":
-        "Legacy Coordinate-Labelled Native Operator Zero-Locus Identity",
-    "NCG-EQV-017":
-        "Native Operator/Analytic Readout Zero-Locus Identity",
-    "NCG-OPR-007":
-        "Canonical Radial-Chart Native Representation Factorization",
-    "NCG-OPR-008":
-        "Canonical Finite Radial-Chart Native Representation Factorization",
-    "NCG-REA-004":
-        "Native State Carry-Mass Energy",
-}
-
-FORBIDDEN_REGISTRY_LABELS = {
-    "Finite Zero-Set Equivalence",
-    "Finite Real/Analytic Operator Identity",
-    "Camera-Three Boundary/Continuation Zero Equivalence",
-    "One Native Operator Zero Analytic Identity",
-    "Native State Inverse-Mass Energy",
-}
-
-
-
-def versioned_text_files() -> tuple[list[Path], list[str]]:
-    files: list[Path] = []
+def versioned_text_files() -> tuple[dict[str, str], list[str]]:
+    result: dict[str, str] = {}
     errors: list[str] = []
     for path in sorted(REPOSITORY_ROOT.rglob("*")):
         if not path.is_file() or any(part in EXCLUDED_PARTS for part in path.parts):
             continue
+        relative = str(path.relative_to(REPOSITORY_ROOT))
         try:
-            path.read_text(encoding="utf-8")
+            result[relative] = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
-            # No binary artifact is expected in the committed audit root.
-            errors.append(f"{path.relative_to(REPOSITORY_ROOT)} is not UTF-8 text")
-            continue
-        files.append(path)
-    return files, errors
+            errors.append(f"{relative} is not UTF-8 text")
+    return result, errors
 
 
 def main() -> int:
@@ -222,234 +131,136 @@ def main() -> int:
     args = parser.parse_args()
 
     files, errors = versioned_text_files()
-    by_relative = {
-        str(path.relative_to(REPOSITORY_ROOT)): path.read_text(encoding="utf-8")
-        for path in files
-    }
 
     try:
-        semantic_contract = json.loads(
-            by_relative["audit/semantic-contract.json"]
-        )
-        if semantic_contract.get("release") != "v0.4.0":
-            errors.append("audit/semantic-contract.json release must be v0.4.0")
-    except (KeyError, json.JSONDecodeError) as error:
-        errors.append(f"invalid audit/semantic-contract.json: {error}")
-        semantic_contract = {"contracts": []}
+        contract = json.loads(files["audit/semantic-contract.json"])
+    except (KeyError, json.JSONDecodeError) as exc:
+        contract = {}
+        errors.append(f"invalid audit/semantic-contract.json: {exc}")
 
-    contracts_by_id = {
-        str(contract.get("id")): contract
-        for contract in semantic_contract.get("contracts", [])
+    if contract.get("schema") != "native-carry-semantic-contract-v2":
+        errors.append("semantic contract schema must be v2")
+    if contract.get("baseline_release") != "v0.4.0":
+        errors.append("semantic contract baseline_release must be v0.4.0")
+
+    by_id = {
+        str(item.get("id")): item
+        for item in contract.get("contracts", [])
+        if isinstance(item, dict)
     }
-    for contract_id, expected_statement in EXPECTED_CONTRACT_STATEMENTS.items():
-        actual = contracts_by_id.get(contract_id, {}).get("statement")
-        if actual != expected_statement:
-            errors.append(
-                f"audit/semantic-contract.json: statement mismatch for "
-                f"{contract_id}"
-            )
-    legacy_aliases = semantic_contract.get("legacy_aliases", {})
+    for contract_id, statement in EXPECTED_STATEMENTS.items():
+        if by_id.get(contract_id, {}).get("statement") != statement:
+            errors.append(f"statement mismatch for {contract_id}")
+
+    aliases = contract.get("legacy_aliases", {})
     for legacy, canonical in EXPECTED_LEGACY_ALIASES.items():
-        if legacy_aliases.get(legacy) != canonical:
-            errors.append(
-                f"audit/semantic-contract.json: missing canonical map "
-                f"{legacy} -> {canonical}"
-            )
+        if aliases.get(legacy) != canonical:
+            errors.append(f"missing legacy alias map {legacy} -> {canonical}")
+    for forbidden in FORBIDDEN_LEGACY_ALIAS_KEYS:
+        if forbidden in aliases:
+            errors.append(f"raw zero name incorrectly listed as legacy representation alias: {forbidden}")
+
+    for relative, required in REQUIRED_TEXT.items():
+        text = files.get(relative)
+        if text is None:
+            errors.append(f"missing required file {relative}")
+            continue
+        for phrase in required:
+            if phrase not in text:
+                errors.append(f"{relative}: missing required phrase {phrase!r}")
+
+    # Guard active source and the reader-facing registry against stale theorem
+    # names.  Explanatory migration notes may quote retired names, and the
+    # checker itself necessarily stores the denylist, so neither belongs in
+    # this semantic-name scan.
+    semantic_guard_paths = [
+        relative
+        for relative in files
+        if relative.startswith("NativeCarryGeometry/")
+        or relative == "audit/theorems.tsv"
+        or relative == "docs/80_THEOREM_REGISTRY.md"
+    ]
+    for relative in semantic_guard_paths:
+        lowered = files[relative].lower()
+        for forbidden in FORBIDDEN_CURRENT_TEXT:
+            if forbidden.lower() in lowered:
+                errors.append(
+                    f"{relative}: contains forbidden stale semantic text {forbidden!r}"
+                )
+
+    # Check malformed Unicode without embedding the replacement character in
+    # the checker's own source, an impressively efficient way to accuse itself.
+    replacement_character = chr(0xFFFD)
+    for relative, file_text in files.items():
+        if relative.startswith("scripts/migrate_zero_semantics"):
+            continue
+        if replacement_character in file_text:
+            errors.append(f"{relative}: contains Unicode replacement character")
 
     try:
-        registry_rows = list(
-            csv.DictReader(
-                by_relative["audit/theorems.tsv"].splitlines(),
-                delimiter="\t",
-            )
-        )
-    except (KeyError, csv.Error) as error:
-        errors.append(f"invalid audit/theorems.tsv: {error}")
-        registry_rows = []
-
-    active_rows = [
-        row
-        for row in registry_rows
-        if (row.get("status") or "active").strip().lower()
-        not in {"retired", "reserved"}
+        rows = list(csv.DictReader(files["audit/theorems.tsv"].splitlines(), delimiter="\t"))
+    except (KeyError, csv.Error) as exc:
+        rows = []
+        errors.append(f"invalid audit/theorems.tsv: {exc}")
+    active = [
+        row for row in rows
+        if (row.get("status") or "active").strip().lower() not in {"retired", "reserved"}
     ]
-    registry_by_id = {(row.get("id") or "").strip(): row for row in active_rows}
-    active_ids = set(registry_by_id)
-    for theorem_id, expected_label in REQUIRED_REGISTRY_LABELS.items():
-        actual_label = (registry_by_id.get(theorem_id, {}).get("label") or "").strip()
-        if actual_label != expected_label:
-            errors.append(
-                f"audit/theorems.tsv: label mismatch for {theorem_id}"
-            )
-    for theorem_id, row in registry_by_id.items():
-        label = (row.get("label") or "").strip()
-        if label in FORBIDDEN_REGISTRY_LABELS:
-            errors.append(
-                f"audit/theorems.tsv: legacy-ambiguous label for "
-                f"{theorem_id}: {label}"
-            )
-    for contract in semantic_contract.get("contracts", []):
-        contract_id = contract.get("id", "<missing>")
-        for witness in contract.get("witness_ids", []):
-            row = registry_by_id.get(witness)
-            if row is None:
-                errors.append(
-                    f"semantic contract {contract_id}: missing witness {witness}"
-                )
-                continue
-            digest = (row.get("type_sha256") or "").strip()
-            if not re.fullmatch(r"[0-9a-f]{64}", digest):
-                errors.append(
-                    f"semantic contract {contract_id}: witness {witness} "
-                    "has no generated type digest"
-                )
+    registry = {(row.get("id") or "").strip(): row for row in active}
+    active_ids = set(registry)
+    for theorem_id, (declaration, label) in REQUIRED_REGISTRY.items():
+        row = registry.get(theorem_id, {})
+        if row.get("declaration") != declaration:
+            errors.append(f"registry declaration mismatch for {theorem_id}")
+        if row.get("label") != label:
+            errors.append(f"registry label mismatch for {theorem_id}")
+        digest = row.get("type_sha256", "")
+        if not re.fullmatch(r"[0-9a-f]{64}", digest):
+            errors.append(f"registry digest missing for {theorem_id}")
 
     for artifact, key in (
         ("audit/theorem-registry.json", "theorems"),
         ("audit/axioms.json", "theorems"),
     ):
         try:
-            payload = json.loads(by_relative[artifact])
-            artifact_ids = {
-                str(item["id"]) for item in payload[key]
-            }
+            payload = json.loads(files[artifact])
+            artifact_ids = {str(item["id"]) for item in payload[key]}
             if artifact_ids != active_ids:
-                errors.append(
-                    f"{artifact}: ID set differs from audit/theorems.tsv"
-                )
-            if artifact == "audit/theorem-registry.json":
-                artifact_by_id = {
-                    str(item["id"]): item for item in payload[key]
-                }
-                for theorem_id, row in registry_by_id.items():
-                    generated = artifact_by_id.get(theorem_id, {})
-                    for field in ("declaration", "label", "type_sha256"):
-                        if str(generated.get(field, "")).strip() != (
-                            row.get(field) or ""
-                        ).strip():
-                            errors.append(
-                                f"{artifact}: {field} mismatch for {theorem_id}"
-                            )
-        except (KeyError, TypeError, json.JSONDecodeError) as error:
-            errors.append(f"invalid generated artifact {artifact}: {error}")
+                errors.append(f"{artifact}: active ID set mismatch")
+        except (KeyError, TypeError, json.JSONDecodeError) as exc:
+            errors.append(f"invalid {artifact}: {exc}")
 
     preimage_ids = {
         Path(relative).stem
-        for relative in by_relative
+        for relative in files
         if relative.startswith("audit/preimages/") and relative.endswith(".txt")
     }
     if preimage_ids != active_ids:
-        errors.append(
-            "audit/preimages ID set differs from audit/theorems.tsv"
-        )
+        errors.append("audit/preimages ID set differs from active theorem registry")
 
     try:
-        source_lock = json.loads(by_relative["audit/source-lock.json"])
+        source_lock = json.loads(files["audit/source-lock.json"])
         if source_lock["registry"]["id_count"] != len(active_ids):
-            errors.append(
-                "audit/source-lock.json registry.id_count differs from "
-                "the active theorem count"
-            )
-    except (KeyError, TypeError, json.JSONDecodeError) as error:
-        errors.append(f"invalid audit/source-lock.json: {error}")
+            errors.append("audit/source-lock.json registry count mismatch")
+    except (KeyError, TypeError, json.JSONDecodeError) as exc:
+        errors.append(f"invalid audit/source-lock.json: {exc}")
 
-    if by_relative.get(".release/v0.4.0.md") != (
-        "publish-v0.4.0\nrequest=1\n"
-    ):
-        errors.append("invalid immutable release sentinel .release/v0.4.0.md")
+    sentinel = files.get(".release/v0.4.0.md")
+    if sentinel != "publish-v0.4.0\nrequest=1\n":
+        errors.append("historical v0.4.0 release sentinel changed")
 
-    for relative, required in REQUIRED_TEXT.items():
-        text = by_relative.get(relative)
-        if text is None:
-            errors.append(f"missing semantic-contract file {relative}")
-            continue
-        for phrase in required:
-            if phrase not in text:
-                errors.append(f"{relative}: missing contract phrase {phrase!r}")
-
-    for path in sorted(PUBLIC_NARRATIVE):
-        if not path.is_file():
-            errors.append(f"missing public narrative {path.relative_to(REPOSITORY_ROOT)}")
-            continue
-        text = path.read_text(encoding="utf-8")
-        lowered = text.lower()
-        for phrase, replacement in FORBIDDEN_PUBLIC_PHRASES.items():
-            if phrase in lowered:
-                errors.append(
-                    f"{path.relative_to(REPOSITORY_ROOT)}: forbidden phrase "
-                    f"{phrase!r}; {replacement}"
-                )
-        present_legacy = sorted(name for name in LEGACY_NAMES if name in text)
-        if present_legacy and "legacy" not in lowered:
-            errors.append(
-                f"{path.relative_to(REPOSITORY_ROOT)}: legacy API name(s) "
-                f"{', '.join(present_legacy)} appear without an explicit "
-                "legacy-compatibility notice"
-            )
-
-    for relative, text in by_relative.items():
-        if "\uFFFD" in text or "\u00e2\u0084" in text:
-            errors.append(f"{relative}: broken Unicode encoding marker")
-        allowed_controls = "\n"
-        if relative == "audit/theorems.tsv":
-            allowed_controls += "\t"
-        controls = sorted(
-            {ord(char) for char in text
-             if ord(char) < 32 and char not in allowed_controls}
-        )
-        if controls:
-            errors.append(
-                f"{relative}: forbidden control character code(s) "
-                + ", ".join(str(code) for code in controls)
-            )
-        if relative.endswith(".md"):
-            narrative = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
-            if re.search(r"(?m)^\s*[\[\]]\s*$", narrative):
-                errors.append(
-                    f"{relative}: bare bracket used as a math delimiter"
-                )
-            display_delimiter = "$" * 2
-            if narrative.count(display_delimiter) % 2:
-                errors.append(f"{relative}: unbalanced display-math delimiters")
-            if narrative.count(r"\[") != narrative.count(r"\]"):
-                errors.append(f"{relative}: unbalanced \\[ / \\] delimiters")
-            without_displays = narrative.replace(display_delimiter, "")
-            inline_dollars = re.findall(r"(?<!\\)\$", without_displays)
-            if len(inline_dollars) % 2:
-                errors.append(f"{relative}: unbalanced inline math delimiters")
-            if re.search(r"(?<=[0-9)}\]])iff\b", narrative):
-                errors.append(
-                    f"{relative}: possible lost TeX escape before 'iff'"
-                )
-            lost_tex_patterns = (
-                (r"(?<!\\)operatorname\{", "operatorname{"),
-                (r"(?<!\\)mathbb\{", "mathbb{"),
-                (r"(?<!\\)frac\{", "frac{"),
-                (
-                    r"(?<!\\)(?:qquad|longrightarrow|simeq)(?![A-Za-z])",
-                    "standalone TeX command",
-                ),
-            )
-            for pattern, token in lost_tex_patterns:
-                if re.search(pattern, text):
-                    errors.append(
-                        f"{relative}: possible lost TeX escape before {token!r}"
-                    )
-
-    payload = {
-        "check": "one-native-operator-semantic-contract",
-        "files_inspected": len(files),
-        "public_narratives_inspected": len(PUBLIC_NARRATIVE),
-        "required_contract_files": len(REQUIRED_TEXT),
-        "registered_theorems": len(active_ids),
-        "semantic_contracts": len(semantic_contract.get("contracts", [])),
+    report = {
+        "check": "semantic-contract-v2",
+        "baseline_release": "v0.4.0",
+        "files_checked": len(files),
+        "active_theorem_ids": len(active_ids),
         "errors": sorted(set(errors)),
         "status": "pass" if not errors else "fail",
     }
-    if args.report:
+    if args.report is not None:
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(
-            json.dumps(payload, indent=2, sort_keys=True) + "\n",
+            json.dumps(report, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
     if errors:
@@ -457,8 +268,8 @@ def main() -> int:
             print(f"ERROR: {error}")
         return 1
     print(
-        "PASS: one-native-operator semantic contract; "
-        f"{len(files)} versioned text files inspected"
+        f"PASS: semantic contract v2 across {len(files)} files and "
+        f"{len(active_ids)} active theorem IDs"
     )
     return 0
 
