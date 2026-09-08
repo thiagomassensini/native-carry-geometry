@@ -1,3 +1,212 @@
-\documentclass[11pt,a4paper]{article}\n\usepackage[margin=1in]{geometry}\n\usepackage{amsmath,amssymb,amsthm,hyperref,enumitem}\n\newtheorem{theorem}{Theorem}[section]\n\newtheorem{proposition}[theorem]{Proposition}\n\newtheorem{remark}[theorem]{Remark}\n\newcommand{\R}{\mathbb{R}}\n\newcommand{\C}{\mathbb{C}}\n\title{The Geometry of Carry Compression in Positional Numeral Systems}\n\author{Thiago Massensini}\n\date{\today}\n\begin{document}\n\maketitle\n\begin{abstract}\nWe give a Lean-verified construction in which positional carry depth determines a mass, the mass determines a quadratic-root amplitude, and the resulting integer tower is observed through centered brackets and finite cameras. A radial deformation replaces the native amplitude $n^{-1/2}$ by $n^{-\sigma}$. Its quadratic energy is $n^{-2\sigma}$, so the native mass shell is exactly $\sigma=1/2$. The same states admit faithful complex coordinates $n^{-(\sigma+it)}$. In the canonical strip and normalized camera $3$, the real and analytic descriptions have the same raw zero locus. We distinguish raw operator vanishing from representation of the fixed native operator, and therefore do not claim that every raw zero has real part $1/2$. The repository records the corresponding theorem types, dependencies, and audit artifacts.\n\end{abstract}\n\section{Introduction}\nThe construction begins with ordinary positional arithmetic. For $b>0$, depth $k$, and $n\in\mathbb N$, Euclidean division gives\n\[ n=r+b^kq,\qquad 0\le r<b^k. \]\nThe distinguished carry event is $r=0$, equivalently $b^k\mid n$. For $b>1$ and $n>0$, the maximal such exponent is the positional carry depth. These statements are formalized as \texttt{NCG-POS-001} through \texttt{NCG-POS-004}.\nThe central design choice is causal: the positional layer determines the measure before an operator is constructed. At depth $k$ the distinguished residue class has uniform mass\n\[ \operatorname{carryMass}(b,k)=b^{-k}. \]\nIts canonical quadratic-root amplitude is\n\[ \operatorname{carryAmplitude}(b,k)=b^{-k/2}, \qquad \operatorname{carryAmplitude}(b,k)^2=\operatorname{carryMass}(b,k). \]\nThe latter identity is \texttt{NCG-MAS-001}.\n\section{Radial deformation and the native shell}\nIntroduce the comparison family\n\[ \operatorname{deformedAmplitude}(b,\sigma,k)=b^{-k\sigma}. \]\nIts quadratic energy is $b^{-2k\sigma}$. For $b>1$ and $k>0$,\n\[ b^{-2k\sigma}=b^{-k}\quad\Longleftrightarrow\quad\sigma=\frac12. \]\nThis is the local rigidity theorem \texttt{NCG-AMP-002}; the global compatibility theorem \texttt{NCG-AMP-003} gives the same singleton shell for every base $b>1$. Thus $\sigma$ is a quadratic-norm deformation coordinate, not an additional hidden condition on zeros.\nFor the normalized branch, the formal development sums the geometric energy series. In the positive-$\sigma$ regime,\n\[ E_b(\sigma)=(b-1)\frac{b^{-2\sigma}}{1-b^{-2\sigma}}, \]\nand $E_b(\sigma)=1$ exactly at $\sigma=1/2$ (\texttt{NCG-AMP-004}). The saturation statement is a norm statement and is not an operator-zero predicate.\n\section{Native integer tower}\nThe positive integer tower is assembled in the measure layer before any camera is evaluated:\n\[ M(n)=\operatorname{carryMass}(n,1)=n^{-1},\qquad A(n)=\operatorname{carryAmplitude}(n,1)=n^{-1/2}. \]\nLean proves $A(n)^2=M(n)$ for all integers, with zero values on the nonpositive branch. This is \texttt{NCG-MAS-003}. The operator consumes this already weighted tower.\n\section{Centered brackets and carry curvature}\nFor an additive target, define the centered second difference\n\[ \Delta_r^2f(c)=f(c-r)-2f(c)+f(c+r). \]\nThe formal results \texttt{NCG-BRK-001} and \texttt{NCG-BRK-002} prove radius symmetry and additivity. A saturated bracket is\n\[ \mathcal B_hf(c)=\sum_{r=1}^{h}\Delta_r^2f(c). \]\nFor odd-prime cameras the balanced-residue presentation is formally identified with this symmetric-radius form (\texttt{NCG-BRK-003}). The finite camera also admits an exact cancellation identity, with no limiting argument.\nThe radial curvature detector applies this bracket algebra to the deformed family. Under its explicit odd-prime and admissibility hypotheses, \texttt{NCG-CUR-001}--\texttt{NCG-CUR-004} give\n\[ \operatorname{balancedRadialCurvatureAtSigma}(c,\sigma,x)=0 \quad\Longleftrightarrow\quad \sigma=\frac12. \]\nThis is an auxiliary detector of the native shell, not the definition of an operator zero.\n\section{Real operator family}\nThe real state space is $\R^2$ with quadratic energy\n\[ E(x,y)=x^2+y^2. \]\nFor $n>0$, define\n\[ u_{\sigma,t}(n)=n^{-\sigma}\bigl(\cos(-t\log n),\sin(-t\log n)\bigr). \]\nThen\n\[ E(u_{\sigma,t}(n))=n^{-2\sigma}. \]\nThe fixed native member is $u_{1/2,t}$ and has energy $n^{-1}$. The finite camera applies centered brackets to these samples, producing a vector resultant. The raw finite zero predicate is exactly vanishing of that resultant (\texttt{NCG-OPR-003}); the boundary predicate is the corresponding convergence-to-zero statement.\nAt the native value, the radial and fixed states coincide, yielding\n\[ \operatorname{IsRealCarryOperatorZero}(c,1/2,t)\Longleftrightarrow \operatorname{IsNativeCarryOperatorZero}(c,t), \]\nwhich is \texttt{NCG-OPR-005}. This is a specialization theorem only.\n\section{Faithful complex coordinates}\nThe map $(x,y)\mapsto x+iy$ is formalized as an additive equivalence \texttt{complexCoordinates}:\R^2\simeq_+\mathbb C$. It preserves norm square and commutes with the finite additive camera.\nFor $s=\sigma+it$ and $n>0$ the state satisfies\n\[ \operatorname{complexCoordinates}(u_{\sigma,t}(n))=n^{-s}. \]\nTherefore\n\[ \operatorname{normSq}(n^{-s})=n^{-2\sigma}. \]\nThe registered theorem is \texttt{NCG-EQV-016}. Complex notation is consequently a coordinate representation of the same radial state.\nLet\n\[ \mathcal S=\{s\in\mathbb C:0<\operatorname{Re}(s)<1\}. \]\nAt camera $3$, the formal crosswalk proves, for $s\in\mathcal S$,\n\[ \operatorname{IsRealCarryOperatorZero}(3,\operatorname{Re}s,\operatorname{Im}s)\Longleftrightarrow \operatorname{IsCanonicalCarryOperatorZero}(s). \]\nThis is \texttt{NCG-EQV-008}. It transports the raw zero locus and does not add a half-line restriction.\n\section{Raw zeros versus native representation}\nThe repository deliberately distinguishes four notions: the fixed native zero, the raw real radial zero, the raw analytic zero, and a representation relation saying that a radial point both preserves native mass and vanishes.\nThe representation relation factors as\n\[ \operatorname{RadialChartRepresentsNativeZero}(c,\sigma,t)\Longleftrightarrow \left(\sigma=\frac12\right)\land\operatorname{IsNativeCarryOperatorZero}(c,t). \]\nThis is \texttt{NCG-OPR-007}. In analytic coordinates, \texttt{NCG-EQV-018} gives\n\[ \operatorname{AnalyticChartRepresentsNativeZero}(s)\Longleftrightarrow \operatorname{Re}(s)=\frac12\land\operatorname{canonicalCarryContinuation}(s)=0. \]\nThe half-coordinate conclusion belongs to representation, not to raw vanishing.\n\section{The remaining confinement problem}\nThe stronger assertion\n\[ 0<\sigma<1\land\operatorname{IsRealCarryOperatorZero}(3,\sigma,t)\Longrightarrow\sigma=\frac12 \]\nis not proved. The experimental module \texttt{RawGenuineConfinementAttempt.lean} makes the missing bridge explicit. It proves equivalence of the desired confinement with preservation of the native quadratic energy under raw closure, saturation of the radial branch, and annihilation of the signed radial-curvature detector. The theorem \texttt{rawCanonicalContinuationConfinement_of_boundaryCurvature} therefore takes that bridge as an explicit hypothesis.\n\section{Formal audit}\nThe audit root imports arithmetic, measure, bracket, operator, analytic, and equivalence layers. The dependency direction is\n\[ \text{positional decomposition}\to\text{depth}\to\text{mass}\to\text{amplitude}\to\text{native tower}\to\text{state}\to\text{bracket}\to\text{camera}\to\text{zero}\to\text{analytic coordinates}. \]\nThe repository records stable theorem identifiers, elaborated types, signature digests, dependencies, provenance, and transitive axiom reports. The semantic contract explicitly rejects the historical error of hiding native-mass compatibility inside a predicate called zero.\nThe toolchain is Lean 4 $v4.32.0$ with the resolved Mathlib state pinned in the repository manifest. The documented build command is:\n\begin{verbatim}\nlake build --wfail NativeCarryGeometry\n\end{verbatim}\n\section{Scope and nonclaims}\nThe positional base and observation camera are distinct parameters. Generic cameras of widths $0$, $1$, and $2$ are degenerate; the binary adjacent-center construction is separate. The radial/analytic zero-locus crosswalk is specialized to camera $3$ and the canonical strip.\nThe repository proves positional decomposition, carry depth, carry mass, quadratic amplitude, the native tower, centered-bracket algebra, radial energy, faithful real/complex coordinates, the real/analytic raw zero-locus identity in the stated domain, native specialization at $\sigma=1/2$, and native-representation factorization.\nIt does not prove raw radial confinement, equality of temporal resonance sets for all cameras, equivalence of finite vanishing and boundary convergence, identification with the classical Riemann zeta function, or any theorem about the Riemann hypothesis.\n\section{Conclusion}\nThe construction gives a precise geometry of carry. Positional arithmetic supplies depth; the distinguished residue class supplies mass $b^{-k}$; the quadratic root supplies amplitude $b^{-k/2}$; the integer tower is rotated in a real plane; centered differences and cameras produce resultants; and the same resultants admit faithful complex coordinates.\nThe main mathematical separation is\n\[ \boxed{\text{raw cancellation}\qquad\text{versus}\qquad\text{native representation}.} \]\nThe native shell $\sigma=1/2$ is rigorously characterized by mass compatibility and related quadratic diagnostics. Raw cancellation remains a genuine operator question. Keeping these statements separate makes the formalization suitable for a subsequent confinement theorem, counterexample search, or independently audited external analytic transfer.\n\section{Formal Construction in Layers}\nThe formal development is organized as a causal chain rather than as a collection of interchangeable definitions. The positional layer establishes quotient--residue geometry and carry depth. The measure layer turns the distinguished residue class into a mass and then into a quadratic-root amplitude. The operator layer consumes the resulting integer tower. Only after the real operator exists does the analytic layer provide a faithful complex presentation.\n\subsection{Arithmetic layer}\nFor $b>0$, $k,n\in\mathbb N$, the canonical decomposition is\n\[ n=r+b^kq,\qquad 0\le r<b^k. \]\nThe theorem \texttt{NCG-POS-001} proves existence and uniqueness. The zero-residue event is equivalent to divisibility by $b^k$ (\texttt{NCG-POS-004}). For $b>1$ and $n>0$, \texttt{NCG-POS-002} and \texttt{NCG-POS-003} identify the maximal depth and the corresponding factorization.\nThe binary and balanced modules refine this geometry without changing its role. The binary adjacent-center results \texttt{NCG-BIN-001}--\texttt{NCG-BIN-004} handle odd legs separately. For odd prime bases, \texttt{NCG-BAL-001}--\texttt{NCG-BAL-003} and \texttt{NCG-DEP-001}--\texttt{NCG-DEP-002} establish the balanced offset and carrying-center structure.\n\subsection{Measure layer}\nThe uniform carry event has probability $1/b^k$, formalized by \texttt{NCG-PRB-001}. Hence\n\[ \carryMass(b,k)=b^{-k}. \]\nThe native amplitude is its quadratic root:\n\[ \carryAmp(b,k)=b^{-k/2},\qquad \carryAmp(b,k)^2=\carryMass(b,k). \]\nThe latter identity is \texttt{NCG-MAS-001}. At integer scale the native tower has mass $n^{-1}$ and amplitude $n^{-1/2}$ on positive integers, with the exact square relation given by \texttt{NCG-MAS-003}.\n\subsection{Radial comparison layer}\nThe comparison family changes only the amplitude exponent:\n\[ \radialAmp(b,\sigma,k)=b^{-k\sigma}. \]\nIts energy is $b^{-2k\sigma}$. At positive depth, equality with the native carry mass is equivalent to $\sigma=1/2$ (\texttt{NCG-AMP-002}). The global compatibility theorem \texttt{NCG-AMP-003} gives the same result over every base $b>1$. The branch-energy theorem \texttt{NCG-AMP-004} independently identifies the same half-coordinate as the saturation locus.\n\subsection{Observation layer}\nThe centered second difference is\n\[ \Delta_r^2 f(c)=f(c-r)-2f(c)+f(c+r). \]\nRadius symmetry and additivity are \texttt{NCG-BRK-001} and \texttt{NCG-BRK-002}. For odd prime cameras the balanced bracket agrees with the saturated symmetric bracket (\texttt{NCG-BRK-003}), while \texttt{NCG-BRK-004} and \texttt{NCG-BRK-005} provide exact finite cancellation and the corresponding prefix formula.\n\section{The Radial Coordinate as a Quadratic-Norm Deformation}\nFor positive $n$, the real radial state is\n\[ u_{\sigma,t}(n)=n^{-\sigma}\bigl(\cos(-t\log n),\sin(-t\log n)\bigr). \]\nIts quadratic energy is exactly\n\[ Q(u_{\sigma,t}(n))=n^{-2\sigma}. \]\nThis is \texttt{NCG-REA-005}. At $\sigma=1/2$ the energy is $n^{-1}$, which is the native tower mass. Thus the half-coordinate is selected before any zero is considered.\nThe same law survives the complex coordinate change:\n\[ J(u_{\sigma,t}(n))=n^{-(\sigma+it)},\qquad \normsq(n^{-(\sigma+it)})=n^{-2\sigma}. \]\nThe formal results are \texttt{NCG-EQV-005}, \texttt{NCG-EQV-013}, and \texttt{NCG-EQV-016}. This is why $\sigma=\Re(s)$ is best understood here as a radial amplitude coordinate.\n\section{Operator Zeros and Representation Relations}\nThe finite radial predicate is raw resultant vanishing (\texttt{NCG-OPR-003}); the boundary predicate is raw boundary cancellation (\texttt{NCG-OPR-004}). The fixed native predicate is defined independently from the already weighted native tower.\nAt the half-coordinate, \texttt{NCG-OPR-005} gives\n\[ \operatorname{IsRealCarryOperatorZero}(c,1/2,t)\Longleftrightarrow \operatorname{IsNativeCarryOperatorZero}(c,t). \]\nNative representation is a different proposition. \texttt{NCG-OPR-006} exposes it as mass compatibility together with raw zero, and \texttt{NCG-OPR-007} factors it as\n\[ \operatorname{RadialChartRepresentsNativeZero}(c,\sigma,t)\Longleftrightarrow \sigma=1/2\land\operatorname{IsNativeCarryOperatorZero}(c,t). \]\nThe analytic relation has the corresponding factorization \texttt{NCG-EQV-018}:\n\[ \operatorname{AnalyticChartRepresentsNativeZero}(s)\Longleftrightarrow \Re(s)=1/2\land\operatorname{canonicalCarryContinuation}(s)=0. \]\nThese are representation theorems. They do not imply that the raw radial or analytic zero locus is confined to the half-line.\n\section{Analytic Presentation and Coordinate Equivalence}\nThe analytic layer defines a finite bracket chart, proves convergence to the bracket series, establishes holomorphy, and factors the normalized bracket series through a canonical carry continuation. These results are registered as \texttt{NCG-ANL-001}--\texttt{NCG-ANL-008}.\nIn the canonical strip $0<\Re(s)<1$, camera $3$ is the normalized representative. The raw analytic predicate is exactly\n\[ \operatorname{IsCanonicalCarryOperatorZero}(s)\Longleftrightarrow \operatorname{canonicalCarryContinuation}(s)=0. \]\nThe real--analytic boundary identity \texttt{NCG-EQV-008} proves\n\[ \operatorname{IsRealCarryOperatorZero}(3,\Re(s),\Im(s))\Longleftrightarrow \operatorname{IsCanonicalCarryOperatorZero}(s). \]\nBecause the coordinate map is an additive equivalence preserving norm and finite resultants, this theorem transports the full raw zero locus in its stated domain. It does not remove possible off-half zeros.\n\section{Formal Audit Contract}\nThe repository registers 75 citeable mathematical results under stable identifiers of the form \texttt{NCG-<FAMILY>-<NUMBER>}. The theorem registry records each fully qualified Lean declaration, its elaborated type digest, dependency information, source provenance, and axiom report.\nThe type digest is computed from a canonical preimage containing the declaration name, Lean version, resolved Mathlib commit, and the pretty-printed elaborated type. This binds the citation to the formal statement actually checked by the kernel rather than to mutable source line numbers.\nThe semantic audit additionally enforces that raw zero predicates contain no native-mass compatibility, that the native zero has no radial parameter, that representation predicates contain both compatibility and raw vanishing, and that camera-specific hypotheses remain visible.\n\section{Reproducibility}\nThe audited environment uses Lean $v4.32.0$ and resolved Mathlib commit \texttt{81a5d257c8e410db227a6665ed08f64fea08e997}. The historical selective-port source lock is \texttt{thiagomassensini/primos@7d8d0b345b329935674edc24e5ac08ad9f7b5804}. The documented build is\n\begin{verbatim}\nlake build --wfail NativeCarryGeometry\n\end{verbatim}\nAn archival audit records the repository commit, Lean and Lake versions, and hashes of \texttt{lean-toolchain} and \texttt{lake-manifest.json}. The audit also checks theorem signatures, transitive axioms, dependency boundaries, generated artifacts, and the semantic contract.\n\section{Formal Status and Nonclaims}\nThe core proves positional decomposition, carry depth, carry mass, quadratic amplitude, the native tower, bracket algebra, radial energy, faithful real/complex coordinates, raw real/analytic zero-locus equivalence in the stated domain, native specialization at $\sigma=1/2$, and native-representation factorization.\nIt does not prove\n\begin{enumerate}\n\item that every raw radial zero has $\sigma=1/2$;\n\item that every raw analytic zero has real part $1/2$;\n\item that all cameras have the same temporal resonance set;\n\item that finite vanishing is equivalent to boundary convergence without additional hypotheses;\n\item that the canonical continuation is the classical Riemann zeta function;\n\item any theorem about the Riemann hypothesis without a separate audited transfer theorem.\n\end{enumerate}\nThe historical repository contains additional research routes, including Green operators, source-state realizations, spectral pencils, empirical scanners, and other operator-theoretic constructions. They are explicitly excluded from this audit root. Exclusion means non-dependency, not falsity.\n\section{Discussion: What the Genesis Actually Establishes}\nThe construction can be summarized as a sequence of representations:\n\[ b^{-k}\;\xrightarrow{\text{quadratic root}}\;b^{-k/2}\;\xrightarrow{\text{integer scale}}\;n^{-1/2}\;\xrightarrow{\text{rotation}}\;u_t(n)\;\xrightarrow{\mathbb R^2\simeq_+\mathbb C}\;n^{-(1/2+it)}. \]\nThe radial family replaces the native half exponent by $\sigma$, so its quadratic norm changes from $n^{-1}$ to $n^{-2\sigma}$. The half-coordinate is therefore a geometric compatibility condition inherited from the carry measure.\nThe crucial logical separation is\n\[ \boxed{\text{raw cancellation}\quad\neq\quad\text{native representation}.} \]\nThis is the main semantic safeguard of the formalization. A future confinement theorem must connect raw cancellation to the native mass shell by an independent mathematical argument. The present genesis does not smuggle that bridge into the word ``zero''.\n\appendix\n\section{Theorem-Family Index}\n\begin{center}\n\begin{tabular}{lll}\n\toprule\nFamily & IDs & Mathematical layer\\\n\midrule\nPOS & NCG-POS-001--004 & quotient--residue decomposition and depth\\\nBIN & NCG-BIN-001--004 & binary adjacent-center geometry\\\nBAL & NCG-BAL-001--003 & balanced odd-prime residues\\\nDEP & NCG-DEP-001--002 & carrying offset and effective depth\\\nPRB & NCG-PRB-001 & uniform carry-event probability\\\nMAS & NCG-MAS-001--003 & mass and native amplitude\\\nAMP & NCG-AMP-001--008 & radial energy and rigidity\\\nBRK & NCG-BRK-001--005 & centered bracket and finite camera\\\nCUR & NCG-CUR-001--004 & radial curvature detector\\\nREA & NCG-REA-001--006 & real state and energy\\\nOPR & NCG-OPR-001--008 & finite/boundary operator and representation\\\nANL & NCG-ANL-001--008 & analytic chart and continuation\\\nEQV & NCG-EQV-001--019 & coordinate and zero-locus equivalence\\\n\bottomrule\n\end{tabular}\n\end{center}\n\section{Repository Record}\nThe authoritative implementation and audit artifacts are maintained at \url{https://github.com/thiagomassensini/native-carry-geometry}. The repository provides the public theorem registry, source provenance, reproducibility procedure, semantic audit, and the Lean source itself. The formal declarations, rather than this prose, are the authority for exact theorem types.
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,hyperref,enumitem}
 
-\begin{thebibliography}{9}\n\bibitem{NCG} T. Massensini, \emph{Native Carry Geometry: The Geometry of Carry Compression in Positional Numeral Systems}, GitHub repository, \url{https://github.com/thiagomassensini/native-carry-geometry}.\n\bibitem{Lean} The Lean 4 Theorem Prover, \url{https://lean-lang.org/}.\n\bibitem{Mathlib} The mathlib community, \emph{Mathlib4}, \url{https://github.com/leanprover-community/mathlib4}.\n\end{thebibliography}\n\end{document}
+ewtheorem{theorem}{Theorem}[section]
+
+ewtheorem{proposition}[theorem]{Proposition}
+
+ewtheorem{remark}[theorem]{Remark}
+
+ewcommand{\R}{\mathbb{R}}
+
+ewcommand{\C}{\mathbb{C}}
+\title{The Geometry of Carry Compression in Positional Numeral Systems}
+\author{Thiago Massensini}
+\date{\today}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a Lean-verified construction in which positional carry depth determines a mass, the mass determines a quadratic-root amplitude, and the resulting integer tower is observed through centered brackets and finite cameras. A radial deformation replaces the native amplitude $n^{-1/2}$ by $n^{-\sigma}$. Its quadratic energy is $n^{-2\sigma}$, so the native mass shell is exactly $\sigma=1/2$. The same states admit faithful complex coordinates $n^{-(\sigma+it)}$. In the canonical strip and normalized camera $3$, the real and analytic descriptions have the same raw zero locus. We distinguish raw operator vanishing from representation of the fixed native operator, and therefore do not claim that every raw zero has real part $1/2$. The repository records the corresponding theorem types, dependencies, and audit artifacts.
+\end{abstract}
+\section{Introduction}
+The construction begins with ordinary positional arithmetic. For $b>0$, depth $k$, and $n\in\mathbb N$, Euclidean division gives
+\[ n=r+b^kq,\qquad 0\le r<b^k. \]
+The distinguished carry event is $r=0$, equivalently $b^k\mid n$. For $b>1$ and $n>0$, the maximal such exponent is the positional carry depth. These statements are formalized as \texttt{NCG-POS-001} through \texttt{NCG-POS-004}.
+The central design choice is causal: the positional layer determines the measure before an operator is constructed. At depth $k$ the distinguished residue class has uniform mass
+\[ \operatorname{carryMass}(b,k)=b^{-k}. \]
+Its canonical quadratic-root amplitude is
+\[ \operatorname{carryAmplitude}(b,k)=b^{-k/2}, \qquad \operatorname{carryAmplitude}(b,k)^2=\operatorname{carryMass}(b,k). \]
+The latter identity is \texttt{NCG-MAS-001}.
+\section{Radial deformation and the native shell}
+Introduce the comparison family
+\[ \operatorname{deformedAmplitude}(b,\sigma,k)=b^{-k\sigma}. \]
+Its quadratic energy is $b^{-2k\sigma}$. For $b>1$ and $k>0$,
+\[ b^{-2k\sigma}=b^{-k}\quad\Longleftrightarrow\quad\sigma=\frac12. \]
+This is the local rigidity theorem \texttt{NCG-AMP-002}; the global compatibility theorem \texttt{NCG-AMP-003} gives the same singleton shell for every base $b>1$. Thus $\sigma$ is a quadratic-norm deformation coordinate, not an additional hidden condition on zeros.
+For the normalized branch, the formal development sums the geometric energy series. In the positive-$\sigma$ regime,
+\[ E_b(\sigma)=(b-1)\frac{b^{-2\sigma}}{1-b^{-2\sigma}}, \]
+and $E_b(\sigma)=1$ exactly at $\sigma=1/2$ (\texttt{NCG-AMP-004}). The saturation statement is a norm statement and is not an operator-zero predicate.
+\section{Native integer tower}
+The positive integer tower is assembled in the measure layer before any camera is evaluated:
+\[ M(n)=\operatorname{carryMass}(n,1)=n^{-1},\qquad A(n)=\operatorname{carryAmplitude}(n,1)=n^{-1/2}. \]
+Lean proves $A(n)^2=M(n)$ for all integers, with zero values on the nonpositive branch. This is \texttt{NCG-MAS-003}. The operator consumes this already weighted tower.
+\section{Centered brackets and carry curvature}
+For an additive target, define the centered second difference
+\[ \Delta_r^2f(c)=f(c-r)-2f(c)+f(c+r). \]
+The formal results \texttt{NCG-BRK-001} and \texttt{NCG-BRK-002} prove radius symmetry and additivity. A saturated bracket is
+\[ \mathcal B_hf(c)=\sum_{r=1}^{h}\Delta_r^2f(c). \]
+For odd-prime cameras the balanced-residue presentation is formally identified with this symmetric-radius form (\texttt{NCG-BRK-003}). The finite camera also admits an exact cancellation identity, with no limiting argument.
+The radial curvature detector applies this bracket algebra to the deformed family. Under its explicit odd-prime and admissibility hypotheses, \texttt{NCG-CUR-001}--\texttt{NCG-CUR-004} give
+\[ \operatorname{balancedRadialCurvatureAtSigma}(c,\sigma,x)=0 \quad\Longleftrightarrow\quad \sigma=\frac12. \]
+This is an auxiliary detector of the native shell, not the definition of an operator zero.
+\section{Real operator family}
+The real state space is $\R^2$ with quadratic energy
+\[ E(x,y)=x^2+y^2. \]
+For $n>0$, define
+\[ u_{\sigma,t}(n)=n^{-\sigma}\bigl(\cos(-t\log n),\sin(-t\log n)\bigr). \]
+Then
+\[ E(u_{\sigma,t}(n))=n^{-2\sigma}. \]
+The fixed native member is $u_{1/2,t}$ and has energy $n^{-1}$. The finite camera applies centered brackets to these samples, producing a vector resultant. The raw finite zero predicate is exactly vanishing of that resultant (\texttt{NCG-OPR-003}); the boundary predicate is the corresponding convergence-to-zero statement.
+At the native value, the radial and fixed states coincide, yielding
+\[ \operatorname{IsRealCarryOperatorZero}(c,1/2,t)\Longleftrightarrow \operatorname{IsNativeCarryOperatorZero}(c,t), \]
+which is \texttt{NCG-OPR-005}. This is a specialization theorem only.
+\section{Faithful complex coordinates}
+The map $(x,y)\mapsto x+iy$ is formalized as an additive equivalence \texttt{complexCoordinates}:\R^2\simeq_+\mathbb C$. It preserves norm square and commutes with the finite additive camera.
+For $s=\sigma+it$ and $n>0$ the state satisfies
+\[ \operatorname{complexCoordinates}(u_{\sigma,t}(n))=n^{-s}. \]
+Therefore
+\[ \operatorname{normSq}(n^{-s})=n^{-2\sigma}. \]
+The registered theorem is \texttt{NCG-EQV-016}. Complex notation is consequently a coordinate representation of the same radial state.
+Let
+\[ \mathcal S=\{s\in\mathbb C:0<\operatorname{Re}(s)<1\}. \]
+At camera $3$, the formal crosswalk proves, for $s\in\mathcal S$,
+\[ \operatorname{IsRealCarryOperatorZero}(3,\operatorname{Re}s,\operatorname{Im}s)\Longleftrightarrow \operatorname{IsCanonicalCarryOperatorZero}(s). \]
+This is \texttt{NCG-EQV-008}. It transports the raw zero locus and does not add a half-line restriction.
+\section{Raw zeros versus native representation}
+The repository deliberately distinguishes four notions: the fixed native zero, the raw real radial zero, the raw analytic zero, and a representation relation saying that a radial point both preserves native mass and vanishes.
+The representation relation factors as
+\[ \operatorname{RadialChartRepresentsNativeZero}(c,\sigma,t)\Longleftrightarrow \left(\sigma=\frac12\right)\land\operatorname{IsNativeCarryOperatorZero}(c,t). \]
+This is \texttt{NCG-OPR-007}. In analytic coordinates, \texttt{NCG-EQV-018} gives
+\[ \operatorname{AnalyticChartRepresentsNativeZero}(s)\Longleftrightarrow \operatorname{Re}(s)=\frac12\land\operatorname{canonicalCarryContinuation}(s)=0. \]
+The half-coordinate conclusion belongs to representation, not to raw vanishing.
+\section{The remaining confinement problem}
+The stronger assertion
+\[ 0<\sigma<1\land\operatorname{IsRealCarryOperatorZero}(3,\sigma,t)\Longrightarrow\sigma=\frac12 \]
+is not proved. The experimental module \texttt{RawGenuineConfinementAttempt.lean} makes the missing bridge explicit. It proves equivalence of the desired confinement with preservation of the native quadratic energy under raw closure, saturation of the radial branch, and annihilation of the signed radial-curvature detector. The theorem \texttt{rawCanonicalContinuationConfinement_of_boundaryCurvature} therefore takes that bridge as an explicit hypothesis.
+\section{Formal audit}
+The audit root imports arithmetic, measure, bracket, operator, analytic, and equivalence layers. The dependency direction is
+\[ \text{positional decomposition}\to\text{depth}\to\text{mass}\to\text{amplitude}\to\text{native tower}\to\text{state}\to\text{bracket}\to\text{camera}\to\text{zero}\to\text{analytic coordinates}. \]
+The repository records stable theorem identifiers, elaborated types, signature digests, dependencies, provenance, and transitive axiom reports. The semantic contract explicitly rejects the historical error of hiding native-mass compatibility inside a predicate called zero.
+The toolchain is Lean 4 $v4.32.0$ with the resolved Mathlib state pinned in the repository manifest. The documented build command is:
+\begin{verbatim}
+lake build --wfail NativeCarryGeometry
+\end{verbatim}
+\section{Scope and nonclaims}
+The positional base and observation camera are distinct parameters. Generic cameras of widths $0$, $1$, and $2$ are degenerate; the binary adjacent-center construction is separate. The radial/analytic zero-locus crosswalk is specialized to camera $3$ and the canonical strip.
+The repository proves positional decomposition, carry depth, carry mass, quadratic amplitude, the native tower, centered-bracket algebra, radial energy, faithful real/complex coordinates, the real/analytic raw zero-locus identity in the stated domain, native specialization at $\sigma=1/2$, and native-representation factorization.
+It does not prove raw radial confinement, equality of temporal resonance sets for all cameras, equivalence of finite vanishing and boundary convergence, identification with the classical Riemann zeta function, or any theorem about the Riemann hypothesis.
+\section{Conclusion}
+The construction gives a precise geometry of carry. Positional arithmetic supplies depth; the distinguished residue class supplies mass $b^{-k}$; the quadratic root supplies amplitude $b^{-k/2}$; the integer tower is rotated in a real plane; centered differences and cameras produce resultants; and the same resultants admit faithful complex coordinates.
+The main mathematical separation is
+\[ \boxed{\text{raw cancellation}\qquad\text{versus}\qquad\text{native representation}.} \]
+The native shell $\sigma=1/2$ is rigorously characterized by mass compatibility and related quadratic diagnostics. Raw cancellation remains a genuine operator question. Keeping these statements separate makes the formalization suitable for a subsequent confinement theorem, counterexample search, or independently audited external analytic transfer.
+\section{Formal Construction in Layers}
+The formal development is organized as a causal chain rather than as a collection of interchangeable definitions. The positional layer establishes quotient--residue geometry and carry depth. The measure layer turns the distinguished residue class into a mass and then into a quadratic-root amplitude. The operator layer consumes the resulting integer tower. Only after the real operator exists does the analytic layer provide a faithful complex presentation.
+\subsection{Arithmetic layer}
+For $b>0$, $k,n\in\mathbb N$, the canonical decomposition is
+\[ n=r+b^kq,\qquad 0\le r<b^k. \]
+The theorem \texttt{NCG-POS-001} proves existence and uniqueness. The zero-residue event is equivalent to divisibility by $b^k$ (\texttt{NCG-POS-004}). For $b>1$ and $n>0$, \texttt{NCG-POS-002} and \texttt{NCG-POS-003} identify the maximal depth and the corresponding factorization.
+The binary and balanced modules refine this geometry without changing its role. The binary adjacent-center results \texttt{NCG-BIN-001}--\texttt{NCG-BIN-004} handle odd legs separately. For odd prime bases, \texttt{NCG-BAL-001}--\texttt{NCG-BAL-003} and \texttt{NCG-DEP-001}--\texttt{NCG-DEP-002} establish the balanced offset and carrying-center structure.
+\subsection{Measure layer}
+The uniform carry event has probability $1/b^k$, formalized by \texttt{NCG-PRB-001}. Hence
+\[ \carryMass(b,k)=b^{-k}. \]
+The native amplitude is its quadratic root:
+\[ \carryAmp(b,k)=b^{-k/2},\qquad \carryAmp(b,k)^2=\carryMass(b,k). \]
+The latter identity is \texttt{NCG-MAS-001}. At integer scale the native tower has mass $n^{-1}$ and amplitude $n^{-1/2}$ on positive integers, with the exact square relation given by \texttt{NCG-MAS-003}.
+\subsection{Radial comparison layer}
+The comparison family changes only the amplitude exponent:
+\[ \radialAmp(b,\sigma,k)=b^{-k\sigma}. \]
+Its energy is $b^{-2k\sigma}$. At positive depth, equality with the native carry mass is equivalent to $\sigma=1/2$ (\texttt{NCG-AMP-002}). The global compatibility theorem \texttt{NCG-AMP-003} gives the same result over every base $b>1$. The branch-energy theorem \texttt{NCG-AMP-004} independently identifies the same half-coordinate as the saturation locus.
+\subsection{Observation layer}
+The centered second difference is
+\[ \Delta_r^2 f(c)=f(c-r)-2f(c)+f(c+r). \]
+Radius symmetry and additivity are \texttt{NCG-BRK-001} and \texttt{NCG-BRK-002}. For odd prime cameras the balanced bracket agrees with the saturated symmetric bracket (\texttt{NCG-BRK-003}), while \texttt{NCG-BRK-004} and \texttt{NCG-BRK-005} provide exact finite cancellation and the corresponding prefix formula.
+\section{The Radial Coordinate as a Quadratic-Norm Deformation}
+For positive $n$, the real radial state is
+\[ u_{\sigma,t}(n)=n^{-\sigma}\bigl(\cos(-t\log n),\sin(-t\log n)\bigr). \]
+Its quadratic energy is exactly
+\[ Q(u_{\sigma,t}(n))=n^{-2\sigma}. \]
+This is \texttt{NCG-REA-005}. At $\sigma=1/2$ the energy is $n^{-1}$, which is the native tower mass. Thus the half-coordinate is selected before any zero is considered.
+The same law survives the complex coordinate change:
+\[ J(u_{\sigma,t}(n))=n^{-(\sigma+it)},\qquad 
+ormsq(n^{-(\sigma+it)})=n^{-2\sigma}. \]
+The formal results are \texttt{NCG-EQV-005}, \texttt{NCG-EQV-013}, and \texttt{NCG-EQV-016}. This is why $\sigma=\Re(s)$ is best understood here as a radial amplitude coordinate.
+\section{Operator Zeros and Representation Relations}
+The finite radial predicate is raw resultant vanishing (\texttt{NCG-OPR-003}); the boundary predicate is raw boundary cancellation (\texttt{NCG-OPR-004}). The fixed native predicate is defined independently from the already weighted native tower.
+At the half-coordinate, \texttt{NCG-OPR-005} gives
+\[ \operatorname{IsRealCarryOperatorZero}(c,1/2,t)\Longleftrightarrow \operatorname{IsNativeCarryOperatorZero}(c,t). \]
+Native representation is a different proposition. \texttt{NCG-OPR-006} exposes it as mass compatibility together with raw zero, and \texttt{NCG-OPR-007} factors it as
+\[ \operatorname{RadialChartRepresentsNativeZero}(c,\sigma,t)\Longleftrightarrow \sigma=1/2\land\operatorname{IsNativeCarryOperatorZero}(c,t). \]
+The analytic relation has the corresponding factorization \texttt{NCG-EQV-018}:
+\[ \operatorname{AnalyticChartRepresentsNativeZero}(s)\Longleftrightarrow \Re(s)=1/2\land\operatorname{canonicalCarryContinuation}(s)=0. \]
+These are representation theorems. They do not imply that the raw radial or analytic zero locus is confined to the half-line.
+\section{Analytic Presentation and Coordinate Equivalence}
+The analytic layer defines a finite bracket chart, proves convergence to the bracket series, establishes holomorphy, and factors the normalized bracket series through a canonical carry continuation. These results are registered as \texttt{NCG-ANL-001}--\texttt{NCG-ANL-008}.
+In the canonical strip $0<\Re(s)<1$, camera $3$ is the normalized representative. The raw analytic predicate is exactly
+\[ \operatorname{IsCanonicalCarryOperatorZero}(s)\Longleftrightarrow \operatorname{canonicalCarryContinuation}(s)=0. \]
+The real--analytic boundary identity \texttt{NCG-EQV-008} proves
+\[ \operatorname{IsRealCarryOperatorZero}(3,\Re(s),\Im(s))\Longleftrightarrow \operatorname{IsCanonicalCarryOperatorZero}(s). \]
+Because the coordinate map is an additive equivalence preserving norm and finite resultants, this theorem transports the full raw zero locus in its stated domain. It does not remove possible off-half zeros.
+\section{Formal Audit Contract}
+The repository registers 75 citeable mathematical results under stable identifiers of the form \texttt{NCG-<FAMILY>-<NUMBER>}. The theorem registry records each fully qualified Lean declaration, its elaborated type digest, dependency information, source provenance, and axiom report.
+The type digest is computed from a canonical preimage containing the declaration name, Lean version, resolved Mathlib commit, and the pretty-printed elaborated type. This binds the citation to the formal statement actually checked by the kernel rather than to mutable source line numbers.
+The semantic audit additionally enforces that raw zero predicates contain no native-mass compatibility, that the native zero has no radial parameter, that representation predicates contain both compatibility and raw vanishing, and that camera-specific hypotheses remain visible.
+\section{Reproducibility}
+The audited environment uses Lean $v4.32.0$ and resolved Mathlib commit \texttt{81a5d257c8e410db227a6665ed08f64fea08e997}. The historical selective-port source lock is \texttt{thiagomassensini/primos@7d8d0b345b329935674edc24e5ac08ad9f7b5804}. The documented build is
+\begin{verbatim}
+lake build --wfail NativeCarryGeometry
+\end{verbatim}
+An archival audit records the repository commit, Lean and Lake versions, and hashes of \texttt{lean-toolchain} and \texttt{lake-manifest.json}. The audit also checks theorem signatures, transitive axioms, dependency boundaries, generated artifacts, and the semantic contract.
+\section{Formal Status and Nonclaims}
+The core proves positional decomposition, carry depth, carry mass, quadratic amplitude, the native tower, bracket algebra, radial energy, faithful real/complex coordinates, raw real/analytic zero-locus equivalence in the stated domain, native specialization at $\sigma=1/2$, and native-representation factorization.
+It does not prove
+\begin{enumerate}
+\item that every raw radial zero has $\sigma=1/2$;
+\item that every raw analytic zero has real part $1/2$;
+\item that all cameras have the same temporal resonance set;
+\item that finite vanishing is equivalent to boundary convergence without additional hypotheses;
+\item that the canonical continuation is the classical Riemann zeta function;
+\item any theorem about the Riemann hypothesis without a separate audited transfer theorem.
+\end{enumerate}
+The historical repository contains additional research routes, including Green operators, source-state realizations, spectral pencils, empirical scanners, and other operator-theoretic constructions. They are explicitly excluded from this audit root. Exclusion means non-dependency, not falsity.
+\section{Discussion: What the Genesis Actually Establishes}
+The construction can be summarized as a sequence of representations:
+\[ b^{-k}\;\xrightarrow{\text{quadratic root}}\;b^{-k/2}\;\xrightarrow{\text{integer scale}}\;n^{-1/2}\;\xrightarrow{\text{rotation}}\;u_t(n)\;\xrightarrow{\mathbb R^2\simeq_+\mathbb C}\;n^{-(1/2+it)}. \]
+The radial family replaces the native half exponent by $\sigma$, so its quadratic norm changes from $n^{-1}$ to $n^{-2\sigma}$. The half-coordinate is therefore a geometric compatibility condition inherited from the carry measure.
+The crucial logical separation is
+\[ \boxed{\text{raw cancellation}\quad
+eq\quad\text{native representation}.} \]
+This is the main semantic safeguard of the formalization. A future confinement theorem must connect raw cancellation to the native mass shell by an independent mathematical argument. The present genesis does not smuggle that bridge into the word ``zero''.
+\appendix
+\section{Theorem-Family Index}
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Family & IDs & Mathematical layer\\
+\midrule
+POS & NCG-POS-001--004 & quotient--residue decomposition and depth\\
+BIN & NCG-BIN-001--004 & binary adjacent-center geometry\\
+BAL & NCG-BAL-001--003 & balanced odd-prime residues\\
+DEP & NCG-DEP-001--002 & carrying offset and effective depth\\
+PRB & NCG-PRB-001 & uniform carry-event probability\\
+MAS & NCG-MAS-001--003 & mass and native amplitude\\
+AMP & NCG-AMP-001--008 & radial energy and rigidity\\
+BRK & NCG-BRK-001--005 & centered bracket and finite camera\\
+CUR & NCG-CUR-001--004 & radial curvature detector\\
+REA & NCG-REA-001--006 & real state and energy\\
+OPR & NCG-OPR-001--008 & finite/boundary operator and representation\\
+ANL & NCG-ANL-001--008 & analytic chart and continuation\\
+EQV & NCG-EQV-001--019 & coordinate and zero-locus equivalence\\
+\bottomrule
+\end{tabular}
+\end{center}
+\section{Repository Record}
+The authoritative implementation and audit artifacts are maintained at \url{https://github.com/thiagomassensini/native-carry-geometry}. The repository provides the public theorem registry, source provenance, reproducibility procedure, semantic audit, and the Lean source itself. The formal declarations, rather than this prose, are the authority for exact theorem types.
+
+\begin{thebibliography}{9}
+\bibitem{NCG} T. Massensini, \emph{Native Carry Geometry: The Geometry of Carry Compression in Positional Numeral Systems}, GitHub repository, \url{https://github.com/thiagomassensini/native-carry-geometry}.
+\bibitem{Lean} The Lean 4 Theorem Prover, \url{https://lean-lang.org/}.
+\bibitem{Mathlib} The mathlib community, \emph{Mathlib4}, \url{https://github.com/leanprover-community/mathlib4}.
+\end{thebibliography}
+\end{document}
