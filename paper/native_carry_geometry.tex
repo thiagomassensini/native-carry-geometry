@@ -2,15 +2,15 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,hyperref,enumitem}
 
-ewtheorem{theorem}{Theorem}[section]
+\newtheorem{theorem}{Theorem}[section]
 
-ewtheorem{proposition}[theorem]{Proposition}
+\newtheorem{proposition}[theorem]{Proposition}
 
-ewtheorem{remark}[theorem]{Remark}
+\newtheorem{remark}[theorem]{Remark}
 
-ewcommand{\R}{\mathbb{R}}
+\newcommand{\R}{\mathbb{R}}
 
-ewcommand{\C}{\mathbb{C}}
+\newcommand{\C}{\mathbb{C}}
 \title{The Geometry of Carry Compression in Positional Numeral Systems}
 \author{Thiago Massensini}
 \date{\today}
@@ -130,7 +130,7 @@ Its quadratic energy is exactly
 This is \texttt{NCG-REA-005}. At $\sigma=1/2$ the energy is $n^{-1}$, which is the native tower mass. Thus the half-coordinate is selected before any zero is considered.
 The same law survives the complex coordinate change:
 \[ J(u_{\sigma,t}(n))=n^{-(\sigma+it)},\qquad 
-ormsq(n^{-(\sigma+it)})=n^{-2\sigma}. \]
+\normsq(n^{-(\sigma+it)})=n^{-2\sigma}. \]
 The formal results are \texttt{NCG-EQV-005}, \texttt{NCG-EQV-013}, and \texttt{NCG-EQV-016}. This is why $\sigma=\Re(s)$ is best understood here as a radial amplitude coordinate.
 \section{Operator Zeros and Representation Relations}
 The finite radial predicate is raw resultant vanishing (\texttt{NCG-OPR-003}); the boundary predicate is raw boundary cancellation (\texttt{NCG-OPR-004}). The fixed native predicate is defined independently from the already weighted native tower.
